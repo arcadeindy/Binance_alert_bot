@@ -12,6 +12,5 @@ namespace Binance_alert_bot.Objects
         public dgMarketSettings dgMarketSettings { get; set; }
         public dgNotifications dgNotifications { get; set; }
         public Market market { get; set; }
-        public Timeframe timeframe { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Binance_alert_bot.Binance
 
         #region Fields
         public List<string> AllSymbolsBTC = new List<string>();
-        public List<Market> BinanceMarket = new List<Market>();
+        public volatile List<Market> BinanceMarket = new List<Market>();
         #endregion
 
         #region Properties
@@ -44,15 +44,20 @@ namespace Binance_alert_bot.Binance
             GetExchangeInfo();
             BinanceLog?.Invoke("Получил всю инфо о бриже");
 
-            GetKlines();
-
-            BinanceLog?.Invoke("Получил историю свечей");
+            Task.Run(() => GetKlines());
 
             Task.Run(() => SubscribeToNewSymbolAsync(AllSymbolsBTC)).Wait();
 
             BinanceLog?.Invoke("Подключил сокеты всех монет");
 
             BinanceLog?.Invoke("Подключено");
+
+            while (true)
+            {
+                foreach(var symbol in BinanceMarket.ToArray())
+                    symbol.Ticks.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2));
+                Thread.Sleep(1000 * 60);
+            }
         }
 
         #endregion
@@ -142,14 +147,16 @@ namespace Binance_alert_bot.Binance
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
-                                    Price = data.Data.Close,
+                                    Close = data.Data.Close,
+                                    Open = data.Data.Open,
                                     Volume = data.Data.QuoteAssetVolume
                                 });
                         }
                         else
                         {
                             findCoin.Ticks.Last().Time = data.EventTime;
-                            findCoin.Ticks.Last().Price = data.Data.Close;
+                            findCoin.Ticks.Last().Close = data.Data.Close;
+                            findCoin.Ticks.Last().Open = data.Data.Open;
                             findCoin.Ticks.Last().Volume = data.Data.QuoteAssetVolume;
                         }
                     }
@@ -178,7 +185,8 @@ namespace Binance_alert_bot.Binance
                             new MarketTicks
                             {
                                 Time = kline.CloseTime,
-                                Price = kline.Close,
+                                Close = kline.Close,
+                                Open = kline.Open,
                                 High = kline.High,
                                 Low = kline.Low,
                                 Volume = kline.QuoteAssetVolume
@@ -200,7 +208,7 @@ namespace Binance_alert_bot.Binance
                     }
                 }
             }
-
+            BinanceLog?.Invoke("Получил историю свечей");
         }
         private void GetExchangeInfo(string Symbol = "")
         {
