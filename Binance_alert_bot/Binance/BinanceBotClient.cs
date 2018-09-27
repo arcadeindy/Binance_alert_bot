@@ -168,12 +168,12 @@ namespace Binance_alert_bot.Binance
         {
             foreach (var symbol in AllSymbolsBTC)
             {
-                int requests = 60 * 48;
-                while (requests > 0)
+                int requests = -2 * 24 * 60;
+                while (requests < 0)
                 {
-                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.OneMinute, limit: (requests - 1000 > 0) ? 1000 : requests);
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.OneMinute, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
 
-                    requests -= 1000;
+                    requests += 1000;
 
                     var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
 

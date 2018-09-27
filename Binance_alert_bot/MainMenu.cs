@@ -149,6 +149,171 @@ namespace Binance_alert_bot
         {
             ColumnAction("High24h", cbHigh24h.Checked);
         }
+
+        private void cbLow1min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low1min", cbLow1min.Checked);
+        }
+
+        private void cbLow3min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low3min", cbLow3min.Checked);
+        }
+
+        private void cbLow5min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low5min", cbLow5min.Checked);
+        }
+
+        private void cbLow15min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low15min", cbLow15min.Checked);
+        }
+
+        private void cbLow30min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low30min", cbLow30min.Checked);
+        }
+
+        private void cbLow1h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low1h", cbLow1h.Checked);
+        }
+
+        private void cbLow2h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low2h", cbLow2h.Checked);
+        }
+
+        private void cbLow4h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low4h", cbLow4h.Checked);
+        }
+
+        private void cbLow6h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low6h", cbLow6h.Checked);
+        }
+
+        private void cbLow12h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low12h", cbLow12h.Checked);
+        }
+
+        private void cbLow24h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Low24h", cbLow24h.Checked);
+        }
+
+        private void cbVolume1min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume1min", cbVolume1min.Checked);
+        }
+
+        private void cbVolume3min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume3min", cbVolume3min.Checked);
+        }
+
+        private void cbVolume5min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume5min", cbVolume5min.Checked);
+        }
+
+        private void cbVolume15min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume15min", cbVolume15min.Checked);
+        }
+
+        private void cbVolume30min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume30min", cbVolume30min.Checked);
+        }
+
+        private void cbVolume1h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume1h", cbVolume1h.Checked);
+        }
+
+        private void cbVolume2h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume2h", cbVolume2h.Checked);
+        }
+
+        private void cbVolume4h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume4h", cbVolume4h.Checked);
+        }
+
+        private void cbVolume6h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume6h", cbVolume6h.Checked);
+        }
+
+        private void cbVolume12h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume12h", cbVolume12h.Checked);
+        }
+
+        private void cbVolume24h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("Volume24h", cbVolume24h.Checked);
+        }
+
+        private void cbVolumeChange1min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange1min", cbVolumeChange1min.Checked);
+        }
+
+        private void cbVolumeChange3min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange3min", cbVolumeChange3min.Checked);
+        }
+
+        private void cbVolumeChange5min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange5min", cbVolumeChange5min.Checked);
+        }
+
+        private void cbVolumeChange15min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange15min", cbVolumeChange15min.Checked);
+        }
+
+        private void cbVolumeChange30min_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange30min", cbVolumeChange30min.Checked);
+        }
+
+        private void cbVolumeChange1h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange1h", cbVolumeChange1h.Checked);
+        }
+
+        private void cbVolumeChange2h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange2h", cbVolumeChange2h.Checked);
+        }
+
+        private void cbVolumeChange4h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange4h", cbVolumeChange4h.Checked);
+        }
+
+        private void cbVolumeChange6h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange6h", cbVolumeChange6h.Checked);
+        }
+
+        private void cbVolumeChange12h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange12h", cbVolumeChange12h.Checked);
+        }
+
+        private void cbVolumeChange24h_CheckedChanged(object sender, EventArgs e)
+        {
+            ColumnAction("VolumeChange24h", cbVolumeChange24h.Checked);
+        }
         #endregion
 
         #region Methods
@@ -252,17 +417,17 @@ namespace Binance_alert_bot
                                     InThread(() => LoadBinanceCell(dr.Cells["Volume12h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Sum(h => h.Volume)));
                                     InThread(() => LoadBinanceCell(dr.Cells["Volume24h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Sum(h => h.Volume)));
 
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange3min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange5min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange15min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange30min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange2h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange4h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24 * 2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 1) && t.Time < DateTime.UtcNow.AddMinutes(- 1)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange3min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 3) && t.Time < DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange5min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 5) && t.Time < DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange15min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 15) && t.Time < DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange30min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 30) && t.Time < DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60) && t.Time < DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange2h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*2) && t.Time < DateTime.UtcNow.AddMinutes(-60*2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange4h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*4) && t.Time < DateTime.UtcNow.AddMinutes(-60*4)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*6) && t.Time < DateTime.UtcNow.AddMinutes(-60*6)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*12) && t.Time < DateTime.UtcNow.AddMinutes(-60*12)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*24) && t.Time < DateTime.UtcNow.AddMinutes(-60*24)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
                                     break;
                                 }
                             }
@@ -372,9 +537,6 @@ namespace Binance_alert_bot
 
         #endregion
 
-        private void cbLow1min_CheckedChanged(object sender, EventArgs e)
-        {
-            ColumnAction("Low1min", cbLow1min.Checked);
-        }
+
     }
 }
