@@ -73,7 +73,7 @@ namespace Binance_alert_bot.Binance
                     {
                         foreach (var coin in data)
                         {
-                            if (!coin.Symbol.Contains("BTC"))
+                            if (!coin.Symbol.Contains("BTC") || coin.Symbol == "BTCUSDT")
                                 continue;
 
                             var findCoin = BinanceMarket.Find(x => x.Symbol == coin.Symbol);
@@ -84,15 +84,15 @@ namespace Binance_alert_bot.Binance
                                     new Market
                                     {
                                         Symbol = coin.Symbol,
-                                        Bid = coin.BestBidPrice,
-                                        Ask = coin.BestAskPrice,
+                                        Bid = Math.Round(coin.BestBidPrice, GetPriceFilter(coin.Symbol)),
+                                        Ask = Math.Round(coin.BestAskPrice, GetPriceFilter(coin.Symbol)),
                                         Ticks = new List<MarketTicks>()
                                     });
                             }
                             else
                             {
-                                findCoin.Bid = coin.BestBidPrice;
-                                findCoin.Ask = coin.BestAskPrice;
+                                findCoin.Bid = Math.Round(coin.BestBidPrice, GetPriceFilter(coin.Symbol));
+                                findCoin.Ask = Math.Round(coin.BestAskPrice, GetPriceFilter(coin.Symbol));
                             }
                         }
                     }
@@ -104,7 +104,7 @@ namespace Binance_alert_bot.Binance
                 {
                     try
                     {
-                        if (!data.Symbol.Contains("BTC"))
+                        if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT")
                             return;
 
                         var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
@@ -115,15 +115,15 @@ namespace Binance_alert_bot.Binance
                                 new Market
                                 {
                                     Symbol = data.Symbol,
-                                    Bid = data.BestBidPrice,
-                                    Ask = data.BestAskPrice,
+                                    Bid = Math.Round(data.BestBidPrice, GetPriceFilter(data.Symbol)),
+                                    Ask = Math.Round(data.BestAskPrice, GetPriceFilter(data.Symbol)),
                                     Ticks = new List<MarketTicks>()
                                 });
                         }
                         else
                         {
-                            findCoin.Bid = data.BestBidPrice;
-                            findCoin.Ask = data.BestAskPrice;
+                            findCoin.Bid = Math.Round(data.BestBidPrice, GetPriceFilter(data.Symbol));
+                            findCoin.Ask = Math.Round(data.BestAskPrice, GetPriceFilter(data.Symbol));
                         }
                     }
                     catch { }
@@ -136,7 +136,7 @@ namespace Binance_alert_bot.Binance
             {
                 try
                 {
-                    if (!data.Symbol.Contains("BTC")) return;
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
 
                     var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
                     if (findCoin != null)
@@ -147,16 +147,20 @@ namespace Binance_alert_bot.Binance
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
-                                    Close = data.Data.Close,
-                                    Open = data.Data.Open,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
                                     Volume = data.Data.QuoteAssetVolume
                                 });
                         }
                         else
                         {
                             findCoin.Ticks.Last().Time = data.EventTime;
-                            findCoin.Ticks.Last().Close = data.Data.Close;
-                            findCoin.Ticks.Last().Open = data.Data.Open;
+                            findCoin.Ticks.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
                             findCoin.Ticks.Last().Volume = data.Data.QuoteAssetVolume;
                         }
                     }
@@ -185,10 +189,10 @@ namespace Binance_alert_bot.Binance
                             new MarketTicks
                             {
                                 Time = kline.CloseTime,
-                                Close = kline.Close,
-                                Open = kline.Open,
-                                High = kline.High,
-                                Low = kline.Low,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
                                 Volume = kline.QuoteAssetVolume
                             });
                     }
@@ -218,13 +222,13 @@ namespace Binance_alert_bot.Binance
             {
                 exchangeInfo = info.Data.Symbols;
 
-                if (Symbol != String.Empty && Symbol.Contains("BTC"))
+                if (Symbol != String.Empty && Symbol.Contains("BTC") && Symbol != "BTCUSDT")
                         Task.Run(() => SubscribeToNewSymbolAsync(new List<string>() { Symbol }));
 
 
                 foreach (var symbol in exchangeInfo.ToArray())
                 {
-                    if (symbol.Name.Contains("BTC"))
+                    if (symbol.Name.Contains("BTC") && symbol.Name != "BTCUSDT")
                     {
                         AllSymbolsBTC.Add(symbol.Name);
                     }
@@ -234,6 +238,22 @@ namespace Binance_alert_bot.Binance
             {
                 ErrorHandling(info.Error);
                 goto start;
+            }
+        }
+        private int GetPriceFilter(string Symbol)
+        {
+            start:
+            var findCoin = exchangeInfo.FirstOrDefault(x => x.Name == Symbol);
+            if (findCoin == null)
+            {
+                GetExchangeInfo(Symbol);
+                goto start;
+                //throw new Exception($"{Symbol} не найдена в списке всех монет. Обновил");
+            }
+            else
+            {
+                BinanceSymbolPriceFilter filter = (BinanceSymbolPriceFilter)findCoin.Filters[0];
+                return filter.TickSize.ToString().Replace(",", "").IndexOf("1");
             }
         }
         private void ErrorHandling(Error error)

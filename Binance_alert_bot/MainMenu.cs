@@ -314,6 +314,24 @@ namespace Binance_alert_bot
         {
             ColumnAction("VolumeChange24h", cbVolumeChange24h.Checked);
         }
+
+        private void dgBinanceTable_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            if (e.Column.Index != 0)
+            {
+                e.SortResult = decimal.Parse(e.CellValue1.ToString().Replace(" %", "")).CompareTo(decimal.Parse(e.CellValue2.ToString().Replace(" %", "")));
+                e.Handled = true;
+            }
+        }
+
+        private void dgBinanceTable_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            int index = e.RowIndex;
+            string indexStr = (index + 1).ToString();
+            object header = this.dgBinanceTable.Rows[index].HeaderCell.Value;
+            if (header == null || !header.Equals(indexStr))
+                this.dgBinanceTable.Rows[index].HeaderCell.Value = indexStr;
+        }
         #endregion
 
         #region Methods
@@ -363,23 +381,23 @@ namespace Binance_alert_bot
                             bool find = false;
                             foreach (DataGridViewRow dr in this.dgBinanceTable.Rows)
                             {
-                                if (dr.Cells["Symbol"].Value.ToString() == market.Symbol)
+                                if (dr.Cells["Symbol"].Value.ToString() == market.Symbol.Replace("BTC", "/BTC"))
                                 {
                                     find = true;
                                     InThread(() => LoadBinanceCell(dr.Cells["Ask"], market.Ask));
                                     InThread(() => LoadBinanceCell(dr.Cells["Bid"], market.Bid));
 
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change1min"], GetProfit(market.Ticks.Last().Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change3min"], GetProfit(market.Ticks[market.Ticks.Count - 3].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change5min"], GetProfit(market.Ticks[market.Ticks.Count - 5].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change15min"], GetProfit(market.Ticks[market.Ticks.Count - 15].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change30min"], GetProfit(market.Ticks[market.Ticks.Count - 30].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change1h"], GetProfit(market.Ticks[market.Ticks.Count - 60].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change2h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 2].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change4h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 4].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change6h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 6].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change12h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 12].Open, market.Ticks.Last().Close)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Change24h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 24].Open, market.Ticks.Last().Close)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change1min"], GetProfit(market.Ticks.Last().Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change3min"], GetProfit(market.Ticks[market.Ticks.Count - 3].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change5min"], GetProfit(market.Ticks[market.Ticks.Count - 5].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change15min"], GetProfit(market.Ticks[market.Ticks.Count - 15].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change30min"], GetProfit(market.Ticks[market.Ticks.Count - 30].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change1h"], GetProfit(market.Ticks[market.Ticks.Count - 60].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change2h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 2].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change4h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 4].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change6h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 6].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change12h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 12].Open, market.Ticks.Last().Close), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Change24h"], GetProfit(market.Ticks[market.Ticks.Count - 60 * 24].Open, market.Ticks.Last().Close), true));
 
                                     InThread(() => LoadBinanceCell(dr.Cells["High1min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Max(h => h.High)));
                                     InThread(() => LoadBinanceCell(dr.Cells["High3min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Max(h => h.High)));
@@ -393,17 +411,17 @@ namespace Binance_alert_bot
                                     InThread(() => LoadBinanceCell(dr.Cells["High12h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Max(h => h.High)));
                                     InThread(() => LoadBinanceCell(dr.Cells["High24h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Max(h => h.High)));
 
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low1min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low3min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low5min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low15min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low30min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low1h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low2h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low4h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low6h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low12h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Max(h => h.Low)));
-                                    InThread(() => LoadBinanceCell(dr.Cells["Low24h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Max(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low1min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low3min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low5min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low15min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low30min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low1h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low2h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low4h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low6h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low12h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12) && t.Low > 0).Min(h => h.Low)));
+                                    InThread(() => LoadBinanceCell(dr.Cells["Low24h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24) && t.Low > 0).Min(h => h.Low)));
 
                                     InThread(() => LoadBinanceCell(dr.Cells["Volume1min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Sum(h => h.Volume)));
                                     InThread(() => LoadBinanceCell(dr.Cells["Volume3min"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.Volume)));
@@ -417,17 +435,17 @@ namespace Binance_alert_bot
                                     InThread(() => LoadBinanceCell(dr.Cells["Volume12h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Sum(h => h.Volume)));
                                     InThread(() => LoadBinanceCell(dr.Cells["Volume24h"], market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Sum(h => h.Volume)));
 
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 1) && t.Time < DateTime.UtcNow.AddMinutes(- 1)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange3min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 3) && t.Time < DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange5min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 5) && t.Time < DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange15min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 15) && t.Time < DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange30min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 30) && t.Time < DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60) && t.Time < DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange2h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*2) && t.Time < DateTime.UtcNow.AddMinutes(-60*2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange4h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*4) && t.Time < DateTime.UtcNow.AddMinutes(-60*4)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*6) && t.Time < DateTime.UtcNow.AddMinutes(-60*6)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*12) && t.Time < DateTime.UtcNow.AddMinutes(-60*12)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
-                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*24) && t.Time < DateTime.UtcNow.AddMinutes(-60*24)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume))));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 1) && t.Time < DateTime.UtcNow.AddMinutes(- 1)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange3min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 3) && t.Time < DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange5min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 5) && t.Time < DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange15min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 15) && t.Time < DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange30min"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 30) && t.Time < DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange1h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60) && t.Time < DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange2h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*2) && t.Time < DateTime.UtcNow.AddMinutes(-60*2)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange4h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*4) && t.Time < DateTime.UtcNow.AddMinutes(-60*4)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*6) && t.Time < DateTime.UtcNow.AddMinutes(-60*6)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*12) && t.Time < DateTime.UtcNow.AddMinutes(-60*12)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+                                    InThread(() => LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*24) && t.Time < DateTime.UtcNow.AddMinutes(-60*24)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
                                     break;
                                 }
                             }
@@ -435,7 +453,7 @@ namespace Binance_alert_bot
                             if (!find)
                             {
                                 InThread(() => this.dgBinanceTable.Rows.Add(
-                                    market.Symbol,
+                                    market.Symbol.Replace("BTC", "/BTC"),
                                     0,
                                     0,
 
@@ -518,16 +536,19 @@ namespace Binance_alert_bot
             }
         }
 
-        private void LoadBinanceCell(DataGridViewCell cell, decimal value)
+        private void LoadBinanceCell(DataGridViewCell cell, decimal value, bool changeColor = false)
         {
-            if (Convert.ToDecimal(cell.Value) > value)
-                cell.Style.ForeColor = Color.Red;
-            else if (Convert.ToDecimal(cell.Value) < value)
-                cell.Style.ForeColor = Color.Green;
-            else
-                cell.Style.ForeColor = Color.Black;
-
-            cell.Value = value;
+            if (Convert.ToDecimal(cell.Value.ToString().Replace(" %", "")) == value)
+                return;
+            if (changeColor)
+            {
+                if (value < 0)
+                    cell.Style.ForeColor = Color.Red;
+                else if (value > 0)
+                    cell.Style.ForeColor = Color.Green;
+            }
+            
+            cell.Value = (!changeColor) ? $"{value}" : $"{value} %";
         }
         public decimal GetProfit(decimal first, decimal last)
         {
@@ -535,8 +556,9 @@ namespace Binance_alert_bot
         }
 
 
+
         #endregion
 
-
+        
     }
 }
