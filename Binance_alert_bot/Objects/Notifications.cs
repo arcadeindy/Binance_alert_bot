@@ -8,5 +8,9 @@ namespace Binance_alert_bot.Objects
 {
     public class Notifications
     {
+        public string Symbol { get; set; }
+        public string Type { get; set; }
+        public string Timeframe { get; set; }
+        public string Change { get; set; }
     }
 }

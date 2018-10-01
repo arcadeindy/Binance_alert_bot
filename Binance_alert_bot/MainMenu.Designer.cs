@@ -44,11 +44,7 @@
             this.ddlNotifyTimeframe = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ddlNotifySymbol = new System.Windows.Forms.ComboBox();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgNotification = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cbFavorite = new System.Windows.Forms.CheckBox();
@@ -131,66 +127,70 @@
             this.Symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ask = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Change1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.High3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.High1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Low3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.High24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Low1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Low24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Volume1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.VolumeChange3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Volume24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgNotification)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -231,66 +231,67 @@
             // 
             this.dgBinanceTable.AllowUserToAddRows = false;
             this.dgBinanceTable.AllowUserToDeleteRows = false;
+            this.dgBinanceTable.AllowUserToOrderColumns = true;
             this.dgBinanceTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgBinanceTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Symbol,
             this.Ask,
             this.Bid,
-            this.Change24h,
-            this.Change12h,
-            this.Change6h,
-            this.Change4h,
-            this.Change2h,
-            this.Change1h,
-            this.Change30min,
-            this.Change15min,
-            this.Change5min,
-            this.Change3min,
             this.Change1min,
-            this.High24h,
-            this.High12h,
-            this.High6h,
-            this.High4h,
-            this.High2h,
-            this.High1h,
-            this.High30min,
-            this.High15min,
-            this.High5min,
-            this.High3min,
+            this.Change3min,
+            this.Change5min,
+            this.Change15min,
+            this.Change30min,
+            this.Change1h,
+            this.Change2h,
+            this.Change4h,
+            this.Change6h,
+            this.Change12h,
+            this.Change24h,
             this.High1min,
-            this.Low24h,
-            this.Low12h,
-            this.Low6h,
-            this.Low4h,
-            this.Low2h,
-            this.Low1h,
-            this.Low30min,
-            this.Low15min,
-            this.Low5min,
-            this.Low3min,
+            this.High3min,
+            this.High5min,
+            this.High15min,
+            this.High30min,
+            this.High1h,
+            this.High2h,
+            this.High4h,
+            this.High6h,
+            this.High12h,
+            this.High24h,
             this.Low1min,
-            this.Volume24h,
-            this.Volume12h,
-            this.Volume6h,
-            this.Volume4h,
-            this.Volume2h,
-            this.Volume1h,
-            this.Volume30min,
-            this.Volume15min,
-            this.Volume5min,
-            this.Volume3min,
+            this.Low3min,
+            this.Low5min,
+            this.Low15min,
+            this.Low30min,
+            this.Low1h,
+            this.Low2h,
+            this.Low4h,
+            this.Low6h,
+            this.Low12h,
+            this.Low24h,
             this.Volume1min,
-            this.VolumeChange24h,
-            this.VolumeChange12h,
-            this.VolumeChange6h,
-            this.VolumeChange4h,
-            this.VolumeChange2h,
-            this.VolumeChange1h,
-            this.VolumeChange30min,
-            this.VolumeChange15min,
-            this.VolumeChange5min,
+            this.Volume3min,
+            this.Volume5min,
+            this.Volume15min,
+            this.Volume30min,
+            this.Volume1h,
+            this.Volume2h,
+            this.Volume4h,
+            this.Volume6h,
+            this.Volume12h,
+            this.Volume24h,
+            this.VolumeChange1min,
             this.VolumeChange3min,
-            this.VolumeChange1min});
+            this.VolumeChange5min,
+            this.VolumeChange15min,
+            this.VolumeChange30min,
+            this.VolumeChange1h,
+            this.VolumeChange2h,
+            this.VolumeChange4h,
+            this.VolumeChange6h,
+            this.VolumeChange12h,
+            this.VolumeChange24h});
             this.dgBinanceTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgBinanceTable.Location = new System.Drawing.Point(3, 3);
             this.dgBinanceTable.Name = "dgBinanceTable";
@@ -314,7 +315,7 @@
             this.tabPage2.Controls.Add(this.ddlNotifyTimeframe);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.ddlNotifySymbol);
-            this.tabPage2.Controls.Add(this.dataGridView2);
+            this.tabPage2.Controls.Add(this.dgNotification);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -326,6 +327,7 @@
             // rbMore
             // 
             this.rbMore.AutoSize = true;
+            this.rbMore.Checked = true;
             this.rbMore.Location = new System.Drawing.Point(496, 42);
             this.rbMore.Name = "rbMore";
             this.rbMore.Size = new System.Drawing.Size(31, 17);
@@ -353,6 +355,7 @@
             this.btnNotifyDelete.TabIndex = 14;
             this.btnNotifyDelete.Text = "Удалить";
             this.btnNotifyDelete.UseVisualStyleBackColor = true;
+            this.btnNotifyDelete.Click += new System.EventHandler(this.btnNotifyDelete_Click);
             // 
             // btnAddNotify
             // 
@@ -362,6 +365,7 @@
             this.btnAddNotify.TabIndex = 12;
             this.btnAddNotify.Text = "Добавить";
             this.btnAddNotify.UseVisualStyleBackColor = true;
+            this.btnAddNotify.Click += new System.EventHandler(this.btnAddNotify_Click);
             // 
             // label6
             // 
@@ -376,8 +380,8 @@
             // 
             this.ddlNotifyType.FormattingEnabled = true;
             this.ddlNotifyType.Items.AddRange(new object[] {
-            "Price Change",
-            "Volume Change"});
+            "PriceChange",
+            "VolumeChange"});
             this.ddlNotifyType.Location = new System.Drawing.Point(135, 38);
             this.ddlNotifyType.Name = "ddlNotifyType";
             this.ddlNotifyType.Size = new System.Drawing.Size(121, 21);
@@ -404,9 +408,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(259, 16);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Tymeframe";
+            this.label4.Text = "Timeframe";
             // 
             // ddlNotifyTimeframe
             // 
@@ -414,6 +418,14 @@
             this.ddlNotifyTimeframe.Items.AddRange(new object[] {
             "1min",
             "3min",
+            "5min",
+            "15min",
+            "30min",
+            "1h",
+            "2h",
+            "4h",
+            "6h",
+            "12h",
             "24h"});
             this.ddlNotifyTimeframe.Location = new System.Drawing.Point(262, 38);
             this.ddlNotifyTimeframe.Name = "ddlNotifyTimeframe";
@@ -425,9 +437,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(8, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(30, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Symbol";
+            this.label3.Text = "Pairs";
             // 
             // ddlNotifySymbol
             // 
@@ -439,48 +451,25 @@
             this.ddlNotifySymbol.Size = new System.Drawing.Size(121, 21);
             this.ddlNotifySymbol.TabIndex = 4;
             // 
-            // dataGridView2
+            // dgNotification
             // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dgNotification.AllowUserToAddRows = false;
+            this.dgNotification.AllowUserToDeleteRows = false;
+            this.dgNotification.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
+            this.dgNotification.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgNotification.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgNotification.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Symb,
             this.Type,
             this.Timeframe,
             this.Change});
-            this.dataGridView2.Location = new System.Drawing.Point(3, 65);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(1176, 513);
-            this.dataGridView2.TabIndex = 1;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Symbol";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
+            this.dgNotification.Location = new System.Drawing.Point(3, 65);
+            this.dgNotification.Name = "dgNotification";
+            this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgNotification.Size = new System.Drawing.Size(1176, 513);
+            this.dgNotification.TabIndex = 1;
             // 
             // tabPage3
             // 
@@ -517,6 +506,7 @@
             this.cbFavorite.Size = new System.Drawing.Size(15, 14);
             this.cbFavorite.TabIndex = 5;
             this.cbFavorite.UseVisualStyleBackColor = true;
+            this.cbFavorite.CheckedChanged += new System.EventHandler(this.cbFavorite_CheckedChanged);
             // 
             // btnDeleteFavorite
             // 
@@ -526,6 +516,7 @@
             this.btnDeleteFavorite.TabIndex = 4;
             this.btnDeleteFavorite.Text = "Удалить";
             this.btnDeleteFavorite.UseVisualStyleBackColor = true;
+            this.btnDeleteFavorite.Click += new System.EventHandler(this.btnDeleteFavorite_Click);
             // 
             // btnAddFavorite
             // 
@@ -535,15 +526,16 @@
             this.btnAddFavorite.TabIndex = 3;
             this.btnAddFavorite.Text = "Добавить";
             this.btnAddFavorite.UseVisualStyleBackColor = true;
+            this.btnAddFavorite.Click += new System.EventHandler(this.btnAddFavorite_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 20);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(41, 13);
+            this.label7.Size = new System.Drawing.Size(30, 13);
             this.label7.TabIndex = 2;
-            this.label7.Text = "Symbol";
+            this.label7.Text = "Pairs";
             // 
             // ddlSymbols
             // 
@@ -583,6 +575,7 @@
             this.btnTelegramTestMsg.TabIndex = 4;
             this.btnTelegramTestMsg.Text = "Тестовое сообщение";
             this.btnTelegramTestMsg.UseVisualStyleBackColor = true;
+            this.btnTelegramTestMsg.Click += new System.EventHandler(this.btnTelegramTestMsg_Click);
             // 
             // label2
             // 
@@ -1399,68 +1392,12 @@
             this.Bid.ReadOnly = true;
             this.Bid.Visible = false;
             // 
-            // Change24h
+            // Change1min
             // 
-            this.Change24h.HeaderText = "24h Price Change";
-            this.Change24h.Name = "Change24h";
-            this.Change24h.ReadOnly = true;
-            this.Change24h.Visible = false;
-            // 
-            // Change12h
-            // 
-            this.Change12h.HeaderText = "12h Price Change";
-            this.Change12h.Name = "Change12h";
-            this.Change12h.ReadOnly = true;
-            this.Change12h.Visible = false;
-            // 
-            // Change6h
-            // 
-            this.Change6h.HeaderText = "6h Price Change";
-            this.Change6h.Name = "Change6h";
-            this.Change6h.ReadOnly = true;
-            this.Change6h.Visible = false;
-            // 
-            // Change4h
-            // 
-            this.Change4h.HeaderText = "4h Price Change";
-            this.Change4h.Name = "Change4h";
-            this.Change4h.ReadOnly = true;
-            this.Change4h.Visible = false;
-            // 
-            // Change2h
-            // 
-            this.Change2h.HeaderText = "2h Price Change";
-            this.Change2h.Name = "Change2h";
-            this.Change2h.ReadOnly = true;
-            this.Change2h.Visible = false;
-            // 
-            // Change1h
-            // 
-            this.Change1h.HeaderText = "1h Price Change";
-            this.Change1h.Name = "Change1h";
-            this.Change1h.ReadOnly = true;
-            this.Change1h.Visible = false;
-            // 
-            // Change30min
-            // 
-            this.Change30min.HeaderText = "30min Price Change";
-            this.Change30min.Name = "Change30min";
-            this.Change30min.ReadOnly = true;
-            this.Change30min.Visible = false;
-            // 
-            // Change15min
-            // 
-            this.Change15min.HeaderText = "15min Price Change";
-            this.Change15min.Name = "Change15min";
-            this.Change15min.ReadOnly = true;
-            this.Change15min.Visible = false;
-            // 
-            // Change5min
-            // 
-            this.Change5min.HeaderText = "5min Price Change";
-            this.Change5min.Name = "Change5min";
-            this.Change5min.ReadOnly = true;
-            this.Change5min.Visible = false;
+            this.Change1min.HeaderText = "1min Price Change";
+            this.Change1min.Name = "Change1min";
+            this.Change1min.ReadOnly = true;
+            this.Change1min.Visible = false;
             // 
             // Change3min
             // 
@@ -1469,82 +1406,68 @@
             this.Change3min.ReadOnly = true;
             this.Change3min.Visible = false;
             // 
-            // Change1min
+            // Change5min
             // 
-            this.Change1min.HeaderText = "1min Price Change";
-            this.Change1min.Name = "Change1min";
-            this.Change1min.ReadOnly = true;
-            this.Change1min.Visible = false;
+            this.Change5min.HeaderText = "5min Price Change";
+            this.Change5min.Name = "Change5min";
+            this.Change5min.ReadOnly = true;
+            this.Change5min.Visible = false;
             // 
-            // High24h
+            // Change15min
             // 
-            this.High24h.HeaderText = "24h High";
-            this.High24h.Name = "High24h";
-            this.High24h.ReadOnly = true;
-            this.High24h.Visible = false;
+            this.Change15min.HeaderText = "15min Price Change";
+            this.Change15min.Name = "Change15min";
+            this.Change15min.ReadOnly = true;
+            this.Change15min.Visible = false;
             // 
-            // High12h
+            // Change30min
             // 
-            this.High12h.HeaderText = "12h High";
-            this.High12h.Name = "High12h";
-            this.High12h.ReadOnly = true;
-            this.High12h.Visible = false;
+            this.Change30min.HeaderText = "30min Price Change";
+            this.Change30min.Name = "Change30min";
+            this.Change30min.ReadOnly = true;
+            this.Change30min.Visible = false;
             // 
-            // High6h
+            // Change1h
             // 
-            this.High6h.HeaderText = "6h High";
-            this.High6h.Name = "High6h";
-            this.High6h.ReadOnly = true;
-            this.High6h.Visible = false;
+            this.Change1h.HeaderText = "1h Price Change";
+            this.Change1h.Name = "Change1h";
+            this.Change1h.ReadOnly = true;
+            this.Change1h.Visible = false;
             // 
-            // High4h
+            // Change2h
             // 
-            this.High4h.HeaderText = "4h High";
-            this.High4h.Name = "High4h";
-            this.High4h.ReadOnly = true;
-            this.High4h.Visible = false;
+            this.Change2h.HeaderText = "2h Price Change";
+            this.Change2h.Name = "Change2h";
+            this.Change2h.ReadOnly = true;
+            this.Change2h.Visible = false;
             // 
-            // High2h
+            // Change4h
             // 
-            this.High2h.HeaderText = "2h High";
-            this.High2h.Name = "High2h";
-            this.High2h.ReadOnly = true;
-            this.High2h.Visible = false;
+            this.Change4h.HeaderText = "4h Price Change";
+            this.Change4h.Name = "Change4h";
+            this.Change4h.ReadOnly = true;
+            this.Change4h.Visible = false;
             // 
-            // High1h
+            // Change6h
             // 
-            this.High1h.HeaderText = "1h High";
-            this.High1h.Name = "High1h";
-            this.High1h.ReadOnly = true;
-            this.High1h.Visible = false;
+            this.Change6h.HeaderText = "6h Price Change";
+            this.Change6h.Name = "Change6h";
+            this.Change6h.ReadOnly = true;
+            this.Change6h.Visible = false;
             // 
-            // High30min
+            // Change12h
             // 
-            this.High30min.HeaderText = "30min High";
-            this.High30min.Name = "High30min";
-            this.High30min.ReadOnly = true;
-            this.High30min.Visible = false;
+            this.Change12h.HeaderText = "12h Price Change";
+            this.Change12h.Name = "Change12h";
+            this.Change12h.ReadOnly = true;
+            this.Change12h.Visible = false;
             // 
-            // High15min
+            // Change24h
             // 
-            this.High15min.HeaderText = "15min High";
-            this.High15min.Name = "High15min";
-            this.High15min.ReadOnly = true;
-            this.High15min.Visible = false;
-            // 
-            // High5min
-            // 
-            this.High5min.HeaderText = "5min High";
-            this.High5min.Name = "High5min";
-            this.High5min.ReadOnly = true;
-            this.High5min.Visible = false;
-            // 
-            // High3min
-            // 
-            this.High3min.HeaderText = "3min High";
-            this.High3min.Name = "High3min";
-            this.High3min.ReadOnly = true;
-            this.High3min.Visible = false;
+            this.Change24h.HeaderText = "24h Price Change";
+            this.Change24h.Name = "Change24h";
+            this.Change24h.ReadOnly = true;
+            this.Change24h.Visible = false;
             // 
             // High1min
             // 
@@ -1553,75 +1476,75 @@
             this.High1min.ReadOnly = true;
             this.High1min.Visible = false;
             // 
-            // Low24h
+            // High3min
             // 
-            this.Low24h.HeaderText = "24h Low";
-            this.Low24h.Name = "Low24h";
-            this.Low24h.ReadOnly = true;
-            this.Low24h.Visible = false;
+            this.High3min.HeaderText = "3min High";
+            this.High3min.Name = "High3min";
+            this.High3min.ReadOnly = true;
+            this.High3min.Visible = false;
             // 
-            // Low12h
+            // High5min
             // 
-            this.Low12h.HeaderText = "12h Low";
-            this.Low12h.Name = "Low12h";
-            this.Low12h.ReadOnly = true;
-            this.Low12h.Visible = false;
+            this.High5min.HeaderText = "5min High";
+            this.High5min.Name = "High5min";
+            this.High5min.ReadOnly = true;
+            this.High5min.Visible = false;
             // 
-            // Low6h
+            // High15min
             // 
-            this.Low6h.HeaderText = "6h Low";
-            this.Low6h.Name = "Low6h";
-            this.Low6h.ReadOnly = true;
-            this.Low6h.Visible = false;
+            this.High15min.HeaderText = "15min High";
+            this.High15min.Name = "High15min";
+            this.High15min.ReadOnly = true;
+            this.High15min.Visible = false;
             // 
-            // Low4h
+            // High30min
             // 
-            this.Low4h.HeaderText = "4h Low";
-            this.Low4h.Name = "Low4h";
-            this.Low4h.ReadOnly = true;
-            this.Low4h.Visible = false;
+            this.High30min.HeaderText = "30min High";
+            this.High30min.Name = "High30min";
+            this.High30min.ReadOnly = true;
+            this.High30min.Visible = false;
             // 
-            // Low2h
+            // High1h
             // 
-            this.Low2h.HeaderText = "2h Low";
-            this.Low2h.Name = "Low2h";
-            this.Low2h.ReadOnly = true;
-            this.Low2h.Visible = false;
+            this.High1h.HeaderText = "1h High";
+            this.High1h.Name = "High1h";
+            this.High1h.ReadOnly = true;
+            this.High1h.Visible = false;
             // 
-            // Low1h
+            // High2h
             // 
-            this.Low1h.HeaderText = "1h Low";
-            this.Low1h.Name = "Low1h";
-            this.Low1h.ReadOnly = true;
-            this.Low1h.Visible = false;
+            this.High2h.HeaderText = "2h High";
+            this.High2h.Name = "High2h";
+            this.High2h.ReadOnly = true;
+            this.High2h.Visible = false;
             // 
-            // Low30min
+            // High4h
             // 
-            this.Low30min.HeaderText = "30min Low";
-            this.Low30min.Name = "Low30min";
-            this.Low30min.ReadOnly = true;
-            this.Low30min.Visible = false;
+            this.High4h.HeaderText = "4h High";
+            this.High4h.Name = "High4h";
+            this.High4h.ReadOnly = true;
+            this.High4h.Visible = false;
             // 
-            // Low15min
+            // High6h
             // 
-            this.Low15min.HeaderText = "15min Low";
-            this.Low15min.Name = "Low15min";
-            this.Low15min.ReadOnly = true;
-            this.Low15min.Visible = false;
+            this.High6h.HeaderText = "6h High";
+            this.High6h.Name = "High6h";
+            this.High6h.ReadOnly = true;
+            this.High6h.Visible = false;
             // 
-            // Low5min
+            // High12h
             // 
-            this.Low5min.HeaderText = "5min Low";
-            this.Low5min.Name = "Low5min";
-            this.Low5min.ReadOnly = true;
-            this.Low5min.Visible = false;
+            this.High12h.HeaderText = "12h High";
+            this.High12h.Name = "High12h";
+            this.High12h.ReadOnly = true;
+            this.High12h.Visible = false;
             // 
-            // Low3min
+            // High24h
             // 
-            this.Low3min.HeaderText = "3min Low";
-            this.Low3min.Name = "Low3min";
-            this.Low3min.ReadOnly = true;
-            this.Low3min.Visible = false;
+            this.High24h.HeaderText = "24h High";
+            this.High24h.Name = "High24h";
+            this.High24h.ReadOnly = true;
+            this.High24h.Visible = false;
             // 
             // Low1min
             // 
@@ -1630,75 +1553,75 @@
             this.Low1min.ReadOnly = true;
             this.Low1min.Visible = false;
             // 
-            // Volume24h
+            // Low3min
             // 
-            this.Volume24h.HeaderText = "24 Volume";
-            this.Volume24h.Name = "Volume24h";
-            this.Volume24h.ReadOnly = true;
-            this.Volume24h.Visible = false;
+            this.Low3min.HeaderText = "3min Low";
+            this.Low3min.Name = "Low3min";
+            this.Low3min.ReadOnly = true;
+            this.Low3min.Visible = false;
             // 
-            // Volume12h
+            // Low5min
             // 
-            this.Volume12h.HeaderText = "12h Volume";
-            this.Volume12h.Name = "Volume12h";
-            this.Volume12h.ReadOnly = true;
-            this.Volume12h.Visible = false;
+            this.Low5min.HeaderText = "5min Low";
+            this.Low5min.Name = "Low5min";
+            this.Low5min.ReadOnly = true;
+            this.Low5min.Visible = false;
             // 
-            // Volume6h
+            // Low15min
             // 
-            this.Volume6h.HeaderText = "6h Volume";
-            this.Volume6h.Name = "Volume6h";
-            this.Volume6h.ReadOnly = true;
-            this.Volume6h.Visible = false;
+            this.Low15min.HeaderText = "15min Low";
+            this.Low15min.Name = "Low15min";
+            this.Low15min.ReadOnly = true;
+            this.Low15min.Visible = false;
             // 
-            // Volume4h
+            // Low30min
             // 
-            this.Volume4h.HeaderText = "4h Volume";
-            this.Volume4h.Name = "Volume4h";
-            this.Volume4h.ReadOnly = true;
-            this.Volume4h.Visible = false;
+            this.Low30min.HeaderText = "30min Low";
+            this.Low30min.Name = "Low30min";
+            this.Low30min.ReadOnly = true;
+            this.Low30min.Visible = false;
             // 
-            // Volume2h
+            // Low1h
             // 
-            this.Volume2h.HeaderText = "2h Volume";
-            this.Volume2h.Name = "Volume2h";
-            this.Volume2h.ReadOnly = true;
-            this.Volume2h.Visible = false;
+            this.Low1h.HeaderText = "1h Low";
+            this.Low1h.Name = "Low1h";
+            this.Low1h.ReadOnly = true;
+            this.Low1h.Visible = false;
             // 
-            // Volume1h
+            // Low2h
             // 
-            this.Volume1h.HeaderText = "1h Volume";
-            this.Volume1h.Name = "Volume1h";
-            this.Volume1h.ReadOnly = true;
-            this.Volume1h.Visible = false;
+            this.Low2h.HeaderText = "2h Low";
+            this.Low2h.Name = "Low2h";
+            this.Low2h.ReadOnly = true;
+            this.Low2h.Visible = false;
             // 
-            // Volume30min
+            // Low4h
             // 
-            this.Volume30min.HeaderText = "30min Volume";
-            this.Volume30min.Name = "Volume30min";
-            this.Volume30min.ReadOnly = true;
-            this.Volume30min.Visible = false;
+            this.Low4h.HeaderText = "4h Low";
+            this.Low4h.Name = "Low4h";
+            this.Low4h.ReadOnly = true;
+            this.Low4h.Visible = false;
             // 
-            // Volume15min
+            // Low6h
             // 
-            this.Volume15min.HeaderText = "15min Volume";
-            this.Volume15min.Name = "Volume15min";
-            this.Volume15min.ReadOnly = true;
-            this.Volume15min.Visible = false;
+            this.Low6h.HeaderText = "6h Low";
+            this.Low6h.Name = "Low6h";
+            this.Low6h.ReadOnly = true;
+            this.Low6h.Visible = false;
             // 
-            // Volume5min
+            // Low12h
             // 
-            this.Volume5min.HeaderText = "5min Volume";
-            this.Volume5min.Name = "Volume5min";
-            this.Volume5min.ReadOnly = true;
-            this.Volume5min.Visible = false;
+            this.Low12h.HeaderText = "12h Low";
+            this.Low12h.Name = "Low12h";
+            this.Low12h.ReadOnly = true;
+            this.Low12h.Visible = false;
             // 
-            // Volume3min
+            // Low24h
             // 
-            this.Volume3min.HeaderText = "3min Volume";
-            this.Volume3min.Name = "Volume3min";
-            this.Volume3min.ReadOnly = true;
-            this.Volume3min.Visible = false;
+            this.Low24h.HeaderText = "24h Low";
+            this.Low24h.Name = "Low24h";
+            this.Low24h.ReadOnly = true;
+            this.Low24h.Visible = false;
             // 
             // Volume1min
             // 
@@ -1707,68 +1630,82 @@
             this.Volume1min.ReadOnly = true;
             this.Volume1min.Visible = false;
             // 
-            // VolumeChange24h
+            // Volume3min
             // 
-            this.VolumeChange24h.HeaderText = "24h Volume Change";
-            this.VolumeChange24h.Name = "VolumeChange24h";
-            this.VolumeChange24h.ReadOnly = true;
-            this.VolumeChange24h.Visible = false;
+            this.Volume3min.HeaderText = "3min Volume";
+            this.Volume3min.Name = "Volume3min";
+            this.Volume3min.ReadOnly = true;
+            this.Volume3min.Visible = false;
             // 
-            // VolumeChange12h
+            // Volume5min
             // 
-            this.VolumeChange12h.HeaderText = "12h Volume Change";
-            this.VolumeChange12h.Name = "VolumeChange12h";
-            this.VolumeChange12h.ReadOnly = true;
-            this.VolumeChange12h.Visible = false;
+            this.Volume5min.HeaderText = "5min Volume";
+            this.Volume5min.Name = "Volume5min";
+            this.Volume5min.ReadOnly = true;
+            this.Volume5min.Visible = false;
             // 
-            // VolumeChange6h
+            // Volume15min
             // 
-            this.VolumeChange6h.HeaderText = "6h Volume Change";
-            this.VolumeChange6h.Name = "VolumeChange6h";
-            this.VolumeChange6h.ReadOnly = true;
-            this.VolumeChange6h.Visible = false;
+            this.Volume15min.HeaderText = "15min Volume";
+            this.Volume15min.Name = "Volume15min";
+            this.Volume15min.ReadOnly = true;
+            this.Volume15min.Visible = false;
             // 
-            // VolumeChange4h
+            // Volume30min
             // 
-            this.VolumeChange4h.HeaderText = "4h Volume Change";
-            this.VolumeChange4h.Name = "VolumeChange4h";
-            this.VolumeChange4h.ReadOnly = true;
-            this.VolumeChange4h.Visible = false;
+            this.Volume30min.HeaderText = "30min Volume";
+            this.Volume30min.Name = "Volume30min";
+            this.Volume30min.ReadOnly = true;
+            this.Volume30min.Visible = false;
             // 
-            // VolumeChange2h
+            // Volume1h
             // 
-            this.VolumeChange2h.HeaderText = "2h Volume Change";
-            this.VolumeChange2h.Name = "VolumeChange2h";
-            this.VolumeChange2h.ReadOnly = true;
-            this.VolumeChange2h.Visible = false;
+            this.Volume1h.HeaderText = "1h Volume";
+            this.Volume1h.Name = "Volume1h";
+            this.Volume1h.ReadOnly = true;
+            this.Volume1h.Visible = false;
             // 
-            // VolumeChange1h
+            // Volume2h
             // 
-            this.VolumeChange1h.HeaderText = "1h Volume Change";
-            this.VolumeChange1h.Name = "VolumeChange1h";
-            this.VolumeChange1h.ReadOnly = true;
-            this.VolumeChange1h.Visible = false;
+            this.Volume2h.HeaderText = "2h Volume";
+            this.Volume2h.Name = "Volume2h";
+            this.Volume2h.ReadOnly = true;
+            this.Volume2h.Visible = false;
             // 
-            // VolumeChange30min
+            // Volume4h
             // 
-            this.VolumeChange30min.HeaderText = "30min Volume Change";
-            this.VolumeChange30min.Name = "VolumeChange30min";
-            this.VolumeChange30min.ReadOnly = true;
-            this.VolumeChange30min.Visible = false;
+            this.Volume4h.HeaderText = "4h Volume";
+            this.Volume4h.Name = "Volume4h";
+            this.Volume4h.ReadOnly = true;
+            this.Volume4h.Visible = false;
             // 
-            // VolumeChange15min
+            // Volume6h
             // 
-            this.VolumeChange15min.HeaderText = "15min Volume Change";
-            this.VolumeChange15min.Name = "VolumeChange15min";
-            this.VolumeChange15min.ReadOnly = true;
-            this.VolumeChange15min.Visible = false;
+            this.Volume6h.HeaderText = "6h Volume";
+            this.Volume6h.Name = "Volume6h";
+            this.Volume6h.ReadOnly = true;
+            this.Volume6h.Visible = false;
             // 
-            // VolumeChange5min
+            // Volume12h
             // 
-            this.VolumeChange5min.HeaderText = "5min Volume Change";
-            this.VolumeChange5min.Name = "VolumeChange5min";
-            this.VolumeChange5min.ReadOnly = true;
-            this.VolumeChange5min.Visible = false;
+            this.Volume12h.HeaderText = "12h Volume";
+            this.Volume12h.Name = "Volume12h";
+            this.Volume12h.ReadOnly = true;
+            this.Volume12h.Visible = false;
+            // 
+            // Volume24h
+            // 
+            this.Volume24h.HeaderText = "24 Volume";
+            this.Volume24h.Name = "Volume24h";
+            this.Volume24h.ReadOnly = true;
+            this.Volume24h.Visible = false;
+            // 
+            // VolumeChange1min
+            // 
+            this.VolumeChange1min.HeaderText = "1min Volume Change";
+            this.VolumeChange1min.Name = "VolumeChange1min";
+            this.VolumeChange1min.ReadOnly = true;
+            this.VolumeChange1min.Visible = false;
             // 
             // VolumeChange3min
             // 
@@ -1777,12 +1714,92 @@
             this.VolumeChange3min.ReadOnly = true;
             this.VolumeChange3min.Visible = false;
             // 
-            // VolumeChange1min
+            // VolumeChange5min
             // 
-            this.VolumeChange1min.HeaderText = "1min Volume Change";
-            this.VolumeChange1min.Name = "VolumeChange1min";
-            this.VolumeChange1min.ReadOnly = true;
-            this.VolumeChange1min.Visible = false;
+            this.VolumeChange5min.HeaderText = "5min Volume Change";
+            this.VolumeChange5min.Name = "VolumeChange5min";
+            this.VolumeChange5min.ReadOnly = true;
+            this.VolumeChange5min.Visible = false;
+            // 
+            // VolumeChange15min
+            // 
+            this.VolumeChange15min.HeaderText = "15min Volume Change";
+            this.VolumeChange15min.Name = "VolumeChange15min";
+            this.VolumeChange15min.ReadOnly = true;
+            this.VolumeChange15min.Visible = false;
+            // 
+            // VolumeChange30min
+            // 
+            this.VolumeChange30min.HeaderText = "30min Volume Change";
+            this.VolumeChange30min.Name = "VolumeChange30min";
+            this.VolumeChange30min.ReadOnly = true;
+            this.VolumeChange30min.Visible = false;
+            // 
+            // VolumeChange1h
+            // 
+            this.VolumeChange1h.HeaderText = "1h Volume Change";
+            this.VolumeChange1h.Name = "VolumeChange1h";
+            this.VolumeChange1h.ReadOnly = true;
+            this.VolumeChange1h.Visible = false;
+            // 
+            // VolumeChange2h
+            // 
+            this.VolumeChange2h.HeaderText = "2h Volume Change";
+            this.VolumeChange2h.Name = "VolumeChange2h";
+            this.VolumeChange2h.ReadOnly = true;
+            this.VolumeChange2h.Visible = false;
+            // 
+            // VolumeChange4h
+            // 
+            this.VolumeChange4h.HeaderText = "4h Volume Change";
+            this.VolumeChange4h.Name = "VolumeChange4h";
+            this.VolumeChange4h.ReadOnly = true;
+            this.VolumeChange4h.Visible = false;
+            // 
+            // VolumeChange6h
+            // 
+            this.VolumeChange6h.HeaderText = "6h Volume Change";
+            this.VolumeChange6h.Name = "VolumeChange6h";
+            this.VolumeChange6h.ReadOnly = true;
+            this.VolumeChange6h.Visible = false;
+            // 
+            // VolumeChange12h
+            // 
+            this.VolumeChange12h.HeaderText = "12h Volume Change";
+            this.VolumeChange12h.Name = "VolumeChange12h";
+            this.VolumeChange12h.ReadOnly = true;
+            this.VolumeChange12h.Visible = false;
+            // 
+            // VolumeChange24h
+            // 
+            this.VolumeChange24h.HeaderText = "24h Volume Change";
+            this.VolumeChange24h.Name = "VolumeChange24h";
+            this.VolumeChange24h.ReadOnly = true;
+            this.VolumeChange24h.Visible = false;
+            // 
+            // Symb
+            // 
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
+            // 
+            // Type
+            // 
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Timeframe
+            // 
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
             // 
             // MainMenu
             // 
@@ -1792,13 +1809,15 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "MainMenu";
             this.Text = "Binance Plus";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainMenu_FormClosing);
+            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.Shown += new System.EventHandler(this.MainMenu_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgNotification)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
@@ -1837,11 +1856,7 @@
         private System.Windows.Forms.ComboBox ddlNotifyTimeframe;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox ddlNotifySymbol;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
+        private System.Windows.Forms.DataGridView dgNotification;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label2;
@@ -1926,61 +1941,65 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Symbol;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ask;
         private System.Windows.Forms.DataGridViewTextBoxColumn Bid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change3min;
         private System.Windows.Forms.DataGridViewTextBoxColumn Change1min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn High3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change24h;
         private System.Windows.Forms.DataGridViewTextBoxColumn High1min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Low3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn High24h;
         private System.Windows.Forms.DataGridViewTextBoxColumn Low1min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Low24h;
         private System.Windows.Forms.DataGridViewTextBoxColumn Volume1min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Volume24h;
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange1min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange24h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
     }
 }
 

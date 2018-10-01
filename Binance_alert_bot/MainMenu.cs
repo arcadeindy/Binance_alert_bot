@@ -1,22 +1,27 @@
 ﻿using Binance_alert_bot.Binance;
 using Binance_alert_bot.Binance.Objects;
+using Binance_alert_bot.Objects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
 
 namespace Binance_alert_bot
 {
     public partial class MainMenu : Form
     {
         BinanceBotClient client;
+        Config cfg;
         public MainMenu()
         {
             InitializeComponent();
@@ -26,9 +31,32 @@ namespace Binance_alert_bot
         private void MainMenu_Shown(object sender, EventArgs e)
         {
             client = new BinanceBotClient();
-            client.BinanceLog += Logs;
+            client.Logs += Logs;
+            client.SymbolsEvent += Symbols;
             Task.Run(() => client.BinanceSetCredentials());
             Task.Run(() => LoadBinance());
+        }
+        private void btnAddNotify_Click(object sender, EventArgs e)
+        {
+            if (this.ddlNotifySymbol.SelectedItem.ToString() == "" && this.ddlNotifyType.SelectedItem.ToString() == "" && this.ddlNotifyTimeframe.SelectedItem.ToString() == "" && this.tbNotifyChange.Text != "")
+            {
+                MessageBox.Show("Заполните все поля");
+                return;
+            }
+
+            InThread(() => this.dgNotification.Rows.Add(
+                this.ddlNotifySymbol.SelectedItem.ToString(),
+                this.ddlNotifyType.SelectedItem.ToString(),
+                this.ddlNotifyTimeframe.SelectedItem.ToString(),
+                $"{((this.rbLess.Checked) ? "<" : ">")}{this.tbNotifyChange.Text}%"));
+        }
+
+        private void btnNotifyDelete_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.dgNotification.SelectedRows)
+            {
+                this.dgNotification.Rows.RemoveAt(row.Index);
+            }
         }
         private void cbAsk_CheckedChanged(object sender, EventArgs e)
         {
@@ -332,6 +360,16 @@ namespace Binance_alert_bot
             if (header == null || !header.Equals(indexStr))
                 this.dgBinanceTable.Rows[index].HeaderCell.Value = indexStr;
         }
+
+        private void MainMenu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveSettings();
+        }
+
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+            LoadSettings();
+        }
         #endregion
 
         #region Methods
@@ -356,6 +394,19 @@ namespace Binance_alert_bot
         {
             InThread(() => this.tbLogs.AppendText($"{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff")} {msg}\n"));
         }
+        private void Symbols(List<string> symbols)
+        {
+            InThread(() => this.ddlSymbols.Items.Clear());
+            InThread(() => this.ddlNotifySymbol.Items.Clear());
+
+            symbols = symbols.OrderBy(q => q).ToList();
+
+            foreach (var symbol in symbols)
+            {
+                InThread(() => this.ddlSymbols.Items.Add(symbol.Replace("BTC", "/BTC")));
+                InThread(() => this.ddlNotifySymbol.Items.Add(symbol.Replace("BTC", "/BTC")));
+            }
+        }
         private void ColumnAction(string ColumnName, bool Checked)
         {
             InThread(() => this.dgBinanceTable.Columns[ColumnName].Visible = Checked);
@@ -374,7 +425,10 @@ namespace Binance_alert_bot
 
                         foreach (var market in client.BinanceMarket.ToArray())
                         {
-                            if (market.Ticks.Count < 60 * 24 * 2 - 1)
+                            if (market.Ticks.Count < 60 * 24 * 2 - 3)
+                                continue;
+
+                            if (this.cbFavorite.Checked && !this.lbFavorite.Items.Contains(market.Symbol.Replace("BTC", "/BTC")))
                                 continue;
 
                             start:
@@ -446,6 +500,8 @@ namespace Binance_alert_bot
                                     InThread(() => LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*6) && t.Time < DateTime.UtcNow.AddMinutes(-60*6)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
                                     InThread(() => LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*12) && t.Time < DateTime.UtcNow.AddMinutes(-60*12)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
                                     InThread(() => LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24) - 60*24) && t.Time < DateTime.UtcNow.AddMinutes(-60*24)).Sum(h => h.Volume), market.Ticks.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes((-1 * 60 * 24))).Sum(h => h.Volume)), true));
+
+                                    SendNotification(dr);
                                     break;
                                 }
                             }
@@ -555,10 +611,257 @@ namespace Binance_alert_bot
             return Math.Round(last * 100 / first - 100, 2);
         }
 
+        public void SendNotification(DataGridViewRow dr_t)
+        {
+            if (this.tbTelegramApi.Text != "" && this.tbTelegramChatId.Text != "")
+            {
+                TelegramBotClient bot = new TelegramBotClient(this.tbTelegramApi.Text);
+                foreach (DataGridViewRow dr in this.dgNotification.Rows)
+                {
+                    if (dr_t.Cells["Symbol"].Value.ToString() != dr.Cells["Symb"].Value.ToString())
+                        continue;
+                    var x = dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Replace(" %", "");
+                    var y = dr.Cells["Change"].Value.ToString().Replace("<", "").Replace(">", "").Replace("%", "");
+                    var z = dr.Cells["Change"].Value.ToString().Contains(">");
+
+                    if (Convert.ToDecimal(dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Replace(" %", "")) > Convert.ToDecimal(dr.Cells["Change"].Value.ToString().Replace("<", "").Replace(">", "").Replace("%", "")) && dr.Cells["Change"].Value.ToString().Contains(">"))
+                    {
+                        
+                        string text = $"*Pair* `{dr.Cells["Symb"].Value.ToString()}`\n" +
+                                        $"*Type of change:* `{dr.Cells["Type"].Value.ToString()}`\n" +
+                                        $"*Timeframe:* `{dr.Cells["Timeframe"].Value.ToString()}`\n" +
+                                        $"*Change percentage:* `{dr.Cells["Change"].Value.ToString()}`\n";
+                        Logs(text.Replace("*","").Replace("`",""));
+                        bot.SendTextMessageAsync(Convert.ToInt32(this.tbTelegramChatId.Text), text, parseMode: ParseMode.Markdown);
+                    }
+                    if (Convert.ToDecimal(dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Replace(" %", "")) < Convert.ToDecimal(dr.Cells["Change"].Value.ToString().Replace("<", "").Replace(">", "").Replace("%", "")) && dr.Cells["Change"].Value.ToString().Contains("<"))
+                    {
+                        string text = $"*Pair* `{dr.Cells["Symb"].Value.ToString()}`\n" +
+                                                                $"*Type of change:* `{dr.Cells["Type"].Value.ToString()}`\n" +
+                                                                $"*Timeframe:* `{dr.Cells["Timeframe"].Value.ToString()}`\n" +
+                                                                $"*Change percentage:* `{dr.Cells["Change"].Value.ToString()}`\n";
+                        Logs(text.Replace("*", "").Replace("`", ""));
+                        bot.SendTextMessageAsync(Convert.ToInt32(this.tbTelegramChatId.Text), text, parseMode: ParseMode.Markdown);
+                    }
+                }
+            }
+        }
+
+        private void LoadSettings()
+        {
+            if (!File.Exists("config.json"))
+                cfg = new Config();
+            else
+                cfg = Config.Reload();
+
+            this.cbAsk.Checked = this.cfg.ask;
+            this.cbBid.Checked = this.cfg.bid;
+
+            this.cbChange1min.Checked = this.cfg.PriceChange1min;
+            this.cbChange3min.Checked = this.cfg.PriceChange3min;
+            this.cbChange5min.Checked = this.cfg.PriceChange5min;
+            this.cbChange15min.Checked = this.cfg.PriceChange15min;
+            this.cbChange30min.Checked = this.cfg.PriceChange30min;
+            this.cbChange1h.Checked = this.cfg.PriceChange1h;
+            this.cbChange2h.Checked = this.cfg.PriceChange2h;
+            this.cbChange4h.Checked = this.cfg.PriceChange4h;
+            this.cbChange6h.Checked = this.cfg.PriceChange6h;
+            this.cbChange12h.Checked = this.cfg.PriceChange12h;
+            this.cbChange24h.Checked = this.cfg.PriceChange24h;
+
+            this.cbHigh1min.Checked = this.cfg.High1min;
+            this.cbHigh3min.Checked = this.cfg.High3min;
+            this.cbHigh5min.Checked = this.cfg.High5min;
+            this.cbHigh15min.Checked = this.cfg.High15min;
+            this.cbHigh30min.Checked = this.cfg.High30min;
+            this.cbHigh1h.Checked = this.cfg.High1h;
+            this.cbHigh2h.Checked = this.cfg.High2h;
+            this.cbHigh4h.Checked = this.cfg.High4h;
+            this.cbHigh6h.Checked = this.cfg.High6h;
+            this.cbHigh12h.Checked = this.cfg.High12h;
+            this.cbHigh24h.Checked = this.cfg.High24h;
+
+            this.cbLow1min.Checked = this.cfg.Low1min;
+            this.cbLow3min.Checked = this.cfg.Low3min;
+            this.cbLow5min.Checked = this.cfg.Low5min;
+            this.cbLow15min.Checked = this.cfg.Low15min;
+            this.cbLow30min.Checked = this.cfg.Low30min;
+            this.cbLow1h.Checked = this.cfg.Low1h;
+            this.cbLow2h.Checked = this.cfg.Low2h;
+            this.cbLow4h.Checked = this.cfg.Low4h;
+            this.cbLow6h.Checked = this.cfg.Low6h;
+            this.cbLow12h.Checked = this.cfg.Low12h;
+            this.cbLow24h.Checked = this.cfg.Low24h;
+
+            this.cbVolume1min.Checked = this.cfg.Volume1min;
+            this.cbVolume3min.Checked = this.cfg.Volume3min;
+            this.cbVolume5min.Checked = this.cfg.Volume5min;
+            this.cbVolume15min.Checked = this.cfg.Volume15min;
+            this.cbVolume30min.Checked = this.cfg.Volume30min;
+            this.cbVolume1h.Checked = this.cfg.Volume1h;
+            this.cbVolume2h.Checked = this.cfg.Volume2h;
+            this.cbVolume4h.Checked = this.cfg.Volume4h;
+            this.cbVolume6h.Checked = this.cfg.Volume6h;
+            this.cbVolume12h.Checked = this.cfg.Volume12h;
+            this.cbVolume24h.Checked = this.cfg.Volume24h;
+
+            this.cbVolumeChange1min.Checked = this.cfg.VolumeChange1min;
+            this.cbVolumeChange3min.Checked = this.cfg.VolumeChange3min;
+            this.cbVolumeChange5min.Checked = this.cfg.VolumeChange5min;
+            this.cbVolumeChange15min.Checked = this.cfg.VolumeChange15min;
+            this.cbVolumeChange30min.Checked = this.cfg.VolumeChange30min;
+            this.cbVolumeChange1h.Checked = this.cfg.VolumeChange1h;
+            this.cbVolumeChange2h.Checked = this.cfg.VolumeChange2h;
+            this.cbVolumeChange4h.Checked = this.cfg.VolumeChange4h;
+            this.cbVolumeChange6h.Checked = this.cfg.VolumeChange6h;
+            this.cbVolumeChange12h.Checked = this.cfg.VolumeChange12h;
+            this.cbVolumeChange24h.Checked = this.cfg.VolumeChange24h;
+
+            this.cbFavorite.Checked = this.cfg.Favorite;
+
+            this.lbFavorite.Items.Clear();
+            foreach(var symbol in cfg.FavoriveSymbols)
+            {
+                this.lbFavorite.Items.Add(symbol);
+            }
+
+            this.dgNotification.Rows.Clear();
+            foreach(var n in cfg.notifications)
+            {
+                this.dgNotification.Rows.Add(n.Symbol, n.Type, n.Timeframe, n.Change);
+            }
+
+            this.tbTelegramApi.Text = this.cfg.TelegramApiKey;
+            this.tbTelegramChatId.Text = this.cfg.TelegramChatID;
+        }
+        private void SaveSettings()
+        {
+            this.cfg.ask = this.cbAsk.Checked;
+            this.cfg.bid = this.cbBid.Checked;
+
+            this.cfg.PriceChange1min = this.cbChange1min.Checked;
+            this.cfg.PriceChange3min = this.cbChange3min.Checked;
+            this.cfg.PriceChange5min = this.cbChange5min.Checked;
+            this.cfg.PriceChange15min = this.cbChange15min.Checked;
+            this.cfg.PriceChange30min = this.cbChange30min.Checked;
+            this.cfg.PriceChange1h = this.cbChange1h.Checked;
+            this.cfg.PriceChange2h = this.cbChange2h.Checked;
+            this.cfg.PriceChange4h = this.cbChange4h.Checked;
+            this.cfg.PriceChange6h = this.cbChange6h.Checked;
+            this.cfg.PriceChange12h = this.cbChange12h.Checked;
+            this.cfg.PriceChange24h = this.cbChange24h.Checked;
+
+            this.cfg.High1min = this.cbHigh1min.Checked;
+            this.cfg.High3min = this.cbHigh3min.Checked;
+            this.cfg.High5min = this.cbHigh5min.Checked;
+            this.cfg.High15min = this.cbHigh15min.Checked;
+            this.cfg.High30min = this.cbHigh30min.Checked;
+            this.cfg.High1h = this.cbHigh1h.Checked;
+            this.cfg.High2h = this.cbHigh2h.Checked;
+            this.cfg.High4h = this.cbHigh4h.Checked;
+            this.cfg.High6h = this.cbHigh6h.Checked;
+            this.cfg.High12h = this.cbHigh12h.Checked;
+            this.cfg.High24h = this.cbHigh24h.Checked;
+
+            this.cfg.Low1min = this.cbLow1min.Checked;
+            this.cfg.Low3min = this.cbLow3min.Checked;
+            this.cfg.Low5min = this.cbLow5min.Checked;
+            this.cfg.Low15min = this.cbLow15min.Checked;
+            this.cfg.Low30min = this.cbLow30min.Checked;
+            this.cfg.Low1h = this.cbLow1h.Checked;
+            this.cfg.Low2h = this.cbLow2h.Checked;
+            this.cfg.Low4h = this.cbLow4h.Checked;
+            this.cfg.Low6h = this.cbLow6h.Checked;
+            this.cfg.Low12h = this.cbLow12h.Checked;
+            this.cfg.Low24h = this.cbLow24h.Checked;
+
+            this.cfg.Volume1min = this.cbVolume1min.Checked;
+            this.cfg.Volume3min = this.cbVolume3min.Checked;
+            this.cfg.Volume5min = this.cbVolume5min.Checked;
+            this.cfg.Volume15min = this.cbVolume15min.Checked;
+            this.cfg.Volume30min = this.cbVolume30min.Checked;
+            this.cfg.Volume1h = this.cbVolume1h.Checked;
+            this.cfg.Volume2h = this.cbVolume2h.Checked;
+            this.cfg.Volume4h = this.cbVolume4h.Checked;
+            this.cfg.Volume6h = this.cbVolume6h.Checked;
+            this.cfg.Volume12h = this.cbVolume12h.Checked;
+            this.cfg.Volume24h = this.cbVolume24h.Checked;
+
+            this.cfg.VolumeChange1min = this.cbVolumeChange1min.Checked;
+            this.cfg.VolumeChange3min = this.cbVolumeChange3min.Checked;
+            this.cfg.VolumeChange5min = this.cbVolumeChange5min.Checked;
+            this.cfg.VolumeChange15min = this.cbVolumeChange15min.Checked;
+            this.cfg.VolumeChange30min = this.cbVolumeChange30min.Checked;
+            this.cfg.VolumeChange1h = this.cbVolumeChange1h.Checked;
+            this.cfg.VolumeChange2h = this.cbVolumeChange2h.Checked;
+            this.cfg.VolumeChange4h = this.cbVolumeChange4h.Checked;
+            this.cfg.VolumeChange6h = this.cbVolumeChange6h.Checked;
+            this.cfg.VolumeChange12h = this.cbVolumeChange12h.Checked;
+            this.cfg.VolumeChange24h = this.cbVolumeChange24h.Checked;
+
+            this.cfg.Favorite = this.cbFavorite.Checked;
+
+            this.cfg.FavoriveSymbols = new List<string>();
+            foreach (var f in this.lbFavorite.Items)
+                cfg.FavoriveSymbols.Add(f.ToString());
+
+            this.cfg.notifications = new List<Notifications>();
+            foreach (DataGridViewRow dr in dgNotification.Rows)
+            {
+                this.cfg.notifications.Add(
+                    new Notifications
+                    {
+                        Symbol = dr.Cells["Symb"].Value.ToString(),
+                        Type = dr.Cells["Type"].Value.ToString(),
+                        Timeframe = dr.Cells["Timeframe"].Value.ToString(),
+                        Change = dr.Cells["Change"].Value.ToString()
+                    });
+            }
+
+            this.cfg.TelegramApiKey = this.tbTelegramApi.Text;
+            this.cfg.TelegramChatID = this.tbTelegramChatId.Text;
+
+            Config.Save(cfg);
+        }
 
 
         #endregion
 
-        
+        private void btnAddFavorite_Click(object sender, EventArgs e)
+        {
+            if (this.ddlSymbols.SelectedItem.ToString() != "")
+                this.lbFavorite.Items.Add(this.ddlSymbols.SelectedItem.ToString());
+        }
+
+        private void btnDeleteFavorite_Click(object sender, EventArgs e)
+        {
+            if (this.lbFavorite.SelectedItem.ToString() != "")
+                this.lbFavorite.Items.Remove(this.lbFavorite.SelectedItem);
+        }
+
+        private void cbFavorite_CheckedChanged(object sender, EventArgs e)
+        {
+            this.dgBinanceTable.Rows.Clear();
+        }
+
+        private void btnTelegramTestMsg_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.tbTelegramApi.Text != "" && this.tbTelegramChatId.Text != "")
+                {
+                    TelegramBotClient bot = new TelegramBotClient(this.tbTelegramApi.Text);
+                    bot.SendTextMessageAsync(Convert.ToInt32(this.tbTelegramChatId.Text), "Тестовое сообщение", parseMode: ParseMode.Markdown);
+                }
+                else
+                {
+                    MessageBox.Show("Следует заполнить поля");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка в заполненных полях телеграма");
+            }
+        }
     }
 }

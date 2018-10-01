@@ -14,8 +14,11 @@ namespace Binance_alert_bot.Binance
     public class BinanceBotClient
     {
         #region Delegates
-        public event BinanceClientStateHandler BinanceLog;
-        public delegate void BinanceClientStateHandler(string message);
+        public event LogsStateHandler Logs;
+        public delegate void LogsStateHandler(string message);
+
+        public event SymbolsStateHandler SymbolsEvent;
+        public delegate void SymbolsStateHandler(List<string> symbols);
         #endregion
 
         #region Fields
@@ -36,26 +39,26 @@ namespace Binance_alert_bot.Binance
         }
         public void BinanceSetCredentials()
         {
-            BinanceLog?.Invoke("Подключение...");
+            Logs?.Invoke("Подключение...");
             client = new BinanceClient();
 
             ws = new BinanceSocketClient();
 
             GetExchangeInfo();
-            BinanceLog?.Invoke("Получил всю инфо о бриже");
+            Logs?.Invoke("Получил всю инфо о бриже");
 
             Task.Run(() => GetKlines());
 
             Task.Run(() => SubscribeToNewSymbolAsync(AllSymbolsBTC)).Wait();
 
-            BinanceLog?.Invoke("Подключил сокеты всех монет");
+            Logs?.Invoke("Подключил сокеты всех монет");
 
-            BinanceLog?.Invoke("Подключено");
+            Logs?.Invoke("Подключено");
 
             while (true)
             {
                 foreach(var symbol in BinanceMarket.ToArray())
-                    symbol.Ticks.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2));
+                    symbol.Ticks.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2 - 10));
                 Thread.Sleep(1000 * 60);
             }
         }
@@ -128,7 +131,7 @@ namespace Binance_alert_bot.Binance
                     }
                     catch { }
                 });
-                BinanceLog?.Invoke($"Подписался на новую монету {symbol[0]}");
+                Logs?.Invoke($"Подписался на новую монету {symbol[0]}");
             }
 
             //сокеты свечей на 1 минуту
@@ -172,7 +175,7 @@ namespace Binance_alert_bot.Binance
         {
             foreach (var symbol in AllSymbolsBTC)
             {
-                int requests = -2 * 24 * 60;
+                int requests = -2 * 24 * 60 - 10;
                 while (requests < 0)
                 {
                     CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.OneMinute, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
@@ -212,7 +215,7 @@ namespace Binance_alert_bot.Binance
                     }
                 }
             }
-            BinanceLog?.Invoke("Получил историю свечей");
+            Logs?.Invoke("Получил историю свечей");
         }
         private void GetExchangeInfo(string Symbol = "")
         {
@@ -233,6 +236,7 @@ namespace Binance_alert_bot.Binance
                         AllSymbolsBTC.Add(symbol.Name);
                     }
                 }
+                SymbolsEvent?.Invoke(AllSymbolsBTC);
             }
             else
             {
@@ -258,7 +262,7 @@ namespace Binance_alert_bot.Binance
         }
         private void ErrorHandling(Error error)
         {
-            BinanceLog?.Invoke($"{error.Code}: {error.Message}");
+            Logs?.Invoke($"{error.Code}: {error.Message}");
         }
         #endregion
     }
