@@ -51,17 +51,42 @@ namespace Binance_alert_bot.Objects
         public bool High12h { get; set; } = false;
         public bool High24h { get; set; } = true;
 
-        public bool Volume1min { get; set; } = false;
-        public bool Volume3min { get; set; } = false;
-        public bool Volume5min { get; set; } = false;
-        public bool Volume15min { get; set; } = false;
-        public bool Volume30min { get; set; } = false;
-        public bool Volume1h { get; set; } = false;
-        public bool Volume2h { get; set; } = false;
-        public bool Volume4h { get; set; } = false;
-        public bool Volume6h { get; set; } = false;
-        public bool Volume12h { get; set; } = false;
-        public bool Volume24h { get; set; } = true;
+        public bool Amplitude1min { get; set; } = false;
+        public bool Amplitude3min { get; set; } = false;
+        public bool Amplitude5min { get; set; } = false;
+        public bool Amplitude15min { get; set; } = false;
+        public bool Amplitude30min { get; set; } = false;
+        public bool Amplitude1h { get; set; } = false;
+        public bool Amplitude2h { get; set; } = false;
+        public bool Amplitude4h { get; set; } = false;
+        public bool Amplitude6h { get; set; } = false;
+        public bool Amplitude12h { get; set; } = false;
+        public bool Amplitude24h { get; set; } = true;
+
+        public bool VolumeQuote1min { get; set; } = false;
+        public bool VolumeQuote3min { get; set; } = false;
+        public bool VolumeQuote5min { get; set; } = false;
+        public bool VolumeQuote15min { get; set; } = false;
+        public bool VolumeQuote30min { get; set; } = false;
+        public bool VolumeQuote1h { get; set; } = false;
+        public bool VolumeQuote2h { get; set; } = false;
+        public bool VolumeQuote4h { get; set; } = false;
+        public bool VolumeQuote6h { get; set; } = false;
+        public bool VolumeQuote12h { get; set; } = false;
+        public bool VolumeQuote24h { get; set; } = true;
+
+
+        public bool VolumeBase1min { get; set; } = false;
+        public bool VolumeBase3min { get; set; } = false;
+        public bool VolumeBase5min { get; set; } = false;
+        public bool VolumeBase15min { get; set; } = false;
+        public bool VolumeBase30min { get; set; } = false;
+        public bool VolumeBase1h { get; set; } = false;
+        public bool VolumeBase2h { get; set; } = false;
+        public bool VolumeBase4h { get; set; } = false;
+        public bool VolumeBase6h { get; set; } = false;
+        public bool VolumeBase12h { get; set; } = false;
+        public bool VolumeBase24h { get; set; } = true;
 
         public bool VolumeChange1min { get; set; } = false;
         public bool VolumeChange3min { get; set; } = false;

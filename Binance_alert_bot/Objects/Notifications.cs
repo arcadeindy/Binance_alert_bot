@@ -12,5 +12,7 @@ namespace Binance_alert_bot.Objects
         public string Type { get; set; }
         public string Timeframe { get; set; }
         public string Change { get; set; }
+        public string GUID { get; set; }
+        public DateTime NotifyTime { get; set; }
     }
 }

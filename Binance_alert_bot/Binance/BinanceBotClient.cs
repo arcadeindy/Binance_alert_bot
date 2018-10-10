@@ -47,11 +47,11 @@ namespace Binance_alert_bot.Binance
             GetExchangeInfo();
             Logs?.Invoke("Получил всю инфо о бриже");
 
-            Task.Run(() => GetKlines());
-
             Task.Run(() => SubscribeToNewSymbolAsync(AllSymbolsBTC)).Wait();
 
             Logs?.Invoke("Подключил сокеты всех монет");
+
+            Task.Run(() => GetKlines());            
 
             Logs?.Invoke("Подключено");
 
@@ -154,7 +154,8 @@ namespace Binance_alert_bot.Binance
                                     Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
                                     Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
                                     High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
-                                    Volume = data.Data.QuoteAssetVolume
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
                                 });
                         }
                         else
@@ -164,7 +165,8 @@ namespace Binance_alert_bot.Binance
                             findCoin.Ticks.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
                             findCoin.Ticks.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks.Last().Volume = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -196,7 +198,8 @@ namespace Binance_alert_bot.Binance
                                 Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
                                 High = Math.Round(kline.High, GetPriceFilter(symbol)),
                                 Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
-                                Volume = kline.QuoteAssetVolume
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
                             });
                     }
 

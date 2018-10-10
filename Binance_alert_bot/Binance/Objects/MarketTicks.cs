@@ -13,6 +13,7 @@ namespace Binance_alert_bot.Binance.Objects
         public decimal Close { get; set; }
         public decimal Low { get; set; }
         public decimal High { get; set; }
-        public decimal Volume { get; set; }
+        public decimal VolumeQuote { get; set; }
+        public decimal VolumeBase { get; set; }
     }
 }

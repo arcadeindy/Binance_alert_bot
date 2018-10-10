@@ -45,6 +45,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ddlNotifySymbol = new System.Windows.Forms.ComboBox();
             this.dgNotification = new System.Windows.Forms.DataGridView();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cbFavorite = new System.Windows.Forms.CheckBox();
@@ -75,17 +79,17 @@
             this.cbVolumeChange2h = new System.Windows.Forms.CheckBox();
             this.cbVolumeChange1h = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.cbVolume1min = new System.Windows.Forms.CheckBox();
-            this.cbVolume24h = new System.Windows.Forms.CheckBox();
-            this.cbVolume3min = new System.Windows.Forms.CheckBox();
-            this.cbVolume12h = new System.Windows.Forms.CheckBox();
-            this.cbVolume5min = new System.Windows.Forms.CheckBox();
-            this.cbVolume6h = new System.Windows.Forms.CheckBox();
-            this.cbVolume15min = new System.Windows.Forms.CheckBox();
-            this.cbVolume4h = new System.Windows.Forms.CheckBox();
-            this.cbVolume30min = new System.Windows.Forms.CheckBox();
-            this.cbVolume2h = new System.Windows.Forms.CheckBox();
-            this.cbVolume1h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote1min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote24h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote3min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote12h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote5min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote6h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote15min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote4h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote30min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote2h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeQuote1h = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.cbLow1min = new System.Windows.Forms.CheckBox();
             this.cbLow24h = new System.Windows.Forms.CheckBox();
@@ -111,33 +115,57 @@
             this.cbHigh2h = new System.Windows.Forms.CheckBox();
             this.cbHigh1h = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbChange1min = new System.Windows.Forms.CheckBox();
-            this.cbChange24h = new System.Windows.Forms.CheckBox();
-            this.cbChange3min = new System.Windows.Forms.CheckBox();
-            this.cbChange12h = new System.Windows.Forms.CheckBox();
-            this.cbChange5min = new System.Windows.Forms.CheckBox();
-            this.cbChange6h = new System.Windows.Forms.CheckBox();
-            this.cbChange15min = new System.Windows.Forms.CheckBox();
-            this.cbChange4h = new System.Windows.Forms.CheckBox();
-            this.cbChange30min = new System.Windows.Forms.CheckBox();
-            this.cbChange2h = new System.Windows.Forms.CheckBox();
-            this.cbChange1h = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange1min = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange24h = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange3min = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange12h = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange5min = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange6h = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange15min = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange4h = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange30min = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange2h = new System.Windows.Forms.CheckBox();
+            this.cbPriceChange1h = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.cbVolumeBase1min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase24h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase3min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase12h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase5min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase6h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase15min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase4h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase30min = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase2h = new System.Windows.Forms.CheckBox();
+            this.cbVolumeBase1h = new System.Windows.Forms.CheckBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.cbAmplitude1min = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude24h = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude3min = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude12h = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude5min = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude6h = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude15min = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude4h = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude30min = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude2h = new System.Windows.Forms.CheckBox();
+            this.cbAmplitude1h = new System.Windows.Forms.CheckBox();
             this.Symbol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Ask = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Bid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PriceChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.High1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.High3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.High5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -160,17 +188,39 @@
             this.Low6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Low12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Low24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Volume24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Amplitude24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeQuote24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase15min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase30min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase1h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase2h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase4h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VolumeBase24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange1min = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange3min = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange5min = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -182,10 +232,8 @@
             this.VolumeChange6h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clbPairs = new System.Windows.Forms.CheckedListBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -201,6 +249,8 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -237,17 +287,17 @@
             this.Symbol,
             this.Ask,
             this.Bid,
-            this.Change1min,
-            this.Change3min,
-            this.Change5min,
-            this.Change15min,
-            this.Change30min,
-            this.Change1h,
-            this.Change2h,
-            this.Change4h,
-            this.Change6h,
-            this.Change12h,
-            this.Change24h,
+            this.PriceChange1min,
+            this.PriceChange3min,
+            this.PriceChange5min,
+            this.PriceChange15min,
+            this.PriceChange30min,
+            this.PriceChange1h,
+            this.PriceChange2h,
+            this.PriceChange4h,
+            this.PriceChange6h,
+            this.PriceChange12h,
+            this.PriceChange24h,
             this.High1min,
             this.High3min,
             this.High5min,
@@ -270,17 +320,39 @@
             this.Low6h,
             this.Low12h,
             this.Low24h,
-            this.Volume1min,
-            this.Volume3min,
-            this.Volume5min,
-            this.Volume15min,
-            this.Volume30min,
-            this.Volume1h,
-            this.Volume2h,
-            this.Volume4h,
-            this.Volume6h,
-            this.Volume12h,
-            this.Volume24h,
+            this.Amplitude1min,
+            this.Amplitude3min,
+            this.Amplitude5min,
+            this.Amplitude15min,
+            this.Amplitude30min,
+            this.Amplitude1h,
+            this.Amplitude2h,
+            this.Amplitude4h,
+            this.Amplitude6h,
+            this.Amplitude12h,
+            this.Amplitude24h,
+            this.VolumeQuote1min,
+            this.VolumeQuote3min,
+            this.VolumeQuote5min,
+            this.VolumeQuote15min,
+            this.VolumeQuote30min,
+            this.VolumeQuote1h,
+            this.VolumeQuote2h,
+            this.VolumeQuote4h,
+            this.VolumeQuote6h,
+            this.VolumeQuote12h,
+            this.VolumeQuote24h,
+            this.VolumeBase1min,
+            this.VolumeBase3min,
+            this.VolumeBase5min,
+            this.VolumeBase15min,
+            this.VolumeBase30min,
+            this.VolumeBase1h,
+            this.VolumeBase2h,
+            this.VolumeBase4h,
+            this.VolumeBase6h,
+            this.VolumeBase12h,
+            this.VolumeBase24h,
             this.VolumeChange1min,
             this.VolumeChange3min,
             this.VolumeChange5min,
@@ -303,6 +375,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label8);
+            this.tabPage2.Controls.Add(this.clbPairs);
             this.tabPage2.Controls.Add(this.rbMore);
             this.tabPage2.Controls.Add(this.rbLess);
             this.tabPage2.Controls.Add(this.btnNotifyDelete);
@@ -328,7 +402,7 @@
             // 
             this.rbMore.AutoSize = true;
             this.rbMore.Checked = true;
-            this.rbMore.Location = new System.Drawing.Point(496, 42);
+            this.rbMore.Location = new System.Drawing.Point(11, 68);
             this.rbMore.Name = "rbMore";
             this.rbMore.Size = new System.Drawing.Size(31, 17);
             this.rbMore.TabIndex = 16;
@@ -339,7 +413,7 @@
             // rbLess
             // 
             this.rbLess.AutoSize = true;
-            this.rbLess.Location = new System.Drawing.Point(496, 17);
+            this.rbLess.Location = new System.Drawing.Point(48, 68);
             this.rbLess.Name = "rbLess";
             this.rbLess.Size = new System.Drawing.Size(31, 17);
             this.rbLess.TabIndex = 15;
@@ -349,9 +423,9 @@
             // 
             // btnNotifyDelete
             // 
-            this.btnNotifyDelete.Location = new System.Drawing.Point(553, 36);
+            this.btnNotifyDelete.Location = new System.Drawing.Point(6, 36);
             this.btnNotifyDelete.Name = "btnNotifyDelete";
-            this.btnNotifyDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnNotifyDelete.Size = new System.Drawing.Size(123, 23);
             this.btnNotifyDelete.TabIndex = 14;
             this.btnNotifyDelete.Text = "Удалить";
             this.btnNotifyDelete.UseVisualStyleBackColor = true;
@@ -359,9 +433,9 @@
             // 
             // btnAddNotify
             // 
-            this.btnAddNotify.Location = new System.Drawing.Point(553, 11);
+            this.btnAddNotify.Location = new System.Drawing.Point(6, 11);
             this.btnAddNotify.Name = "btnAddNotify";
-            this.btnAddNotify.Size = new System.Drawing.Size(75, 23);
+            this.btnAddNotify.Size = new System.Drawing.Size(123, 23);
             this.btnAddNotify.TabIndex = 12;
             this.btnAddNotify.Text = "Добавить";
             this.btnAddNotify.UseVisualStyleBackColor = true;
@@ -370,7 +444,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(132, 16);
+            this.label6.Location = new System.Drawing.Point(6, 88);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(31, 13);
             this.label6.TabIndex = 11;
@@ -380,17 +454,25 @@
             // 
             this.ddlNotifyType.FormattingEnabled = true;
             this.ddlNotifyType.Items.AddRange(new object[] {
+            "Ask",
+            "Bid",
+            "High",
+            "Low",
+            "Amplitude",
             "PriceChange",
-            "VolumeChange"});
-            this.ddlNotifyType.Location = new System.Drawing.Point(135, 38);
+            "VolumeChange",
+            "VolumeBase",
+            "VolumeQoute",
+            ""});
+            this.ddlNotifyType.Location = new System.Drawing.Point(9, 110);
             this.ddlNotifyType.Name = "ddlNotifyType";
-            this.ddlNotifyType.Size = new System.Drawing.Size(121, 21);
+            this.ddlNotifyType.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyType.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(386, 16);
+            this.label5.Location = new System.Drawing.Point(6, 183);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 13);
             this.label5.TabIndex = 9;
@@ -398,15 +480,15 @@
             // 
             // tbNotifyChange
             // 
-            this.tbNotifyChange.Location = new System.Drawing.Point(389, 39);
+            this.tbNotifyChange.Location = new System.Drawing.Point(9, 206);
             this.tbNotifyChange.Name = "tbNotifyChange";
-            this.tbNotifyChange.Size = new System.Drawing.Size(100, 20);
+            this.tbNotifyChange.Size = new System.Drawing.Size(120, 20);
             this.tbNotifyChange.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(259, 16);
+            this.label4.Location = new System.Drawing.Point(6, 135);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 7;
@@ -427,15 +509,15 @@
             "6h",
             "12h",
             "24h"});
-            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(262, 38);
+            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(9, 157);
             this.ddlNotifyTimeframe.Name = "ddlNotifyTimeframe";
-            this.ddlNotifyTimeframe.Size = new System.Drawing.Size(121, 21);
+            this.ddlNotifyTimeframe.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyTimeframe.TabIndex = 6;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 16);
+            this.label3.Location = new System.Drawing.Point(8, 229);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(30, 13);
             this.label3.TabIndex = 5;
@@ -446,7 +528,7 @@
             this.ddlNotifySymbol.FormattingEnabled = true;
             this.ddlNotifySymbol.Items.AddRange(new object[] {
             "ETHBTC"});
-            this.ddlNotifySymbol.Location = new System.Drawing.Point(8, 38);
+            this.ddlNotifySymbol.Location = new System.Drawing.Point(1053, 36);
             this.ddlNotifySymbol.Name = "ddlNotifySymbol";
             this.ddlNotifySymbol.Size = new System.Drawing.Size(121, 21);
             this.ddlNotifySymbol.TabIndex = 4;
@@ -465,11 +547,35 @@
             this.Type,
             this.Timeframe,
             this.Change});
-            this.dgNotification.Location = new System.Drawing.Point(3, 65);
+            this.dgNotification.Location = new System.Drawing.Point(135, 65);
             this.dgNotification.Name = "dgNotification";
             this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgNotification.Size = new System.Drawing.Size(1176, 513);
+            this.dgNotification.Size = new System.Drawing.Size(1044, 513);
             this.dgNotification.TabIndex = 1;
+            // 
+            // Symb
+            // 
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
+            // 
+            // Type
+            // 
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Timeframe
+            // 
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
             // 
             // tabPage3
             // 
@@ -560,7 +666,7 @@
             this.groupBox7.Controls.Add(this.label1);
             this.groupBox7.Controls.Add(this.tbTelegramChatId);
             this.groupBox7.Controls.Add(this.tbTelegramApi);
-            this.groupBox7.Location = new System.Drawing.Point(8, 364);
+            this.groupBox7.Location = new System.Drawing.Point(8, 474);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(593, 72);
             this.groupBox7.TabIndex = 1;
@@ -611,6 +717,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox10);
+            this.groupBox1.Controls.Add(this.groupBox9);
             this.groupBox1.Controls.Add(this.cbAsk);
             this.groupBox1.Controls.Add(this.cbBid);
             this.groupBox1.Controls.Add(this.groupBox6);
@@ -620,7 +728,7 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Location = new System.Drawing.Point(8, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(593, 336);
+            this.groupBox1.Size = new System.Drawing.Size(593, 455);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Timeframe";
@@ -660,12 +768,12 @@
             this.groupBox6.Controls.Add(this.cbVolumeChange30min);
             this.groupBox6.Controls.Add(this.cbVolumeChange2h);
             this.groupBox6.Controls.Add(this.cbVolumeChange1h);
-            this.groupBox6.Location = new System.Drawing.Point(6, 275);
+            this.groupBox6.Location = new System.Drawing.Point(6, 387);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(573, 50);
             this.groupBox6.TabIndex = 15;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "VolumeChange";
+            this.groupBox6.Text = "VolumeChange Quote";
             // 
             // cbVolumeChange1min
             // 
@@ -790,144 +898,144 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.cbVolume1min);
-            this.groupBox5.Controls.Add(this.cbVolume24h);
-            this.groupBox5.Controls.Add(this.cbVolume3min);
-            this.groupBox5.Controls.Add(this.cbVolume12h);
-            this.groupBox5.Controls.Add(this.cbVolume5min);
-            this.groupBox5.Controls.Add(this.cbVolume6h);
-            this.groupBox5.Controls.Add(this.cbVolume15min);
-            this.groupBox5.Controls.Add(this.cbVolume4h);
-            this.groupBox5.Controls.Add(this.cbVolume30min);
-            this.groupBox5.Controls.Add(this.cbVolume2h);
-            this.groupBox5.Controls.Add(this.cbVolume1h);
-            this.groupBox5.Location = new System.Drawing.Point(6, 219);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote1min);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote24h);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote3min);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote12h);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote5min);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote6h);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote15min);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote4h);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote30min);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote2h);
+            this.groupBox5.Controls.Add(this.cbVolumeQuote1h);
+            this.groupBox5.Location = new System.Drawing.Point(6, 275);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(573, 50);
             this.groupBox5.TabIndex = 14;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Volume";
+            this.groupBox5.Text = "VolumeQuote";
             // 
-            // cbVolume1min
+            // cbVolumeQuote1min
             // 
-            this.cbVolume1min.AutoSize = true;
-            this.cbVolume1min.Location = new System.Drawing.Point(6, 19);
-            this.cbVolume1min.Name = "cbVolume1min";
-            this.cbVolume1min.Size = new System.Drawing.Size(48, 17);
-            this.cbVolume1min.TabIndex = 0;
-            this.cbVolume1min.Text = "1min";
-            this.cbVolume1min.UseVisualStyleBackColor = true;
-            this.cbVolume1min.CheckedChanged += new System.EventHandler(this.cbVolume1min_CheckedChanged);
+            this.cbVolumeQuote1min.AutoSize = true;
+            this.cbVolumeQuote1min.Location = new System.Drawing.Point(6, 19);
+            this.cbVolumeQuote1min.Name = "cbVolumeQuote1min";
+            this.cbVolumeQuote1min.Size = new System.Drawing.Size(48, 17);
+            this.cbVolumeQuote1min.TabIndex = 0;
+            this.cbVolumeQuote1min.Text = "1min";
+            this.cbVolumeQuote1min.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote1min.CheckedChanged += new System.EventHandler(this.cbVolume1min_CheckedChanged);
             // 
-            // cbVolume24h
+            // cbVolumeQuote24h
             // 
-            this.cbVolume24h.AutoSize = true;
-            this.cbVolume24h.Location = new System.Drawing.Point(514, 19);
-            this.cbVolume24h.Name = "cbVolume24h";
-            this.cbVolume24h.Size = new System.Drawing.Size(44, 17);
-            this.cbVolume24h.TabIndex = 10;
-            this.cbVolume24h.Text = "24h";
-            this.cbVolume24h.UseVisualStyleBackColor = true;
-            this.cbVolume24h.CheckedChanged += new System.EventHandler(this.cbVolume24h_CheckedChanged);
+            this.cbVolumeQuote24h.AutoSize = true;
+            this.cbVolumeQuote24h.Location = new System.Drawing.Point(514, 19);
+            this.cbVolumeQuote24h.Name = "cbVolumeQuote24h";
+            this.cbVolumeQuote24h.Size = new System.Drawing.Size(44, 17);
+            this.cbVolumeQuote24h.TabIndex = 10;
+            this.cbVolumeQuote24h.Text = "24h";
+            this.cbVolumeQuote24h.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote24h.CheckedChanged += new System.EventHandler(this.cbVolume24h_CheckedChanged);
             // 
-            // cbVolume3min
+            // cbVolumeQuote3min
             // 
-            this.cbVolume3min.AutoSize = true;
-            this.cbVolume3min.Location = new System.Drawing.Point(60, 19);
-            this.cbVolume3min.Name = "cbVolume3min";
-            this.cbVolume3min.Size = new System.Drawing.Size(48, 17);
-            this.cbVolume3min.TabIndex = 1;
-            this.cbVolume3min.Text = "3min";
-            this.cbVolume3min.UseVisualStyleBackColor = true;
-            this.cbVolume3min.CheckedChanged += new System.EventHandler(this.cbVolume3min_CheckedChanged);
+            this.cbVolumeQuote3min.AutoSize = true;
+            this.cbVolumeQuote3min.Location = new System.Drawing.Point(60, 19);
+            this.cbVolumeQuote3min.Name = "cbVolumeQuote3min";
+            this.cbVolumeQuote3min.Size = new System.Drawing.Size(48, 17);
+            this.cbVolumeQuote3min.TabIndex = 1;
+            this.cbVolumeQuote3min.Text = "3min";
+            this.cbVolumeQuote3min.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote3min.CheckedChanged += new System.EventHandler(this.cbVolume3min_CheckedChanged);
             // 
-            // cbVolume12h
+            // cbVolumeQuote12h
             // 
-            this.cbVolume12h.AutoSize = true;
-            this.cbVolume12h.Location = new System.Drawing.Point(464, 19);
-            this.cbVolume12h.Name = "cbVolume12h";
-            this.cbVolume12h.Size = new System.Drawing.Size(44, 17);
-            this.cbVolume12h.TabIndex = 9;
-            this.cbVolume12h.Text = "12h";
-            this.cbVolume12h.UseVisualStyleBackColor = true;
-            this.cbVolume12h.CheckedChanged += new System.EventHandler(this.cbVolume12h_CheckedChanged);
+            this.cbVolumeQuote12h.AutoSize = true;
+            this.cbVolumeQuote12h.Location = new System.Drawing.Point(464, 19);
+            this.cbVolumeQuote12h.Name = "cbVolumeQuote12h";
+            this.cbVolumeQuote12h.Size = new System.Drawing.Size(44, 17);
+            this.cbVolumeQuote12h.TabIndex = 9;
+            this.cbVolumeQuote12h.Text = "12h";
+            this.cbVolumeQuote12h.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote12h.CheckedChanged += new System.EventHandler(this.cbVolume12h_CheckedChanged);
             // 
-            // cbVolume5min
+            // cbVolumeQuote5min
             // 
-            this.cbVolume5min.AutoSize = true;
-            this.cbVolume5min.Location = new System.Drawing.Point(114, 19);
-            this.cbVolume5min.Name = "cbVolume5min";
-            this.cbVolume5min.Size = new System.Drawing.Size(48, 17);
-            this.cbVolume5min.TabIndex = 2;
-            this.cbVolume5min.Text = "5min";
-            this.cbVolume5min.UseVisualStyleBackColor = true;
-            this.cbVolume5min.CheckedChanged += new System.EventHandler(this.cbVolume5min_CheckedChanged);
+            this.cbVolumeQuote5min.AutoSize = true;
+            this.cbVolumeQuote5min.Location = new System.Drawing.Point(114, 19);
+            this.cbVolumeQuote5min.Name = "cbVolumeQuote5min";
+            this.cbVolumeQuote5min.Size = new System.Drawing.Size(48, 17);
+            this.cbVolumeQuote5min.TabIndex = 2;
+            this.cbVolumeQuote5min.Text = "5min";
+            this.cbVolumeQuote5min.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote5min.CheckedChanged += new System.EventHandler(this.cbVolume5min_CheckedChanged);
             // 
-            // cbVolume6h
+            // cbVolumeQuote6h
             // 
-            this.cbVolume6h.AutoSize = true;
-            this.cbVolume6h.Location = new System.Drawing.Point(420, 19);
-            this.cbVolume6h.Name = "cbVolume6h";
-            this.cbVolume6h.Size = new System.Drawing.Size(38, 17);
-            this.cbVolume6h.TabIndex = 8;
-            this.cbVolume6h.Text = "6h";
-            this.cbVolume6h.UseVisualStyleBackColor = true;
-            this.cbVolume6h.CheckedChanged += new System.EventHandler(this.cbVolume6h_CheckedChanged);
+            this.cbVolumeQuote6h.AutoSize = true;
+            this.cbVolumeQuote6h.Location = new System.Drawing.Point(420, 19);
+            this.cbVolumeQuote6h.Name = "cbVolumeQuote6h";
+            this.cbVolumeQuote6h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeQuote6h.TabIndex = 8;
+            this.cbVolumeQuote6h.Text = "6h";
+            this.cbVolumeQuote6h.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote6h.CheckedChanged += new System.EventHandler(this.cbVolume6h_CheckedChanged);
             // 
-            // cbVolume15min
+            // cbVolumeQuote15min
             // 
-            this.cbVolume15min.AutoSize = true;
-            this.cbVolume15min.Location = new System.Drawing.Point(168, 19);
-            this.cbVolume15min.Name = "cbVolume15min";
-            this.cbVolume15min.Size = new System.Drawing.Size(54, 17);
-            this.cbVolume15min.TabIndex = 3;
-            this.cbVolume15min.Text = "15min";
-            this.cbVolume15min.UseVisualStyleBackColor = true;
-            this.cbVolume15min.CheckedChanged += new System.EventHandler(this.cbVolume15min_CheckedChanged);
+            this.cbVolumeQuote15min.AutoSize = true;
+            this.cbVolumeQuote15min.Location = new System.Drawing.Point(168, 19);
+            this.cbVolumeQuote15min.Name = "cbVolumeQuote15min";
+            this.cbVolumeQuote15min.Size = new System.Drawing.Size(54, 17);
+            this.cbVolumeQuote15min.TabIndex = 3;
+            this.cbVolumeQuote15min.Text = "15min";
+            this.cbVolumeQuote15min.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote15min.CheckedChanged += new System.EventHandler(this.cbVolume15min_CheckedChanged);
             // 
-            // cbVolume4h
+            // cbVolumeQuote4h
             // 
-            this.cbVolume4h.AutoSize = true;
-            this.cbVolume4h.Location = new System.Drawing.Point(376, 19);
-            this.cbVolume4h.Name = "cbVolume4h";
-            this.cbVolume4h.Size = new System.Drawing.Size(38, 17);
-            this.cbVolume4h.TabIndex = 7;
-            this.cbVolume4h.Text = "4h";
-            this.cbVolume4h.UseVisualStyleBackColor = true;
-            this.cbVolume4h.CheckedChanged += new System.EventHandler(this.cbVolume4h_CheckedChanged);
+            this.cbVolumeQuote4h.AutoSize = true;
+            this.cbVolumeQuote4h.Location = new System.Drawing.Point(376, 19);
+            this.cbVolumeQuote4h.Name = "cbVolumeQuote4h";
+            this.cbVolumeQuote4h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeQuote4h.TabIndex = 7;
+            this.cbVolumeQuote4h.Text = "4h";
+            this.cbVolumeQuote4h.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote4h.CheckedChanged += new System.EventHandler(this.cbVolume4h_CheckedChanged);
             // 
-            // cbVolume30min
+            // cbVolumeQuote30min
             // 
-            this.cbVolume30min.AutoSize = true;
-            this.cbVolume30min.Location = new System.Drawing.Point(228, 19);
-            this.cbVolume30min.Name = "cbVolume30min";
-            this.cbVolume30min.Size = new System.Drawing.Size(54, 17);
-            this.cbVolume30min.TabIndex = 4;
-            this.cbVolume30min.Text = "30min";
-            this.cbVolume30min.UseVisualStyleBackColor = true;
-            this.cbVolume30min.CheckedChanged += new System.EventHandler(this.cbVolume30min_CheckedChanged);
+            this.cbVolumeQuote30min.AutoSize = true;
+            this.cbVolumeQuote30min.Location = new System.Drawing.Point(228, 19);
+            this.cbVolumeQuote30min.Name = "cbVolumeQuote30min";
+            this.cbVolumeQuote30min.Size = new System.Drawing.Size(54, 17);
+            this.cbVolumeQuote30min.TabIndex = 4;
+            this.cbVolumeQuote30min.Text = "30min";
+            this.cbVolumeQuote30min.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote30min.CheckedChanged += new System.EventHandler(this.cbVolume30min_CheckedChanged);
             // 
-            // cbVolume2h
+            // cbVolumeQuote2h
             // 
-            this.cbVolume2h.AutoSize = true;
-            this.cbVolume2h.Location = new System.Drawing.Point(332, 19);
-            this.cbVolume2h.Name = "cbVolume2h";
-            this.cbVolume2h.Size = new System.Drawing.Size(38, 17);
-            this.cbVolume2h.TabIndex = 6;
-            this.cbVolume2h.Text = "2h";
-            this.cbVolume2h.UseVisualStyleBackColor = true;
-            this.cbVolume2h.CheckedChanged += new System.EventHandler(this.cbVolume2h_CheckedChanged);
+            this.cbVolumeQuote2h.AutoSize = true;
+            this.cbVolumeQuote2h.Location = new System.Drawing.Point(332, 19);
+            this.cbVolumeQuote2h.Name = "cbVolumeQuote2h";
+            this.cbVolumeQuote2h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeQuote2h.TabIndex = 6;
+            this.cbVolumeQuote2h.Text = "2h";
+            this.cbVolumeQuote2h.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote2h.CheckedChanged += new System.EventHandler(this.cbVolume2h_CheckedChanged);
             // 
-            // cbVolume1h
+            // cbVolumeQuote1h
             // 
-            this.cbVolume1h.AutoSize = true;
-            this.cbVolume1h.Location = new System.Drawing.Point(288, 19);
-            this.cbVolume1h.Name = "cbVolume1h";
-            this.cbVolume1h.Size = new System.Drawing.Size(38, 17);
-            this.cbVolume1h.TabIndex = 5;
-            this.cbVolume1h.Text = "1h";
-            this.cbVolume1h.UseVisualStyleBackColor = true;
-            this.cbVolume1h.CheckedChanged += new System.EventHandler(this.cbVolume1h_CheckedChanged);
+            this.cbVolumeQuote1h.AutoSize = true;
+            this.cbVolumeQuote1h.Location = new System.Drawing.Point(288, 19);
+            this.cbVolumeQuote1h.Name = "cbVolumeQuote1h";
+            this.cbVolumeQuote1h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeQuote1h.TabIndex = 5;
+            this.cbVolumeQuote1h.Text = "1h";
+            this.cbVolumeQuote1h.UseVisualStyleBackColor = true;
+            this.cbVolumeQuote1h.CheckedChanged += new System.EventHandler(this.cbVolume1h_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -1213,144 +1321,144 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cbChange1min);
-            this.groupBox2.Controls.Add(this.cbChange24h);
-            this.groupBox2.Controls.Add(this.cbChange3min);
-            this.groupBox2.Controls.Add(this.cbChange12h);
-            this.groupBox2.Controls.Add(this.cbChange5min);
-            this.groupBox2.Controls.Add(this.cbChange6h);
-            this.groupBox2.Controls.Add(this.cbChange15min);
-            this.groupBox2.Controls.Add(this.cbChange4h);
-            this.groupBox2.Controls.Add(this.cbChange30min);
-            this.groupBox2.Controls.Add(this.cbChange2h);
-            this.groupBox2.Controls.Add(this.cbChange1h);
+            this.groupBox2.Controls.Add(this.cbPriceChange1min);
+            this.groupBox2.Controls.Add(this.cbPriceChange24h);
+            this.groupBox2.Controls.Add(this.cbPriceChange3min);
+            this.groupBox2.Controls.Add(this.cbPriceChange12h);
+            this.groupBox2.Controls.Add(this.cbPriceChange5min);
+            this.groupBox2.Controls.Add(this.cbPriceChange6h);
+            this.groupBox2.Controls.Add(this.cbPriceChange15min);
+            this.groupBox2.Controls.Add(this.cbPriceChange4h);
+            this.groupBox2.Controls.Add(this.cbPriceChange30min);
+            this.groupBox2.Controls.Add(this.cbPriceChange2h);
+            this.groupBox2.Controls.Add(this.cbPriceChange1h);
             this.groupBox2.Location = new System.Drawing.Point(6, 51);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(573, 50);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Change";
+            this.groupBox2.Text = "PriceChange";
             // 
-            // cbChange1min
+            // cbPriceChange1min
             // 
-            this.cbChange1min.AutoSize = true;
-            this.cbChange1min.Location = new System.Drawing.Point(6, 19);
-            this.cbChange1min.Name = "cbChange1min";
-            this.cbChange1min.Size = new System.Drawing.Size(48, 17);
-            this.cbChange1min.TabIndex = 0;
-            this.cbChange1min.Text = "1min";
-            this.cbChange1min.UseVisualStyleBackColor = true;
-            this.cbChange1min.CheckedChanged += new System.EventHandler(this.cbChange1min_CheckedChanged);
+            this.cbPriceChange1min.AutoSize = true;
+            this.cbPriceChange1min.Location = new System.Drawing.Point(6, 19);
+            this.cbPriceChange1min.Name = "cbPriceChange1min";
+            this.cbPriceChange1min.Size = new System.Drawing.Size(48, 17);
+            this.cbPriceChange1min.TabIndex = 0;
+            this.cbPriceChange1min.Text = "1min";
+            this.cbPriceChange1min.UseVisualStyleBackColor = true;
+            this.cbPriceChange1min.CheckedChanged += new System.EventHandler(this.cbChange1min_CheckedChanged);
             // 
-            // cbChange24h
+            // cbPriceChange24h
             // 
-            this.cbChange24h.AutoSize = true;
-            this.cbChange24h.Location = new System.Drawing.Point(514, 19);
-            this.cbChange24h.Name = "cbChange24h";
-            this.cbChange24h.Size = new System.Drawing.Size(44, 17);
-            this.cbChange24h.TabIndex = 10;
-            this.cbChange24h.Text = "24h";
-            this.cbChange24h.UseVisualStyleBackColor = true;
-            this.cbChange24h.CheckedChanged += new System.EventHandler(this.cbChange24h_CheckedChanged);
+            this.cbPriceChange24h.AutoSize = true;
+            this.cbPriceChange24h.Location = new System.Drawing.Point(514, 19);
+            this.cbPriceChange24h.Name = "cbPriceChange24h";
+            this.cbPriceChange24h.Size = new System.Drawing.Size(44, 17);
+            this.cbPriceChange24h.TabIndex = 10;
+            this.cbPriceChange24h.Text = "24h";
+            this.cbPriceChange24h.UseVisualStyleBackColor = true;
+            this.cbPriceChange24h.CheckedChanged += new System.EventHandler(this.cbChange24h_CheckedChanged);
             // 
-            // cbChange3min
+            // cbPriceChange3min
             // 
-            this.cbChange3min.AutoSize = true;
-            this.cbChange3min.Location = new System.Drawing.Point(60, 19);
-            this.cbChange3min.Name = "cbChange3min";
-            this.cbChange3min.Size = new System.Drawing.Size(48, 17);
-            this.cbChange3min.TabIndex = 1;
-            this.cbChange3min.Text = "3min";
-            this.cbChange3min.UseVisualStyleBackColor = true;
-            this.cbChange3min.CheckedChanged += new System.EventHandler(this.cbChange3min_CheckedChanged);
+            this.cbPriceChange3min.AutoSize = true;
+            this.cbPriceChange3min.Location = new System.Drawing.Point(60, 19);
+            this.cbPriceChange3min.Name = "cbPriceChange3min";
+            this.cbPriceChange3min.Size = new System.Drawing.Size(48, 17);
+            this.cbPriceChange3min.TabIndex = 1;
+            this.cbPriceChange3min.Text = "3min";
+            this.cbPriceChange3min.UseVisualStyleBackColor = true;
+            this.cbPriceChange3min.CheckedChanged += new System.EventHandler(this.cbChange3min_CheckedChanged);
             // 
-            // cbChange12h
+            // cbPriceChange12h
             // 
-            this.cbChange12h.AutoSize = true;
-            this.cbChange12h.Location = new System.Drawing.Point(464, 19);
-            this.cbChange12h.Name = "cbChange12h";
-            this.cbChange12h.Size = new System.Drawing.Size(44, 17);
-            this.cbChange12h.TabIndex = 9;
-            this.cbChange12h.Text = "12h";
-            this.cbChange12h.UseVisualStyleBackColor = true;
-            this.cbChange12h.CheckedChanged += new System.EventHandler(this.cbChange12h_CheckedChanged);
+            this.cbPriceChange12h.AutoSize = true;
+            this.cbPriceChange12h.Location = new System.Drawing.Point(464, 19);
+            this.cbPriceChange12h.Name = "cbPriceChange12h";
+            this.cbPriceChange12h.Size = new System.Drawing.Size(44, 17);
+            this.cbPriceChange12h.TabIndex = 9;
+            this.cbPriceChange12h.Text = "12h";
+            this.cbPriceChange12h.UseVisualStyleBackColor = true;
+            this.cbPriceChange12h.CheckedChanged += new System.EventHandler(this.cbChange12h_CheckedChanged);
             // 
-            // cbChange5min
+            // cbPriceChange5min
             // 
-            this.cbChange5min.AutoSize = true;
-            this.cbChange5min.Location = new System.Drawing.Point(114, 19);
-            this.cbChange5min.Name = "cbChange5min";
-            this.cbChange5min.Size = new System.Drawing.Size(48, 17);
-            this.cbChange5min.TabIndex = 2;
-            this.cbChange5min.Text = "5min";
-            this.cbChange5min.UseVisualStyleBackColor = true;
-            this.cbChange5min.CheckedChanged += new System.EventHandler(this.cbChange5min_CheckedChanged);
+            this.cbPriceChange5min.AutoSize = true;
+            this.cbPriceChange5min.Location = new System.Drawing.Point(114, 19);
+            this.cbPriceChange5min.Name = "cbPriceChange5min";
+            this.cbPriceChange5min.Size = new System.Drawing.Size(48, 17);
+            this.cbPriceChange5min.TabIndex = 2;
+            this.cbPriceChange5min.Text = "5min";
+            this.cbPriceChange5min.UseVisualStyleBackColor = true;
+            this.cbPriceChange5min.CheckedChanged += new System.EventHandler(this.cbChange5min_CheckedChanged);
             // 
-            // cbChange6h
+            // cbPriceChange6h
             // 
-            this.cbChange6h.AutoSize = true;
-            this.cbChange6h.Location = new System.Drawing.Point(420, 19);
-            this.cbChange6h.Name = "cbChange6h";
-            this.cbChange6h.Size = new System.Drawing.Size(38, 17);
-            this.cbChange6h.TabIndex = 8;
-            this.cbChange6h.Text = "6h";
-            this.cbChange6h.UseVisualStyleBackColor = true;
-            this.cbChange6h.CheckedChanged += new System.EventHandler(this.cbChange6h_CheckedChanged);
+            this.cbPriceChange6h.AutoSize = true;
+            this.cbPriceChange6h.Location = new System.Drawing.Point(420, 19);
+            this.cbPriceChange6h.Name = "cbPriceChange6h";
+            this.cbPriceChange6h.Size = new System.Drawing.Size(38, 17);
+            this.cbPriceChange6h.TabIndex = 8;
+            this.cbPriceChange6h.Text = "6h";
+            this.cbPriceChange6h.UseVisualStyleBackColor = true;
+            this.cbPriceChange6h.CheckedChanged += new System.EventHandler(this.cbChange6h_CheckedChanged);
             // 
-            // cbChange15min
+            // cbPriceChange15min
             // 
-            this.cbChange15min.AutoSize = true;
-            this.cbChange15min.Location = new System.Drawing.Point(168, 19);
-            this.cbChange15min.Name = "cbChange15min";
-            this.cbChange15min.Size = new System.Drawing.Size(54, 17);
-            this.cbChange15min.TabIndex = 3;
-            this.cbChange15min.Text = "15min";
-            this.cbChange15min.UseVisualStyleBackColor = true;
-            this.cbChange15min.CheckedChanged += new System.EventHandler(this.cbChange15min_CheckedChanged);
+            this.cbPriceChange15min.AutoSize = true;
+            this.cbPriceChange15min.Location = new System.Drawing.Point(168, 19);
+            this.cbPriceChange15min.Name = "cbPriceChange15min";
+            this.cbPriceChange15min.Size = new System.Drawing.Size(54, 17);
+            this.cbPriceChange15min.TabIndex = 3;
+            this.cbPriceChange15min.Text = "15min";
+            this.cbPriceChange15min.UseVisualStyleBackColor = true;
+            this.cbPriceChange15min.CheckedChanged += new System.EventHandler(this.cbChange15min_CheckedChanged);
             // 
-            // cbChange4h
+            // cbPriceChange4h
             // 
-            this.cbChange4h.AutoSize = true;
-            this.cbChange4h.Location = new System.Drawing.Point(376, 19);
-            this.cbChange4h.Name = "cbChange4h";
-            this.cbChange4h.Size = new System.Drawing.Size(38, 17);
-            this.cbChange4h.TabIndex = 7;
-            this.cbChange4h.Text = "4h";
-            this.cbChange4h.UseVisualStyleBackColor = true;
-            this.cbChange4h.CheckedChanged += new System.EventHandler(this.cbChange4h_CheckedChanged);
+            this.cbPriceChange4h.AutoSize = true;
+            this.cbPriceChange4h.Location = new System.Drawing.Point(376, 19);
+            this.cbPriceChange4h.Name = "cbPriceChange4h";
+            this.cbPriceChange4h.Size = new System.Drawing.Size(38, 17);
+            this.cbPriceChange4h.TabIndex = 7;
+            this.cbPriceChange4h.Text = "4h";
+            this.cbPriceChange4h.UseVisualStyleBackColor = true;
+            this.cbPriceChange4h.CheckedChanged += new System.EventHandler(this.cbChange4h_CheckedChanged);
             // 
-            // cbChange30min
+            // cbPriceChange30min
             // 
-            this.cbChange30min.AutoSize = true;
-            this.cbChange30min.Location = new System.Drawing.Point(228, 19);
-            this.cbChange30min.Name = "cbChange30min";
-            this.cbChange30min.Size = new System.Drawing.Size(54, 17);
-            this.cbChange30min.TabIndex = 4;
-            this.cbChange30min.Text = "30min";
-            this.cbChange30min.UseVisualStyleBackColor = true;
-            this.cbChange30min.CheckedChanged += new System.EventHandler(this.cbChange30min_CheckedChanged);
+            this.cbPriceChange30min.AutoSize = true;
+            this.cbPriceChange30min.Location = new System.Drawing.Point(228, 19);
+            this.cbPriceChange30min.Name = "cbPriceChange30min";
+            this.cbPriceChange30min.Size = new System.Drawing.Size(54, 17);
+            this.cbPriceChange30min.TabIndex = 4;
+            this.cbPriceChange30min.Text = "30min";
+            this.cbPriceChange30min.UseVisualStyleBackColor = true;
+            this.cbPriceChange30min.CheckedChanged += new System.EventHandler(this.cbChange30min_CheckedChanged);
             // 
-            // cbChange2h
+            // cbPriceChange2h
             // 
-            this.cbChange2h.AutoSize = true;
-            this.cbChange2h.Location = new System.Drawing.Point(332, 19);
-            this.cbChange2h.Name = "cbChange2h";
-            this.cbChange2h.Size = new System.Drawing.Size(38, 17);
-            this.cbChange2h.TabIndex = 6;
-            this.cbChange2h.Text = "2h";
-            this.cbChange2h.UseVisualStyleBackColor = true;
-            this.cbChange2h.CheckedChanged += new System.EventHandler(this.cbChange2h_CheckedChanged);
+            this.cbPriceChange2h.AutoSize = true;
+            this.cbPriceChange2h.Location = new System.Drawing.Point(332, 19);
+            this.cbPriceChange2h.Name = "cbPriceChange2h";
+            this.cbPriceChange2h.Size = new System.Drawing.Size(38, 17);
+            this.cbPriceChange2h.TabIndex = 6;
+            this.cbPriceChange2h.Text = "2h";
+            this.cbPriceChange2h.UseVisualStyleBackColor = true;
+            this.cbPriceChange2h.CheckedChanged += new System.EventHandler(this.cbChange2h_CheckedChanged);
             // 
-            // cbChange1h
+            // cbPriceChange1h
             // 
-            this.cbChange1h.AutoSize = true;
-            this.cbChange1h.Location = new System.Drawing.Point(288, 19);
-            this.cbChange1h.Name = "cbChange1h";
-            this.cbChange1h.Size = new System.Drawing.Size(38, 17);
-            this.cbChange1h.TabIndex = 5;
-            this.cbChange1h.Text = "1h";
-            this.cbChange1h.UseVisualStyleBackColor = true;
-            this.cbChange1h.CheckedChanged += new System.EventHandler(this.cbChange1h_CheckedChanged);
+            this.cbPriceChange1h.AutoSize = true;
+            this.cbPriceChange1h.Location = new System.Drawing.Point(288, 19);
+            this.cbPriceChange1h.Name = "cbPriceChange1h";
+            this.cbPriceChange1h.Size = new System.Drawing.Size(38, 17);
+            this.cbPriceChange1h.TabIndex = 5;
+            this.cbPriceChange1h.Text = "1h";
+            this.cbPriceChange1h.UseVisualStyleBackColor = true;
+            this.cbPriceChange1h.CheckedChanged += new System.EventHandler(this.cbChange1h_CheckedChanged);
             // 
             // tabPage4
             // 
@@ -1372,6 +1480,288 @@
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
             // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.cbVolumeBase1min);
+            this.groupBox9.Controls.Add(this.cbVolumeBase24h);
+            this.groupBox9.Controls.Add(this.cbVolumeBase3min);
+            this.groupBox9.Controls.Add(this.cbVolumeBase12h);
+            this.groupBox9.Controls.Add(this.cbVolumeBase5min);
+            this.groupBox9.Controls.Add(this.cbVolumeBase6h);
+            this.groupBox9.Controls.Add(this.cbVolumeBase15min);
+            this.groupBox9.Controls.Add(this.cbVolumeBase4h);
+            this.groupBox9.Controls.Add(this.cbVolumeBase30min);
+            this.groupBox9.Controls.Add(this.cbVolumeBase2h);
+            this.groupBox9.Controls.Add(this.cbVolumeBase1h);
+            this.groupBox9.Location = new System.Drawing.Point(6, 331);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(573, 50);
+            this.groupBox9.TabIndex = 18;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "VolumeBase";
+            // 
+            // cbVolumeBase1min
+            // 
+            this.cbVolumeBase1min.AutoSize = true;
+            this.cbVolumeBase1min.Location = new System.Drawing.Point(6, 19);
+            this.cbVolumeBase1min.Name = "cbVolumeBase1min";
+            this.cbVolumeBase1min.Size = new System.Drawing.Size(48, 17);
+            this.cbVolumeBase1min.TabIndex = 0;
+            this.cbVolumeBase1min.Text = "1min";
+            this.cbVolumeBase1min.UseVisualStyleBackColor = true;
+            this.cbVolumeBase1min.CheckedChanged += new System.EventHandler(this.cbVolumeBase1min_CheckedChanged);
+            // 
+            // cbVolumeBase24h
+            // 
+            this.cbVolumeBase24h.AutoSize = true;
+            this.cbVolumeBase24h.Location = new System.Drawing.Point(514, 19);
+            this.cbVolumeBase24h.Name = "cbVolumeBase24h";
+            this.cbVolumeBase24h.Size = new System.Drawing.Size(44, 17);
+            this.cbVolumeBase24h.TabIndex = 10;
+            this.cbVolumeBase24h.Text = "24h";
+            this.cbVolumeBase24h.UseVisualStyleBackColor = true;
+            this.cbVolumeBase24h.CheckedChanged += new System.EventHandler(this.cbVolumeBase24h_CheckedChanged);
+            // 
+            // cbVolumeBase3min
+            // 
+            this.cbVolumeBase3min.AutoSize = true;
+            this.cbVolumeBase3min.Location = new System.Drawing.Point(60, 19);
+            this.cbVolumeBase3min.Name = "cbVolumeBase3min";
+            this.cbVolumeBase3min.Size = new System.Drawing.Size(48, 17);
+            this.cbVolumeBase3min.TabIndex = 1;
+            this.cbVolumeBase3min.Text = "3min";
+            this.cbVolumeBase3min.UseVisualStyleBackColor = true;
+            this.cbVolumeBase3min.CheckedChanged += new System.EventHandler(this.cbVolumeBase3min_CheckedChanged);
+            // 
+            // cbVolumeBase12h
+            // 
+            this.cbVolumeBase12h.AutoSize = true;
+            this.cbVolumeBase12h.Location = new System.Drawing.Point(464, 19);
+            this.cbVolumeBase12h.Name = "cbVolumeBase12h";
+            this.cbVolumeBase12h.Size = new System.Drawing.Size(44, 17);
+            this.cbVolumeBase12h.TabIndex = 9;
+            this.cbVolumeBase12h.Text = "12h";
+            this.cbVolumeBase12h.UseVisualStyleBackColor = true;
+            this.cbVolumeBase12h.CheckedChanged += new System.EventHandler(this.cbVolumeBase12h_CheckedChanged);
+            // 
+            // cbVolumeBase5min
+            // 
+            this.cbVolumeBase5min.AutoSize = true;
+            this.cbVolumeBase5min.Location = new System.Drawing.Point(114, 19);
+            this.cbVolumeBase5min.Name = "cbVolumeBase5min";
+            this.cbVolumeBase5min.Size = new System.Drawing.Size(48, 17);
+            this.cbVolumeBase5min.TabIndex = 2;
+            this.cbVolumeBase5min.Text = "5min";
+            this.cbVolumeBase5min.UseVisualStyleBackColor = true;
+            this.cbVolumeBase5min.CheckedChanged += new System.EventHandler(this.cbVolumeBase5min_CheckedChanged);
+            // 
+            // cbVolumeBase6h
+            // 
+            this.cbVolumeBase6h.AutoSize = true;
+            this.cbVolumeBase6h.Location = new System.Drawing.Point(420, 19);
+            this.cbVolumeBase6h.Name = "cbVolumeBase6h";
+            this.cbVolumeBase6h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeBase6h.TabIndex = 8;
+            this.cbVolumeBase6h.Text = "6h";
+            this.cbVolumeBase6h.UseVisualStyleBackColor = true;
+            this.cbVolumeBase6h.CheckedChanged += new System.EventHandler(this.cbVolumeBase6h_CheckedChanged);
+            // 
+            // cbVolumeBase15min
+            // 
+            this.cbVolumeBase15min.AutoSize = true;
+            this.cbVolumeBase15min.Location = new System.Drawing.Point(168, 19);
+            this.cbVolumeBase15min.Name = "cbVolumeBase15min";
+            this.cbVolumeBase15min.Size = new System.Drawing.Size(54, 17);
+            this.cbVolumeBase15min.TabIndex = 3;
+            this.cbVolumeBase15min.Text = "15min";
+            this.cbVolumeBase15min.UseVisualStyleBackColor = true;
+            this.cbVolumeBase15min.CheckedChanged += new System.EventHandler(this.cbVolumeBase15min_CheckedChanged);
+            // 
+            // cbVolumeBase4h
+            // 
+            this.cbVolumeBase4h.AutoSize = true;
+            this.cbVolumeBase4h.Location = new System.Drawing.Point(376, 19);
+            this.cbVolumeBase4h.Name = "cbVolumeBase4h";
+            this.cbVolumeBase4h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeBase4h.TabIndex = 7;
+            this.cbVolumeBase4h.Text = "4h";
+            this.cbVolumeBase4h.UseVisualStyleBackColor = true;
+            this.cbVolumeBase4h.CheckedChanged += new System.EventHandler(this.cbVolumeBase4h_CheckedChanged);
+            // 
+            // cbVolumeBase30min
+            // 
+            this.cbVolumeBase30min.AutoSize = true;
+            this.cbVolumeBase30min.Location = new System.Drawing.Point(228, 19);
+            this.cbVolumeBase30min.Name = "cbVolumeBase30min";
+            this.cbVolumeBase30min.Size = new System.Drawing.Size(54, 17);
+            this.cbVolumeBase30min.TabIndex = 4;
+            this.cbVolumeBase30min.Text = "30min";
+            this.cbVolumeBase30min.UseVisualStyleBackColor = true;
+            this.cbVolumeBase30min.CheckedChanged += new System.EventHandler(this.cbVolumeBase30min_CheckedChanged);
+            // 
+            // cbVolumeBase2h
+            // 
+            this.cbVolumeBase2h.AutoSize = true;
+            this.cbVolumeBase2h.Location = new System.Drawing.Point(332, 19);
+            this.cbVolumeBase2h.Name = "cbVolumeBase2h";
+            this.cbVolumeBase2h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeBase2h.TabIndex = 6;
+            this.cbVolumeBase2h.Text = "2h";
+            this.cbVolumeBase2h.UseVisualStyleBackColor = true;
+            this.cbVolumeBase2h.CheckedChanged += new System.EventHandler(this.cbVolumeBase2h_CheckedChanged);
+            // 
+            // cbVolumeBase1h
+            // 
+            this.cbVolumeBase1h.AutoSize = true;
+            this.cbVolumeBase1h.Location = new System.Drawing.Point(288, 19);
+            this.cbVolumeBase1h.Name = "cbVolumeBase1h";
+            this.cbVolumeBase1h.Size = new System.Drawing.Size(38, 17);
+            this.cbVolumeBase1h.TabIndex = 5;
+            this.cbVolumeBase1h.Text = "1h";
+            this.cbVolumeBase1h.UseVisualStyleBackColor = true;
+            this.cbVolumeBase1h.CheckedChanged += new System.EventHandler(this.cbVolumeBase1h_CheckedChanged);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.cbAmplitude1min);
+            this.groupBox10.Controls.Add(this.cbAmplitude24h);
+            this.groupBox10.Controls.Add(this.cbAmplitude3min);
+            this.groupBox10.Controls.Add(this.cbAmplitude12h);
+            this.groupBox10.Controls.Add(this.cbAmplitude5min);
+            this.groupBox10.Controls.Add(this.cbAmplitude6h);
+            this.groupBox10.Controls.Add(this.cbAmplitude15min);
+            this.groupBox10.Controls.Add(this.cbAmplitude4h);
+            this.groupBox10.Controls.Add(this.cbAmplitude30min);
+            this.groupBox10.Controls.Add(this.cbAmplitude2h);
+            this.groupBox10.Controls.Add(this.cbAmplitude1h);
+            this.groupBox10.Location = new System.Drawing.Point(6, 219);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(573, 50);
+            this.groupBox10.TabIndex = 19;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Amplitude";
+            // 
+            // cbAmplitude1min
+            // 
+            this.cbAmplitude1min.AutoSize = true;
+            this.cbAmplitude1min.Location = new System.Drawing.Point(6, 19);
+            this.cbAmplitude1min.Name = "cbAmplitude1min";
+            this.cbAmplitude1min.Size = new System.Drawing.Size(48, 17);
+            this.cbAmplitude1min.TabIndex = 0;
+            this.cbAmplitude1min.Text = "1min";
+            this.cbAmplitude1min.UseVisualStyleBackColor = true;
+            this.cbAmplitude1min.CheckedChanged += new System.EventHandler(this.cbAmplitude1min_CheckedChanged);
+            // 
+            // cbAmplitude24h
+            // 
+            this.cbAmplitude24h.AutoSize = true;
+            this.cbAmplitude24h.Location = new System.Drawing.Point(514, 19);
+            this.cbAmplitude24h.Name = "cbAmplitude24h";
+            this.cbAmplitude24h.Size = new System.Drawing.Size(44, 17);
+            this.cbAmplitude24h.TabIndex = 10;
+            this.cbAmplitude24h.Text = "24h";
+            this.cbAmplitude24h.UseVisualStyleBackColor = true;
+            this.cbAmplitude24h.CheckedChanged += new System.EventHandler(this.cbAmplitude24h_CheckedChanged);
+            // 
+            // cbAmplitude3min
+            // 
+            this.cbAmplitude3min.AutoSize = true;
+            this.cbAmplitude3min.Location = new System.Drawing.Point(60, 19);
+            this.cbAmplitude3min.Name = "cbAmplitude3min";
+            this.cbAmplitude3min.Size = new System.Drawing.Size(48, 17);
+            this.cbAmplitude3min.TabIndex = 1;
+            this.cbAmplitude3min.Text = "3min";
+            this.cbAmplitude3min.UseVisualStyleBackColor = true;
+            this.cbAmplitude3min.CheckedChanged += new System.EventHandler(this.cbAmplitude3min_CheckedChanged);
+            // 
+            // cbAmplitude12h
+            // 
+            this.cbAmplitude12h.AutoSize = true;
+            this.cbAmplitude12h.Location = new System.Drawing.Point(464, 19);
+            this.cbAmplitude12h.Name = "cbAmplitude12h";
+            this.cbAmplitude12h.Size = new System.Drawing.Size(44, 17);
+            this.cbAmplitude12h.TabIndex = 9;
+            this.cbAmplitude12h.Text = "12h";
+            this.cbAmplitude12h.UseVisualStyleBackColor = true;
+            this.cbAmplitude12h.CheckedChanged += new System.EventHandler(this.cbAmplitude12h_CheckedChanged);
+            // 
+            // cbAmplitude5min
+            // 
+            this.cbAmplitude5min.AutoSize = true;
+            this.cbAmplitude5min.Location = new System.Drawing.Point(114, 19);
+            this.cbAmplitude5min.Name = "cbAmplitude5min";
+            this.cbAmplitude5min.Size = new System.Drawing.Size(48, 17);
+            this.cbAmplitude5min.TabIndex = 2;
+            this.cbAmplitude5min.Text = "5min";
+            this.cbAmplitude5min.UseVisualStyleBackColor = true;
+            this.cbAmplitude5min.CheckedChanged += new System.EventHandler(this.cbAmplitude5min_CheckedChanged);
+            // 
+            // cbAmplitude6h
+            // 
+            this.cbAmplitude6h.AutoSize = true;
+            this.cbAmplitude6h.Location = new System.Drawing.Point(420, 19);
+            this.cbAmplitude6h.Name = "cbAmplitude6h";
+            this.cbAmplitude6h.Size = new System.Drawing.Size(38, 17);
+            this.cbAmplitude6h.TabIndex = 8;
+            this.cbAmplitude6h.Text = "6h";
+            this.cbAmplitude6h.UseVisualStyleBackColor = true;
+            this.cbAmplitude6h.CheckedChanged += new System.EventHandler(this.cbAmplitude6h_CheckedChanged);
+            // 
+            // cbAmplitude15min
+            // 
+            this.cbAmplitude15min.AutoSize = true;
+            this.cbAmplitude15min.Location = new System.Drawing.Point(168, 19);
+            this.cbAmplitude15min.Name = "cbAmplitude15min";
+            this.cbAmplitude15min.Size = new System.Drawing.Size(54, 17);
+            this.cbAmplitude15min.TabIndex = 3;
+            this.cbAmplitude15min.Text = "15min";
+            this.cbAmplitude15min.UseVisualStyleBackColor = true;
+            this.cbAmplitude15min.CheckedChanged += new System.EventHandler(this.cbAmplitude15min_CheckedChanged);
+            // 
+            // cbAmplitude4h
+            // 
+            this.cbAmplitude4h.AutoSize = true;
+            this.cbAmplitude4h.Location = new System.Drawing.Point(376, 19);
+            this.cbAmplitude4h.Name = "cbAmplitude4h";
+            this.cbAmplitude4h.Size = new System.Drawing.Size(38, 17);
+            this.cbAmplitude4h.TabIndex = 7;
+            this.cbAmplitude4h.Text = "4h";
+            this.cbAmplitude4h.UseVisualStyleBackColor = true;
+            this.cbAmplitude4h.CheckedChanged += new System.EventHandler(this.cbAmplitude4h_CheckedChanged);
+            // 
+            // cbAmplitude30min
+            // 
+            this.cbAmplitude30min.AutoSize = true;
+            this.cbAmplitude30min.Location = new System.Drawing.Point(228, 19);
+            this.cbAmplitude30min.Name = "cbAmplitude30min";
+            this.cbAmplitude30min.Size = new System.Drawing.Size(54, 17);
+            this.cbAmplitude30min.TabIndex = 4;
+            this.cbAmplitude30min.Text = "30min";
+            this.cbAmplitude30min.UseVisualStyleBackColor = true;
+            this.cbAmplitude30min.CheckedChanged += new System.EventHandler(this.cbAmplitude30min_CheckedChanged);
+            // 
+            // cbAmplitude2h
+            // 
+            this.cbAmplitude2h.AutoSize = true;
+            this.cbAmplitude2h.Location = new System.Drawing.Point(332, 19);
+            this.cbAmplitude2h.Name = "cbAmplitude2h";
+            this.cbAmplitude2h.Size = new System.Drawing.Size(38, 17);
+            this.cbAmplitude2h.TabIndex = 6;
+            this.cbAmplitude2h.Text = "2h";
+            this.cbAmplitude2h.UseVisualStyleBackColor = true;
+            this.cbAmplitude2h.CheckedChanged += new System.EventHandler(this.cbAmplitude2h_CheckedChanged);
+            // 
+            // cbAmplitude1h
+            // 
+            this.cbAmplitude1h.AutoSize = true;
+            this.cbAmplitude1h.Location = new System.Drawing.Point(288, 19);
+            this.cbAmplitude1h.Name = "cbAmplitude1h";
+            this.cbAmplitude1h.Size = new System.Drawing.Size(38, 17);
+            this.cbAmplitude1h.TabIndex = 5;
+            this.cbAmplitude1h.Text = "1h";
+            this.cbAmplitude1h.UseVisualStyleBackColor = true;
+            this.cbAmplitude1h.CheckedChanged += new System.EventHandler(this.cbAmplitude1h_CheckedChanged);
+            // 
             // Symbol
             // 
             this.Symbol.HeaderText = "Pair";
@@ -1392,82 +1782,82 @@
             this.Bid.ReadOnly = true;
             this.Bid.Visible = false;
             // 
-            // Change1min
+            // PriceChange1min
             // 
-            this.Change1min.HeaderText = "1min Price Change";
-            this.Change1min.Name = "Change1min";
-            this.Change1min.ReadOnly = true;
-            this.Change1min.Visible = false;
+            this.PriceChange1min.HeaderText = "1min Price Change";
+            this.PriceChange1min.Name = "PriceChange1min";
+            this.PriceChange1min.ReadOnly = true;
+            this.PriceChange1min.Visible = false;
             // 
-            // Change3min
+            // PriceChange3min
             // 
-            this.Change3min.HeaderText = "3min Price Change";
-            this.Change3min.Name = "Change3min";
-            this.Change3min.ReadOnly = true;
-            this.Change3min.Visible = false;
+            this.PriceChange3min.HeaderText = "3min Price Change";
+            this.PriceChange3min.Name = "PriceChange3min";
+            this.PriceChange3min.ReadOnly = true;
+            this.PriceChange3min.Visible = false;
             // 
-            // Change5min
+            // PriceChange5min
             // 
-            this.Change5min.HeaderText = "5min Price Change";
-            this.Change5min.Name = "Change5min";
-            this.Change5min.ReadOnly = true;
-            this.Change5min.Visible = false;
+            this.PriceChange5min.HeaderText = "5min Price Change";
+            this.PriceChange5min.Name = "PriceChange5min";
+            this.PriceChange5min.ReadOnly = true;
+            this.PriceChange5min.Visible = false;
             // 
-            // Change15min
+            // PriceChange15min
             // 
-            this.Change15min.HeaderText = "15min Price Change";
-            this.Change15min.Name = "Change15min";
-            this.Change15min.ReadOnly = true;
-            this.Change15min.Visible = false;
+            this.PriceChange15min.HeaderText = "15min Price Change";
+            this.PriceChange15min.Name = "PriceChange15min";
+            this.PriceChange15min.ReadOnly = true;
+            this.PriceChange15min.Visible = false;
             // 
-            // Change30min
+            // PriceChange30min
             // 
-            this.Change30min.HeaderText = "30min Price Change";
-            this.Change30min.Name = "Change30min";
-            this.Change30min.ReadOnly = true;
-            this.Change30min.Visible = false;
+            this.PriceChange30min.HeaderText = "30min Price Change";
+            this.PriceChange30min.Name = "PriceChange30min";
+            this.PriceChange30min.ReadOnly = true;
+            this.PriceChange30min.Visible = false;
             // 
-            // Change1h
+            // PriceChange1h
             // 
-            this.Change1h.HeaderText = "1h Price Change";
-            this.Change1h.Name = "Change1h";
-            this.Change1h.ReadOnly = true;
-            this.Change1h.Visible = false;
+            this.PriceChange1h.HeaderText = "1h Price Change";
+            this.PriceChange1h.Name = "PriceChange1h";
+            this.PriceChange1h.ReadOnly = true;
+            this.PriceChange1h.Visible = false;
             // 
-            // Change2h
+            // PriceChange2h
             // 
-            this.Change2h.HeaderText = "2h Price Change";
-            this.Change2h.Name = "Change2h";
-            this.Change2h.ReadOnly = true;
-            this.Change2h.Visible = false;
+            this.PriceChange2h.HeaderText = "2h Price Change";
+            this.PriceChange2h.Name = "PriceChange2h";
+            this.PriceChange2h.ReadOnly = true;
+            this.PriceChange2h.Visible = false;
             // 
-            // Change4h
+            // PriceChange4h
             // 
-            this.Change4h.HeaderText = "4h Price Change";
-            this.Change4h.Name = "Change4h";
-            this.Change4h.ReadOnly = true;
-            this.Change4h.Visible = false;
+            this.PriceChange4h.HeaderText = "4h Price Change";
+            this.PriceChange4h.Name = "PriceChange4h";
+            this.PriceChange4h.ReadOnly = true;
+            this.PriceChange4h.Visible = false;
             // 
-            // Change6h
+            // PriceChange6h
             // 
-            this.Change6h.HeaderText = "6h Price Change";
-            this.Change6h.Name = "Change6h";
-            this.Change6h.ReadOnly = true;
-            this.Change6h.Visible = false;
+            this.PriceChange6h.HeaderText = "6h Price Change";
+            this.PriceChange6h.Name = "PriceChange6h";
+            this.PriceChange6h.ReadOnly = true;
+            this.PriceChange6h.Visible = false;
             // 
-            // Change12h
+            // PriceChange12h
             // 
-            this.Change12h.HeaderText = "12h Price Change";
-            this.Change12h.Name = "Change12h";
-            this.Change12h.ReadOnly = true;
-            this.Change12h.Visible = false;
+            this.PriceChange12h.HeaderText = "12h Price Change";
+            this.PriceChange12h.Name = "PriceChange12h";
+            this.PriceChange12h.ReadOnly = true;
+            this.PriceChange12h.Visible = false;
             // 
-            // Change24h
+            // PriceChange24h
             // 
-            this.Change24h.HeaderText = "24h Price Change";
-            this.Change24h.Name = "Change24h";
-            this.Change24h.ReadOnly = true;
-            this.Change24h.Visible = false;
+            this.PriceChange24h.HeaderText = "24h Price Change";
+            this.PriceChange24h.Name = "PriceChange24h";
+            this.PriceChange24h.ReadOnly = true;
+            this.PriceChange24h.Visible = false;
             // 
             // High1min
             // 
@@ -1623,82 +2013,236 @@
             this.Low24h.ReadOnly = true;
             this.Low24h.Visible = false;
             // 
-            // Volume1min
+            // Amplitude1min
             // 
-            this.Volume1min.HeaderText = "1min Volume";
-            this.Volume1min.Name = "Volume1min";
-            this.Volume1min.ReadOnly = true;
-            this.Volume1min.Visible = false;
+            this.Amplitude1min.HeaderText = "1min Amplitude";
+            this.Amplitude1min.Name = "Amplitude1min";
+            this.Amplitude1min.ReadOnly = true;
+            this.Amplitude1min.Visible = false;
             // 
-            // Volume3min
+            // Amplitude3min
             // 
-            this.Volume3min.HeaderText = "3min Volume";
-            this.Volume3min.Name = "Volume3min";
-            this.Volume3min.ReadOnly = true;
-            this.Volume3min.Visible = false;
+            this.Amplitude3min.HeaderText = "3min Amplitude";
+            this.Amplitude3min.Name = "Amplitude3min";
+            this.Amplitude3min.ReadOnly = true;
+            this.Amplitude3min.Visible = false;
             // 
-            // Volume5min
+            // Amplitude5min
             // 
-            this.Volume5min.HeaderText = "5min Volume";
-            this.Volume5min.Name = "Volume5min";
-            this.Volume5min.ReadOnly = true;
-            this.Volume5min.Visible = false;
+            this.Amplitude5min.HeaderText = "5min Amplitude";
+            this.Amplitude5min.Name = "Amplitude5min";
+            this.Amplitude5min.ReadOnly = true;
+            this.Amplitude5min.Visible = false;
             // 
-            // Volume15min
+            // Amplitude15min
             // 
-            this.Volume15min.HeaderText = "15min Volume";
-            this.Volume15min.Name = "Volume15min";
-            this.Volume15min.ReadOnly = true;
-            this.Volume15min.Visible = false;
+            this.Amplitude15min.HeaderText = "15min Amplitude";
+            this.Amplitude15min.Name = "Amplitude15min";
+            this.Amplitude15min.ReadOnly = true;
+            this.Amplitude15min.Visible = false;
             // 
-            // Volume30min
+            // Amplitude30min
             // 
-            this.Volume30min.HeaderText = "30min Volume";
-            this.Volume30min.Name = "Volume30min";
-            this.Volume30min.ReadOnly = true;
-            this.Volume30min.Visible = false;
+            this.Amplitude30min.HeaderText = "30min Amplitude";
+            this.Amplitude30min.Name = "Amplitude30min";
+            this.Amplitude30min.ReadOnly = true;
+            this.Amplitude30min.Visible = false;
             // 
-            // Volume1h
+            // Amplitude1h
             // 
-            this.Volume1h.HeaderText = "1h Volume";
-            this.Volume1h.Name = "Volume1h";
-            this.Volume1h.ReadOnly = true;
-            this.Volume1h.Visible = false;
+            this.Amplitude1h.HeaderText = "1h Amplitude";
+            this.Amplitude1h.Name = "Amplitude1h";
+            this.Amplitude1h.ReadOnly = true;
+            this.Amplitude1h.Visible = false;
             // 
-            // Volume2h
+            // Amplitude2h
             // 
-            this.Volume2h.HeaderText = "2h Volume";
-            this.Volume2h.Name = "Volume2h";
-            this.Volume2h.ReadOnly = true;
-            this.Volume2h.Visible = false;
+            this.Amplitude2h.HeaderText = "2h Amplitude";
+            this.Amplitude2h.Name = "Amplitude2h";
+            this.Amplitude2h.ReadOnly = true;
+            this.Amplitude2h.Visible = false;
             // 
-            // Volume4h
+            // Amplitude4h
             // 
-            this.Volume4h.HeaderText = "4h Volume";
-            this.Volume4h.Name = "Volume4h";
-            this.Volume4h.ReadOnly = true;
-            this.Volume4h.Visible = false;
+            this.Amplitude4h.HeaderText = "4h Amplitude";
+            this.Amplitude4h.Name = "Amplitude4h";
+            this.Amplitude4h.ReadOnly = true;
+            this.Amplitude4h.Visible = false;
             // 
-            // Volume6h
+            // Amplitude6h
             // 
-            this.Volume6h.HeaderText = "6h Volume";
-            this.Volume6h.Name = "Volume6h";
-            this.Volume6h.ReadOnly = true;
-            this.Volume6h.Visible = false;
+            this.Amplitude6h.HeaderText = "6h Amplitude";
+            this.Amplitude6h.Name = "Amplitude6h";
+            this.Amplitude6h.ReadOnly = true;
+            this.Amplitude6h.Visible = false;
             // 
-            // Volume12h
+            // Amplitude12h
             // 
-            this.Volume12h.HeaderText = "12h Volume";
-            this.Volume12h.Name = "Volume12h";
-            this.Volume12h.ReadOnly = true;
-            this.Volume12h.Visible = false;
+            this.Amplitude12h.HeaderText = "12h Amplitude";
+            this.Amplitude12h.Name = "Amplitude12h";
+            this.Amplitude12h.ReadOnly = true;
+            this.Amplitude12h.Visible = false;
             // 
-            // Volume24h
+            // Amplitude24h
             // 
-            this.Volume24h.HeaderText = "24 Volume";
-            this.Volume24h.Name = "Volume24h";
-            this.Volume24h.ReadOnly = true;
-            this.Volume24h.Visible = false;
+            this.Amplitude24h.HeaderText = "24h Amplitude";
+            this.Amplitude24h.Name = "Amplitude24h";
+            this.Amplitude24h.ReadOnly = true;
+            this.Amplitude24h.Visible = false;
+            // 
+            // VolumeQuote1min
+            // 
+            this.VolumeQuote1min.HeaderText = "1min Volume Quote";
+            this.VolumeQuote1min.Name = "VolumeQuote1min";
+            this.VolumeQuote1min.ReadOnly = true;
+            this.VolumeQuote1min.Visible = false;
+            // 
+            // VolumeQuote3min
+            // 
+            this.VolumeQuote3min.HeaderText = "3min Volume Quote";
+            this.VolumeQuote3min.Name = "VolumeQuote3min";
+            this.VolumeQuote3min.ReadOnly = true;
+            this.VolumeQuote3min.Visible = false;
+            // 
+            // VolumeQuote5min
+            // 
+            this.VolumeQuote5min.HeaderText = "5min Volume Quote";
+            this.VolumeQuote5min.Name = "VolumeQuote5min";
+            this.VolumeQuote5min.ReadOnly = true;
+            this.VolumeQuote5min.Visible = false;
+            // 
+            // VolumeQuote15min
+            // 
+            this.VolumeQuote15min.HeaderText = "15min Volume Quote";
+            this.VolumeQuote15min.Name = "VolumeQuote15min";
+            this.VolumeQuote15min.ReadOnly = true;
+            this.VolumeQuote15min.Visible = false;
+            // 
+            // VolumeQuote30min
+            // 
+            this.VolumeQuote30min.HeaderText = "30min Volume Quote";
+            this.VolumeQuote30min.Name = "VolumeQuote30min";
+            this.VolumeQuote30min.ReadOnly = true;
+            this.VolumeQuote30min.Visible = false;
+            // 
+            // VolumeQuote1h
+            // 
+            this.VolumeQuote1h.HeaderText = "1h Volume Quote";
+            this.VolumeQuote1h.Name = "VolumeQuote1h";
+            this.VolumeQuote1h.ReadOnly = true;
+            this.VolumeQuote1h.Visible = false;
+            // 
+            // VolumeQuote2h
+            // 
+            this.VolumeQuote2h.HeaderText = "2h Volume Quote";
+            this.VolumeQuote2h.Name = "VolumeQuote2h";
+            this.VolumeQuote2h.ReadOnly = true;
+            this.VolumeQuote2h.Visible = false;
+            // 
+            // VolumeQuote4h
+            // 
+            this.VolumeQuote4h.HeaderText = "4h Volume Quote";
+            this.VolumeQuote4h.Name = "VolumeQuote4h";
+            this.VolumeQuote4h.ReadOnly = true;
+            this.VolumeQuote4h.Visible = false;
+            // 
+            // VolumeQuote6h
+            // 
+            this.VolumeQuote6h.HeaderText = "6h Volume Quote";
+            this.VolumeQuote6h.Name = "VolumeQuote6h";
+            this.VolumeQuote6h.ReadOnly = true;
+            this.VolumeQuote6h.Visible = false;
+            // 
+            // VolumeQuote12h
+            // 
+            this.VolumeQuote12h.HeaderText = "12h Volume Quote";
+            this.VolumeQuote12h.Name = "VolumeQuote12h";
+            this.VolumeQuote12h.ReadOnly = true;
+            this.VolumeQuote12h.Visible = false;
+            // 
+            // VolumeQuote24h
+            // 
+            this.VolumeQuote24h.HeaderText = "24 Volume Quote";
+            this.VolumeQuote24h.Name = "VolumeQuote24h";
+            this.VolumeQuote24h.ReadOnly = true;
+            this.VolumeQuote24h.Visible = false;
+            // 
+            // VolumeBase1min
+            // 
+            this.VolumeBase1min.HeaderText = "1min Volume Base";
+            this.VolumeBase1min.Name = "VolumeBase1min";
+            this.VolumeBase1min.ReadOnly = true;
+            this.VolumeBase1min.Visible = false;
+            // 
+            // VolumeBase3min
+            // 
+            this.VolumeBase3min.HeaderText = "3min Volume Base";
+            this.VolumeBase3min.Name = "VolumeBase3min";
+            this.VolumeBase3min.ReadOnly = true;
+            this.VolumeBase3min.Visible = false;
+            // 
+            // VolumeBase5min
+            // 
+            this.VolumeBase5min.HeaderText = "5min Volume Base";
+            this.VolumeBase5min.Name = "VolumeBase5min";
+            this.VolumeBase5min.ReadOnly = true;
+            this.VolumeBase5min.Visible = false;
+            // 
+            // VolumeBase15min
+            // 
+            this.VolumeBase15min.HeaderText = "15min Volume Base";
+            this.VolumeBase15min.Name = "VolumeBase15min";
+            this.VolumeBase15min.ReadOnly = true;
+            this.VolumeBase15min.Visible = false;
+            // 
+            // VolumeBase30min
+            // 
+            this.VolumeBase30min.HeaderText = "30min Volume Base";
+            this.VolumeBase30min.Name = "VolumeBase30min";
+            this.VolumeBase30min.ReadOnly = true;
+            this.VolumeBase30min.Visible = false;
+            // 
+            // VolumeBase1h
+            // 
+            this.VolumeBase1h.HeaderText = "1h Volume Base";
+            this.VolumeBase1h.Name = "VolumeBase1h";
+            this.VolumeBase1h.ReadOnly = true;
+            this.VolumeBase1h.Visible = false;
+            // 
+            // VolumeBase2h
+            // 
+            this.VolumeBase2h.HeaderText = "2h Volume Base";
+            this.VolumeBase2h.Name = "VolumeBase2h";
+            this.VolumeBase2h.ReadOnly = true;
+            this.VolumeBase2h.Visible = false;
+            // 
+            // VolumeBase4h
+            // 
+            this.VolumeBase4h.HeaderText = "4h Volume Base";
+            this.VolumeBase4h.Name = "VolumeBase4h";
+            this.VolumeBase4h.ReadOnly = true;
+            this.VolumeBase4h.Visible = false;
+            // 
+            // VolumeBase6h
+            // 
+            this.VolumeBase6h.HeaderText = "6h Volume Base";
+            this.VolumeBase6h.Name = "VolumeBase6h";
+            this.VolumeBase6h.ReadOnly = true;
+            this.VolumeBase6h.Visible = false;
+            // 
+            // VolumeBase12h
+            // 
+            this.VolumeBase12h.HeaderText = "12h Volume Base";
+            this.VolumeBase12h.Name = "VolumeBase12h";
+            this.VolumeBase12h.ReadOnly = true;
+            this.VolumeBase12h.Visible = false;
+            // 
+            // VolumeBase24h
+            // 
+            this.VolumeBase24h.HeaderText = "24h Volume Base";
+            this.VolumeBase24h.Name = "VolumeBase24h";
+            this.VolumeBase24h.ReadOnly = true;
+            this.VolumeBase24h.Visible = false;
             // 
             // VolumeChange1min
             // 
@@ -1777,29 +2321,24 @@
             this.VolumeChange24h.ReadOnly = true;
             this.VolumeChange24h.Visible = false;
             // 
-            // Symb
+            // clbPairs
             // 
-            this.Symb.HeaderText = "Pair";
-            this.Symb.Name = "Symb";
-            this.Symb.ReadOnly = true;
+            this.clbPairs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.clbPairs.FormattingEnabled = true;
+            this.clbPairs.Location = new System.Drawing.Point(8, 245);
+            this.clbPairs.Name = "clbPairs";
+            this.clbPairs.Size = new System.Drawing.Size(121, 334);
+            this.clbPairs.TabIndex = 17;
             // 
-            // Type
+            // label8
             // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(1050, 14);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Pairs";
             // 
             // MainMenu
             // 
@@ -1836,6 +2375,10 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1877,17 +2420,17 @@
         private System.Windows.Forms.CheckBox cbVolumeChange2h;
         private System.Windows.Forms.CheckBox cbVolumeChange1h;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.CheckBox cbVolume1min;
-        private System.Windows.Forms.CheckBox cbVolume24h;
-        private System.Windows.Forms.CheckBox cbVolume3min;
-        private System.Windows.Forms.CheckBox cbVolume12h;
-        private System.Windows.Forms.CheckBox cbVolume5min;
-        private System.Windows.Forms.CheckBox cbVolume6h;
-        private System.Windows.Forms.CheckBox cbVolume15min;
-        private System.Windows.Forms.CheckBox cbVolume4h;
-        private System.Windows.Forms.CheckBox cbVolume30min;
-        private System.Windows.Forms.CheckBox cbVolume2h;
-        private System.Windows.Forms.CheckBox cbVolume1h;
+        private System.Windows.Forms.CheckBox cbVolumeQuote1min;
+        private System.Windows.Forms.CheckBox cbVolumeQuote24h;
+        private System.Windows.Forms.CheckBox cbVolumeQuote3min;
+        private System.Windows.Forms.CheckBox cbVolumeQuote12h;
+        private System.Windows.Forms.CheckBox cbVolumeQuote5min;
+        private System.Windows.Forms.CheckBox cbVolumeQuote6h;
+        private System.Windows.Forms.CheckBox cbVolumeQuote15min;
+        private System.Windows.Forms.CheckBox cbVolumeQuote4h;
+        private System.Windows.Forms.CheckBox cbVolumeQuote30min;
+        private System.Windows.Forms.CheckBox cbVolumeQuote2h;
+        private System.Windows.Forms.CheckBox cbVolumeQuote1h;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox cbLow1min;
         private System.Windows.Forms.CheckBox cbLow24h;
@@ -1913,17 +2456,17 @@
         private System.Windows.Forms.CheckBox cbHigh2h;
         private System.Windows.Forms.CheckBox cbHigh1h;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox cbChange1min;
-        private System.Windows.Forms.CheckBox cbChange24h;
-        private System.Windows.Forms.CheckBox cbChange3min;
-        private System.Windows.Forms.CheckBox cbChange12h;
-        private System.Windows.Forms.CheckBox cbChange5min;
-        private System.Windows.Forms.CheckBox cbChange6h;
-        private System.Windows.Forms.CheckBox cbChange15min;
-        private System.Windows.Forms.CheckBox cbChange4h;
-        private System.Windows.Forms.CheckBox cbChange30min;
-        private System.Windows.Forms.CheckBox cbChange2h;
-        private System.Windows.Forms.CheckBox cbChange1h;
+        private System.Windows.Forms.CheckBox cbPriceChange1min;
+        private System.Windows.Forms.CheckBox cbPriceChange24h;
+        private System.Windows.Forms.CheckBox cbPriceChange3min;
+        private System.Windows.Forms.CheckBox cbPriceChange12h;
+        private System.Windows.Forms.CheckBox cbPriceChange5min;
+        private System.Windows.Forms.CheckBox cbPriceChange6h;
+        private System.Windows.Forms.CheckBox cbPriceChange15min;
+        private System.Windows.Forms.CheckBox cbPriceChange4h;
+        private System.Windows.Forms.CheckBox cbPriceChange30min;
+        private System.Windows.Forms.CheckBox cbPriceChange2h;
+        private System.Windows.Forms.CheckBox cbPriceChange1h;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.RichTextBox tbLogs;
         private System.Windows.Forms.GroupBox groupBox8;
@@ -1938,20 +2481,48 @@
         private System.Windows.Forms.CheckBox cbBid;
         private System.Windows.Forms.RadioButton rbMore;
         private System.Windows.Forms.RadioButton rbLess;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.CheckBox cbVolumeBase1min;
+        private System.Windows.Forms.CheckBox cbVolumeBase24h;
+        private System.Windows.Forms.CheckBox cbVolumeBase3min;
+        private System.Windows.Forms.CheckBox cbVolumeBase12h;
+        private System.Windows.Forms.CheckBox cbVolumeBase5min;
+        private System.Windows.Forms.CheckBox cbVolumeBase6h;
+        private System.Windows.Forms.CheckBox cbVolumeBase15min;
+        private System.Windows.Forms.CheckBox cbVolumeBase4h;
+        private System.Windows.Forms.CheckBox cbVolumeBase30min;
+        private System.Windows.Forms.CheckBox cbVolumeBase2h;
+        private System.Windows.Forms.CheckBox cbVolumeBase1h;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.CheckBox cbAmplitude1min;
+        private System.Windows.Forms.CheckBox cbAmplitude24h;
+        private System.Windows.Forms.CheckBox cbAmplitude3min;
+        private System.Windows.Forms.CheckBox cbAmplitude12h;
+        private System.Windows.Forms.CheckBox cbAmplitude5min;
+        private System.Windows.Forms.CheckBox cbAmplitude6h;
+        private System.Windows.Forms.CheckBox cbAmplitude15min;
+        private System.Windows.Forms.CheckBox cbAmplitude4h;
+        private System.Windows.Forms.CheckBox cbAmplitude30min;
+        private System.Windows.Forms.CheckBox cbAmplitude2h;
+        private System.Windows.Forms.CheckBox cbAmplitude1h;
         private System.Windows.Forms.DataGridViewTextBoxColumn Symbol;
         private System.Windows.Forms.DataGridViewTextBoxColumn Ask;
         private System.Windows.Forms.DataGridViewTextBoxColumn Bid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change1min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change3min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change24h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange1min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PriceChange24h;
         private System.Windows.Forms.DataGridViewTextBoxColumn High1min;
         private System.Windows.Forms.DataGridViewTextBoxColumn High3min;
         private System.Windows.Forms.DataGridViewTextBoxColumn High5min;
@@ -1974,17 +2545,39 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Low6h;
         private System.Windows.Forms.DataGridViewTextBoxColumn Low12h;
         private System.Windows.Forms.DataGridViewTextBoxColumn Low24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume1min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume3min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume5min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume15min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume30min;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume1h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume2h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume4h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume6h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume12h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Volume24h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude1min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Amplitude24h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote1min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeQuote24h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase1min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase3min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase5min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase15min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase30min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase1h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase2h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase4h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase6h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase12h;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VolumeBase24h;
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange1min;
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange3min;
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange5min;
@@ -1996,10 +2589,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange6h;
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange12h;
         private System.Windows.Forms.DataGridViewTextBoxColumn VolumeChange24h;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckedListBox clbPairs;
     }
 }
 
