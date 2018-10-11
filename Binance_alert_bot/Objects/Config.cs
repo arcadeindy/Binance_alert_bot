@@ -108,6 +108,9 @@ namespace Binance_alert_bot.Objects
         public string TelegramApiKey { get; set; }
         public string TelegramChatID { get; set; }
 
+        public bool Timeframe1min { get; set; } = true;
+        public bool TimeframeAll { get; set; } = false;
+
         public static Config Reload()
         {
             return JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));

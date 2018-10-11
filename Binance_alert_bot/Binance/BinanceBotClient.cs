@@ -53,12 +53,22 @@ namespace Binance_alert_bot.Binance
 
             Task.Run(() => GetKlines());            
 
-            Logs?.Invoke("Подключено");
-
             while (true)
             {
                 foreach(var symbol in BinanceMarket.ToArray())
-                    symbol.Ticks.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2 - 10));
+                {
+                    symbol.Ticks1min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2 - 10));
+                    symbol.Ticks3min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 3 * 2 - 1));
+                    symbol.Ticks5min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 5 * 2 - 1));
+                    symbol.Ticks15min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 15 * 2 - 1));
+                    symbol.Ticks30min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 30 * 2 - 1));
+                    symbol.Ticks1h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 60 * 2 - 1));
+                    symbol.Ticks2h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 2 * 60 * 2 - 1));
+                    symbol.Ticks4h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 4 * 60 * 2 - 1));
+                    symbol.Ticks6h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 6 * 60 * 2 - 1));
+                    symbol.Ticks12h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 12 * 60 * 2 - 1));
+                    symbol.Ticks24h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 24 * 60 * 2 - 1));
+                }
                 Thread.Sleep(1000 * 60);
             }
         }
@@ -89,7 +99,7 @@ namespace Binance_alert_bot.Binance
                                         Symbol = coin.Symbol,
                                         Bid = Math.Round(coin.BestBidPrice, GetPriceFilter(coin.Symbol)),
                                         Ask = Math.Round(coin.BestAskPrice, GetPriceFilter(coin.Symbol)),
-                                        Ticks = new List<MarketTicks>()
+                                        Ticks1min = new List<MarketTicks>()
                                     });
                             }
                             else
@@ -120,7 +130,7 @@ namespace Binance_alert_bot.Binance
                                     Symbol = data.Symbol,
                                     Bid = Math.Round(data.BestBidPrice, GetPriceFilter(data.Symbol)),
                                     Ask = Math.Round(data.BestAskPrice, GetPriceFilter(data.Symbol)),
-                                    Ticks = new List<MarketTicks>()
+                                    Ticks1min = new List<MarketTicks>()
                                 });
                         }
                         else
@@ -146,7 +156,7 @@ namespace Binance_alert_bot.Binance
                     {
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks.Add(
+                            findCoin.Ticks1min.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -160,13 +170,402 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks.Last().Time = data.EventTime;
-                            findCoin.Ticks.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks.Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks.Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks1min.Last().Time = data.EventTime;
+                            findCoin.Ticks1min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks1min.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 3 минуты
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.ThreeMinutes, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks3min.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks3min.Last().Time = data.EventTime;
+                            findCoin.Ticks3min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks3min.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 5 минут
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.FiveMinutes, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks5min.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks5min.Last().Time = data.EventTime;
+                            findCoin.Ticks5min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks5min.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 15 минут
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.FiveteenMinutes, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks15min.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks15min.Last().Time = data.EventTime;
+                            findCoin.Ticks15min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks15min.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 30 минут
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.ThirtyMinutes, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks30min.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks30min.Last().Time = data.EventTime;
+                            findCoin.Ticks30min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks30min.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 1 час
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.OneHour, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks1h.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks1h.Last().Time = data.EventTime;
+                            findCoin.Ticks1h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks1h.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 2 h
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.TwoHour, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks2h.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks2h.Last().Time = data.EventTime;
+                            findCoin.Ticks2h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks2h.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 4 h
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.FourHour, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks4h.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks4h.Last().Time = data.EventTime;
+                            findCoin.Ticks4h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks4h.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 6 h
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.SixHour, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks6h.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks6h.Last().Time = data.EventTime;
+                            findCoin.Ticks6h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks6h.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+
+            //сокеты свечей на 12 h
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.TwelfHour, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks12h.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks12h.Last().Time = data.EventTime;
+                            findCoin.Ticks12h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks12h.Last().VolumeBase = data.Data.Volume;
+                        }
+                    }
+                }
+                catch { }
+            });
+            //сокеты свечей на 24 h
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.OneDay, data =>
+            {
+                try
+                {
+                    if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
+                    if (findCoin != null)
+                    {
+                        if (data.Data.Final)
+                        {
+                            findCoin.Ticks24h.Add(
+                                new MarketTicks
+                                {
+                                    Time = data.Data.CloseTime,
+                                    Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol)),
+                                    Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol)),
+                                    Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol)),
+                                    High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol)),
+                                    VolumeQuote = data.Data.QuoteAssetVolume,
+                                    VolumeBase = data.Data.Volume
+                                });
+                        }
+                        else
+                        {
+                            findCoin.Ticks24h.Last().Time = data.EventTime;
+                            findCoin.Ticks24h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks24h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -209,14 +608,426 @@ namespace Binance_alert_bot.Binance
                             new Market
                             {
                                 Symbol = symbol,
-                                Ticks = MarketTicks
+                                Ticks1min = MarketTicks
                             });
                     }
                     else
                     {
-                        findCoin.Ticks.AddRange(MarketTicks);
+                        findCoin.Ticks1min.AddRange(MarketTicks);
                     }
                 }
+
+                requests = -2 * 3 - 10;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.ThreeMinutes, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks3min = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks3min.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 5 - 10;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.FiveMinutes, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks5min = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks5min.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 15 - 10;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.FiveteenMinutes, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks15min = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks15min.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 30 - 10;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.ThirtyMinutes, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks30min = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks30min.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 60 - 1;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.OneHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks1h = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks1h.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 2 *60 - 1;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.TwoHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks2h = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks2h.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 4 * 60 - 1;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.FourHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks4h = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks4h.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 6 * 60 - 1;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.SixHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks6h = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks6h.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 12 * 60 - 1;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.TwelfHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks12h = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks12h.AddRange(MarketTicks);
+                    }
+                }
+
+                requests = -2 * 24 * 60 - 1;
+                while (requests < 0)
+                {
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.OneDay, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+
+                    requests += 1000;
+
+                    var findCoin = BinanceMarket.Find(x => x.Symbol == symbol);
+
+                    var MarketTicks = new List<MarketTicks>();
+
+                    foreach (var kline in klines.Data)
+                    {
+                        MarketTicks.Add(
+                            new MarketTicks
+                            {
+                                Time = kline.CloseTime,
+                                Close = Math.Round(kline.Close, GetPriceFilter(symbol)),
+                                Open = Math.Round(kline.Open, GetPriceFilter(symbol)),
+                                High = Math.Round(kline.High, GetPriceFilter(symbol)),
+                                Low = Math.Round(kline.Low, GetPriceFilter(symbol)),
+                                VolumeQuote = kline.QuoteAssetVolume,
+                                VolumeBase = kline.Volume,
+                            });
+                    }
+
+                    if (findCoin == null)
+                    {
+                        BinanceMarket.Add(
+                            new Market
+                            {
+                                Symbol = symbol,
+                                Ticks24h = MarketTicks
+                            });
+                    }
+                    else
+                    {
+                        findCoin.Ticks24h.AddRange(MarketTicks);
+                    }
+                }
+
+                Logs?.Invoke($"История свечей по {symbol.Replace("BTC", "/BTC")}");
             }
             Logs?.Invoke("Получил историю свечей");
         }
