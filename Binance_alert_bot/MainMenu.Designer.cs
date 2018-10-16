@@ -144,6 +144,8 @@
             this.tbTelegramChatId = new System.Windows.Forms.TextBox();
             this.tbTelegramApi = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rb1minTimeframe = new System.Windows.Forms.RadioButton();
+            this.rbAllTimeframe = new System.Windows.Forms.RadioButton();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.cbAmplitude1min = new System.Windows.Forms.CheckBox();
             this.cbAmplitude24h = new System.Windows.Forms.CheckBox();
@@ -232,8 +234,6 @@
             this.cbPriceChange1h = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
-            this.rbAllTimeframe = new System.Windows.Forms.RadioButton();
-            this.rb1minTimeframe = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -1028,8 +1028,7 @@
             "PriceChange",
             "VolumeChange",
             "VolumeBase",
-            "VolumeQoute",
-            ""});
+            "VolumeQuote"});
             this.ddlNotifyType.Location = new System.Drawing.Point(135, 38);
             this.ddlNotifyType.Name = "ddlNotifyType";
             this.ddlNotifyType.Size = new System.Drawing.Size(120, 21);
@@ -1040,9 +1039,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(384, 15);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(55, 13);
+            this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Change %";
+            this.label5.Text = "Change";
             // 
             // tbNotifyChange
             // 
@@ -1050,6 +1049,7 @@
             this.tbNotifyChange.Name = "tbNotifyChange";
             this.tbNotifyChange.Size = new System.Drawing.Size(120, 20);
             this.tbNotifyChange.TabIndex = 8;
+            this.tbNotifyChange.Leave += new System.EventHandler(this.tbNotifyChange_Leave);
             // 
             // label4
             // 
@@ -1291,6 +1291,30 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Timeframe";
+            // 
+            // rb1minTimeframe
+            // 
+            this.rb1minTimeframe.AutoSize = true;
+            this.rb1minTimeframe.Checked = true;
+            this.rb1minTimeframe.Location = new System.Drawing.Point(480, 38);
+            this.rb1minTimeframe.Name = "rb1minTimeframe";
+            this.rb1minTimeframe.Size = new System.Drawing.Size(99, 17);
+            this.rb1minTimeframe.TabIndex = 21;
+            this.rb1minTimeframe.TabStop = true;
+            this.rb1minTimeframe.Text = "1min Timeframe";
+            this.rb1minTimeframe.UseVisualStyleBackColor = true;
+            this.rb1minTimeframe.CheckedChanged += new System.EventHandler(this.rb1minTimeframe_CheckedChanged);
+            // 
+            // rbAllTimeframe
+            // 
+            this.rbAllTimeframe.AutoSize = true;
+            this.rbAllTimeframe.Location = new System.Drawing.Point(480, 15);
+            this.rbAllTimeframe.Name = "rbAllTimeframe";
+            this.rbAllTimeframe.Size = new System.Drawing.Size(93, 17);
+            this.rbAllTimeframe.TabIndex = 20;
+            this.rbAllTimeframe.Text = "All Timeframes";
+            this.rbAllTimeframe.UseVisualStyleBackColor = true;
+            this.rbAllTimeframe.CheckedChanged += new System.EventHandler(this.rbAllTimeframe_CheckedChanged);
             // 
             // groupBox10
             // 
@@ -2320,30 +2344,6 @@
             this.tbLogs.Size = new System.Drawing.Size(1182, 581);
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
-            // 
-            // rbAllTimeframe
-            // 
-            this.rbAllTimeframe.AutoSize = true;
-            this.rbAllTimeframe.Location = new System.Drawing.Point(480, 15);
-            this.rbAllTimeframe.Name = "rbAllTimeframe";
-            this.rbAllTimeframe.Size = new System.Drawing.Size(93, 17);
-            this.rbAllTimeframe.TabIndex = 20;
-            this.rbAllTimeframe.Text = "All Timeframes";
-            this.rbAllTimeframe.UseVisualStyleBackColor = true;
-            this.rbAllTimeframe.CheckedChanged += new System.EventHandler(this.rbAllTimeframe_CheckedChanged);
-            // 
-            // rb1minTimeframe
-            // 
-            this.rb1minTimeframe.AutoSize = true;
-            this.rb1minTimeframe.Checked = true;
-            this.rb1minTimeframe.Location = new System.Drawing.Point(480, 38);
-            this.rb1minTimeframe.Name = "rb1minTimeframe";
-            this.rb1minTimeframe.Size = new System.Drawing.Size(99, 17);
-            this.rb1minTimeframe.TabIndex = 21;
-            this.rb1minTimeframe.TabStop = true;
-            this.rb1minTimeframe.Text = "1min Timeframe";
-            this.rb1minTimeframe.UseVisualStyleBackColor = true;
-            this.rb1minTimeframe.CheckedChanged += new System.EventHandler(this.rb1minTimeframe_CheckedChanged);
             // 
             // MainMenu
             // 
