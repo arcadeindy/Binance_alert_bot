@@ -559,6 +559,18 @@ namespace Binance_alert_bot
 
                                     DataGridViewRow drBefore = (Convert.ToDecimal(dr.Cells["Ask"].Value) > 0) ? dr : null;
 
+                                    market.Ticks1min = market.Ticks1min.OrderBy(x => x.Time).ToList();
+                                    market.Ticks3min = market.Ticks3min.OrderBy(x => x.Time).ToList();
+                                    market.Ticks5min = market.Ticks5min.OrderBy(x => x.Time).ToList();
+                                    market.Ticks15min = market.Ticks15min.OrderBy(x => x.Time).ToList();
+                                    market.Ticks30min = market.Ticks30min.OrderBy(x => x.Time).ToList();
+                                    market.Ticks1h = market.Ticks1h.OrderBy(x => x.Time).ToList();
+                                    market.Ticks2h = market.Ticks2h.OrderBy(x => x.Time).ToList();
+                                    market.Ticks4h = market.Ticks4h.OrderBy(x => x.Time).ToList();
+                                    market.Ticks6h = market.Ticks6h.OrderBy(x => x.Time).ToList();
+                                    market.Ticks12h = market.Ticks12h.OrderBy(x => x.Time).ToList();
+                                    market.Ticks24h = market.Ticks24h.OrderBy(x => x.Time).ToList();
+
                                     if (this.rb1minTimeframe.Checked)
                                         InThread(() => {
                                         LoadBinanceCell(dr.Cells["Ask"], market.Ask);
@@ -652,18 +664,6 @@ namespace Binance_alert_bot
                                         InThread(() => {
                                             LoadBinanceCell(dr.Cells["Ask"], market.Ask);
                                             LoadBinanceCell(dr.Cells["Bid"], market.Bid);
-
-                                            market.Ticks1min = market.Ticks1min.OrderBy(x => x.Time).ToList();
-                                            market.Ticks3min = market.Ticks3min.OrderBy(x => x.Time).ToList();
-                                            market.Ticks5min = market.Ticks5min.OrderBy(x => x.Time).ToList();
-                                            market.Ticks15min = market.Ticks15min.OrderBy(x => x.Time).ToList();
-                                            market.Ticks30min = market.Ticks30min.OrderBy(x => x.Time).ToList();
-                                            market.Ticks1h = market.Ticks1h.OrderBy(x => x.Time).ToList();
-                                            market.Ticks2h = market.Ticks2h.OrderBy(x => x.Time).ToList();
-                                            market.Ticks4h = market.Ticks4h.OrderBy(x => x.Time).ToList();
-                                            market.Ticks6h = market.Ticks6h.OrderBy(x => x.Time).ToList();
-                                            market.Ticks12h = market.Ticks12h.OrderBy(x => x.Time).ToList();
-                                            market.Ticks24h = market.Ticks24h.OrderBy(x => x.Time).ToList();
 
                                             LoadBinanceCell(dr.Cells["PriceChange1min"], GetProfit(market.Ticks1min[market.Ticks1min.Count - 2].Close, market.Ticks1min.Last().Close), true);
                                             LoadBinanceCell(dr.Cells["PriceChange3min"], GetProfit(market.Ticks3min[market.Ticks3min.Count - 2].Close, market.Ticks3min.Last().Close), true);
@@ -907,10 +907,19 @@ namespace Binance_alert_bot
 
                     decimal drChange = Convert.ToDecimal(dr.Cells["Change"].Value.ToString().Split(' ')[1].ToString());
                     decimal dr_tValue = 0;
+                    decimal drBeforeValue = 0;
                     if (dr.Cells["Type"].Value.ToString() == "Ask" || dr.Cells["Type"].Value.ToString() == "Bid")
+                    {
                         dr_tValue = Convert.ToDecimal(dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}"].Value.ToString());
-                    else 
+                        drBeforeValue = Convert.ToDecimal(drBefore.Cells[$"{dr.Cells["Type"].Value.ToString()}"].Value.ToString());
+                    }
+                    else
+                    {
                         dr_tValue = Convert.ToDecimal(dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Split(' ')[0].ToString());
+                        drBeforeValue = Convert.ToDecimal(drBefore.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Split(' ')[0].ToString());
+                    }
+
+
                     bool less = dr.Cells["Change"].Value.ToString().Contains("<");
                     bool more = dr.Cells["Change"].Value.ToString().Contains(">");
 
@@ -924,9 +933,13 @@ namespace Binance_alert_bot
                         string Timeframe = (dr.Cells["Type"].Value.ToString() == "Ask" || dr.Cells["Type"].Value.ToString() == "Bid") ? "" : dr.Cells["Timeframe"].Value.ToString();
                         string EndSymbol = dr.Cells["Change"].Value.ToString().Split(' ')[2].ToString();
 
-                        string text = $"{Symbol}\n" +
-                            $"*{Type}* = `{dr_tValue}` `{EndSymbol}`\n" +
-                            $"*{Type}* `{drChangeValue}` *{Timeframe}*\n";
+                        string text = $"{Symbol}\n";
+                        text = $"*{Type}* = `{dr_tValue}` `{EndSymbol}`\n";
+
+                        if (dr.Cells["Type"].Value.ToString() == "PriceChange")
+                            text = $"`{drBeforeValue}` → `{dr_tValue}`\n";
+
+                        text = $"*{Type}* `{drChangeValue}` *{Timeframe}*\n";
 
                         Logs($"Telegram -> {dr.Cells["Symb"].Value.ToString()}");
 
