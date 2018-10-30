@@ -127,6 +127,7 @@
   <ItemGroup>
     <Compile Include="Binance\BinanceBotClient.cs" />
     <Compile Include="Binance\Objects\Market.cs" />
+    <Compile Include="Binance\Objects\MarketInfo.cs" />
     <Compile Include="Binance\Objects\MarketTicks.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
