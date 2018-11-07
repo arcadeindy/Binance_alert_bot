@@ -31,8 +31,8 @@ namespace Binance_alert_bot
         private void MainMenu_Shown(object sender, EventArgs e)
         {
             client = new BinanceBotClient();
-            client.Logs += Logs;
-            client.SymbolsEvent += Symbols;
+            client.BinanceLogs += Logs;
+
             Task.Run(() => client.BinanceSetCredentials());
             Task.Run(() => LoadBinance());
         }

@@ -125,10 +125,6 @@
             this.ddlNotifyTimeframe = new System.Windows.Forms.ComboBox();
             this.ddlNotifySymbol = new System.Windows.Forms.ComboBox();
             this.dgNotification = new System.Windows.Forms.DataGridView();
-            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cbFavorite = new System.Windows.Forms.CheckBox();
@@ -234,6 +230,14 @@
             this.cbPriceChange1h = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -934,6 +938,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.comboBox1);
+            this.tabPage2.Controls.Add(this.checkedListBox1);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.rbMore);
             this.tabPage2.Controls.Add(this.rbLess);
@@ -958,7 +965,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(5, 16);
+            this.label8.Location = new System.Drawing.Point(6, 16);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(30, 13);
             this.label8.TabIndex = 18;
@@ -968,7 +975,7 @@
             // 
             this.rbMore.AutoSize = true;
             this.rbMore.Checked = true;
-            this.rbMore.Location = new System.Drawing.Point(513, 42);
+            this.rbMore.Location = new System.Drawing.Point(46, 422);
             this.rbMore.Name = "rbMore";
             this.rbMore.Size = new System.Drawing.Size(31, 17);
             this.rbMore.TabIndex = 16;
@@ -979,7 +986,7 @@
             // rbLess
             // 
             this.rbLess.AutoSize = true;
-            this.rbLess.Location = new System.Drawing.Point(513, 19);
+            this.rbLess.Location = new System.Drawing.Point(9, 422);
             this.rbLess.Name = "rbLess";
             this.rbLess.Size = new System.Drawing.Size(31, 17);
             this.rbLess.TabIndex = 15;
@@ -989,9 +996,9 @@
             // 
             // btnNotifyDelete
             // 
-            this.btnNotifyDelete.Location = new System.Drawing.Point(550, 35);
+            this.btnNotifyDelete.Location = new System.Drawing.Point(9, 550);
             this.btnNotifyDelete.Name = "btnNotifyDelete";
-            this.btnNotifyDelete.Size = new System.Drawing.Size(123, 23);
+            this.btnNotifyDelete.Size = new System.Drawing.Size(120, 23);
             this.btnNotifyDelete.TabIndex = 14;
             this.btnNotifyDelete.Text = "Удалить";
             this.btnNotifyDelete.UseVisualStyleBackColor = true;
@@ -999,9 +1006,9 @@
             // 
             // btnAddNotify
             // 
-            this.btnAddNotify.Location = new System.Drawing.Point(550, 10);
+            this.btnAddNotify.Location = new System.Drawing.Point(9, 525);
             this.btnAddNotify.Name = "btnAddNotify";
-            this.btnAddNotify.Size = new System.Drawing.Size(123, 23);
+            this.btnAddNotify.Size = new System.Drawing.Size(120, 23);
             this.btnAddNotify.TabIndex = 12;
             this.btnAddNotify.Text = "Добавить";
             this.btnAddNotify.UseVisualStyleBackColor = true;
@@ -1010,7 +1017,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(132, 16);
+            this.label6.Location = new System.Drawing.Point(6, 300);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(31, 13);
             this.label6.TabIndex = 11;
@@ -1029,7 +1036,7 @@
             "VolumeChange",
             "VolumeBase",
             "VolumeQuote"});
-            this.ddlNotifyType.Location = new System.Drawing.Point(135, 38);
+            this.ddlNotifyType.Location = new System.Drawing.Point(9, 316);
             this.ddlNotifyType.Name = "ddlNotifyType";
             this.ddlNotifyType.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyType.TabIndex = 10;
@@ -1037,7 +1044,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(384, 15);
+            this.label5.Location = new System.Drawing.Point(6, 380);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 9;
@@ -1045,7 +1052,7 @@
             // 
             // tbNotifyChange
             // 
-            this.tbNotifyChange.Location = new System.Drawing.Point(387, 38);
+            this.tbNotifyChange.Location = new System.Drawing.Point(9, 396);
             this.tbNotifyChange.Name = "tbNotifyChange";
             this.tbNotifyChange.Size = new System.Drawing.Size(120, 20);
             this.tbNotifyChange.TabIndex = 8;
@@ -1054,7 +1061,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(258, 16);
+            this.label4.Location = new System.Drawing.Point(6, 340);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 7;
@@ -1075,7 +1082,7 @@
             "6h",
             "12h",
             "24h"});
-            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(261, 38);
+            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(9, 356);
             this.ddlNotifyTimeframe.Name = "ddlNotifyTimeframe";
             this.ddlNotifyTimeframe.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyTimeframe.TabIndex = 6;
@@ -1085,9 +1092,9 @@
             this.ddlNotifySymbol.FormattingEnabled = true;
             this.ddlNotifySymbol.Items.AddRange(new object[] {
             "ETHBTC"});
-            this.ddlNotifySymbol.Location = new System.Drawing.Point(8, 38);
+            this.ddlNotifySymbol.Location = new System.Drawing.Point(9, 276);
             this.ddlNotifySymbol.Name = "ddlNotifySymbol";
-            this.ddlNotifySymbol.Size = new System.Drawing.Size(121, 21);
+            this.ddlNotifySymbol.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifySymbol.TabIndex = 4;
             // 
             // dgNotification
@@ -1103,36 +1110,13 @@
             this.Symb,
             this.Type,
             this.Timeframe,
-            this.Change});
-            this.dgNotification.Location = new System.Drawing.Point(0, 65);
+            this.Change,
+            this.NameNotify});
+            this.dgNotification.Location = new System.Drawing.Point(135, 8);
             this.dgNotification.Name = "dgNotification";
             this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgNotification.Size = new System.Drawing.Size(1182, 516);
+            this.dgNotification.Size = new System.Drawing.Size(1047, 573);
             this.dgNotification.TabIndex = 1;
-            // 
-            // Symb
-            // 
-            this.Symb.HeaderText = "Pair";
-            this.Symb.Name = "Symb";
-            this.Symb.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
             // 
             // tabPage3
             // 
@@ -2345,6 +2329,73 @@
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
             // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Location = new System.Drawing.Point(9, 32);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(120, 229);
+            this.checkedListBox1.TabIndex = 19;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "1min",
+            "3min",
+            "5min",
+            "15min",
+            "30min",
+            "1h",
+            "2h",
+            "4h",
+            "6h",
+            "12h",
+            "24h"});
+            this.comboBox1.Location = new System.Drawing.Point(9, 462);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(120, 21);
+            this.comboBox1.TabIndex = 20;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 446);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Name";
+            // 
+            // Symb
+            // 
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
+            // 
+            // Type
+            // 
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Timeframe
+            // 
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
+            // NameNotify
+            // 
+            this.NameNotify.HeaderText = "Name";
+            this.NameNotify.Name = "NameNotify";
+            this.NameNotify.ReadOnly = true;
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2485,10 +2536,6 @@
         private System.Windows.Forms.CheckBox cbBid;
         private System.Windows.Forms.RadioButton rbMore;
         private System.Windows.Forms.RadioButton rbLess;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.CheckBox cbVolumeBase1min;
         private System.Windows.Forms.CheckBox cbVolumeBase24h;
@@ -2596,6 +2643,14 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton rb1minTimeframe;
         private System.Windows.Forms.RadioButton rbAllTimeframe;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameNotify;
     }
 }
 

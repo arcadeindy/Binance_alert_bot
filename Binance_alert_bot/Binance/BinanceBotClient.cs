@@ -14,11 +14,14 @@ namespace Binance_alert_bot.Binance
     public class BinanceBotClient
     {
         #region Delegates
-        public event LogsStateHandler Logs;
-        public delegate void LogsStateHandler(string message);
+        public event BinanceLogsStateHandler BinanceLogs;
+        public delegate void BinanceLogsStateHandler(string message);
 
-        public event SymbolsStateHandler SymbolsEvent;
-        public delegate void SymbolsStateHandler(List<string> symbols);
+        public event BinanceSymbolsStateHandler BinanceSymbols;
+        public delegate void BinanceSymbolsStateHandler(List<string> Symbols);
+
+        public event BinanceMarketStateHandler BinanceMarkets;
+        public delegate void BinanceMarketStateHandler(Market market);
         #endregion
 
         #region Fields
@@ -39,17 +42,17 @@ namespace Binance_alert_bot.Binance
         }
         public void BinanceSetCredentials()
         {
-            Logs?.Invoke("Подключение...");
+            BinanceLogs?.Invoke("Подключение...");
             client = new BinanceClient();
 
             ws = new BinanceSocketClient();
 
             GetExchangeInfo();
-            Logs?.Invoke("Получил всю инфо о бриже");
+            BinanceLogs?.Invoke("Получил всю инфо о бриже");
 
             Task.Run(() => SubscribeToNewSymbolAsync(AllSymbolsBTC)).Wait();
 
-            Logs?.Invoke("Подключил сокеты всех монет");
+            BinanceLogs?.Invoke("Подключил сокеты всех монет");
 
             Task.Run(() => GetKlines());
 
@@ -67,33 +70,36 @@ namespace Binance_alert_bot.Binance
             {
                 foreach (var market in BinanceMarket.ToArray())
                 {
-                    if (market.Ticks["1min"].Count < 60 * 24 * 2 - 1
-                     || market.Ticks["3min"].Count < 2
-                     || market.Ticks["5min"].Count < 2
-                     || market.Ticks["15min"].Count < 2
-                     || market.Ticks["30min"].Count < 2
-                     || market.Ticks["1h"].Count < 2
-                     || market.Ticks["2h"].Count < 2
-                     || market.Ticks["4h"].Count < 2
-                     || market.Ticks["6h"].Count < 2
-                     || market.Ticks["12h"].Count < 2
-                     || market.Ticks["24h"].Count < 2)
+                    if (market.Ticks1min.Count < 60 * 24 * 2 - 1
+                     || market.Ticks3min.Count < 2
+                     || market.Ticks5min.Count < 2
+                     || market.Ticks15min.Count < 2
+                     || market.Ticks30min.Count < 2
+                     || market.Ticks1h.Count < 2
+                     || market.Ticks2h.Count < 2
+                     || market.Ticks4h.Count < 2
+                     || market.Ticks6h.Count < 2
+                     || market.Ticks12h.Count < 2
+                     || market.Ticks24h.Count < 2)
                         continue;
 
 
-                    market.Ticks["1min"] = market.Ticks["1min"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["3min"] = market.Ticks["3min"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["5min"] = market.Ticks["5min"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["15min"] = market.Ticks["15min"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["30min"] = market.Ticks["30min"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["1h"] = market.Ticks["1h"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["2h"] = market.Ticks["2h"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["4h"] = market.Ticks["4h"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["6h"] = market.Ticks["6h"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["12h"] = market.Ticks["12h"].OrderBy(x => x.Time).ToList();
-                    market.Ticks["24h"] = market.Ticks["24h"].OrderBy(x => x.Time).ToList();
+                    market.Ticks1min = market.Ticks1min.OrderBy(x => x.Time).ToList();
+                    market.Ticks3min = market.Ticks3min.OrderBy(x => x.Time).ToList();
+                    market.Ticks5min = market.Ticks5min.OrderBy(x => x.Time).ToList();
+                    market.Ticks15min = market.Ticks15min.OrderBy(x => x.Time).ToList();
+                    market.Ticks30min = market.Ticks30min.OrderBy(x => x.Time).ToList();
+                    market.Ticks1h = market.Ticks1h.OrderBy(x => x.Time).ToList();
+                    market.Ticks2h = market.Ticks2h.OrderBy(x => x.Time).ToList();
+                    market.Ticks4h = market.Ticks4h.OrderBy(x => x.Time).ToList();
+                    market.Ticks6h = market.Ticks6h.OrderBy(x => x.Time).ToList();
+                    market.Ticks12h = market.Ticks12h.OrderBy(x => x.Time).ToList();
+                    market.Ticks24h = market.Ticks24h.OrderBy(x => x.Time).ToList();
+                    market.Update();
 
-                    var dt = LoadBinanceTable()
+                    BinanceMarkets?.Invoke(market);
+
+
 
                 }
             }
@@ -105,17 +111,17 @@ namespace Binance_alert_bot.Binance
             {
                 foreach (var symbol in BinanceMarket.ToArray())
                 {
-                    symbol.Ticks["1min"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2 - 10));
-                    symbol.Ticks["3min"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 3 * 2 - 1));
-                    symbol.Ticks["5min"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 5 * 2 - 1));
-                    symbol.Ticks["15min"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 15 * 2 - 1));
-                    symbol.Ticks["30min"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 30 * 2 - 1));
-                    symbol.Ticks["1h"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 60 * 2 - 1));
-                    symbol.Ticks["2h"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 2 * 60 * 2 - 1));
-                    symbol.Ticks["4h"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 4 * 60 * 2 - 1));
-                    symbol.Ticks["6h"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 6 * 60 * 2 - 1));
-                    symbol.Ticks["12h"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 12 * 60 * 2 - 1));
-                    symbol.Ticks["24h"].RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 24 * 60 * 2 - 1));
+                    symbol.Ticks1min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 60 * 24 * 2 - 10));
+                    symbol.Ticks3min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 3 * 2 - 1));
+                    symbol.Ticks5min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 5 * 2 - 1));
+                    symbol.Ticks15min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 15 * 2 - 1));
+                    symbol.Ticks30min.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 30 * 2 - 1));
+                    symbol.Ticks1h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 1 * 60 * 2 - 1));
+                    symbol.Ticks2h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 2 * 60 * 2 - 1));
+                    symbol.Ticks4h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 4 * 60 * 2 - 1));
+                    symbol.Ticks6h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 6 * 60 * 2 - 1));
+                    symbol.Ticks12h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 12 * 60 * 2 - 1));
+                    symbol.Ticks24h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 24 * 60 * 2 - 1));
                 }
                 Thread.Sleep(1000 * 60);
             }
@@ -183,7 +189,7 @@ namespace Binance_alert_bot.Binance
                     }
                     catch { }
                 });
-                Logs?.Invoke($"Подписался на новую монету {symbol[0]}");
+                BinanceLogs?.Invoke($"Подписался на новую монету {symbol[0]}");
             }
 
             //сокеты свечей на 1 минуту
@@ -200,7 +206,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["1min"].Add(
+                            findCoin.Ticks1min.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -214,13 +220,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["1min"].Last().Time = data.EventTime;
-                            findCoin.Ticks["1min"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1min"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1min"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1min"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1min"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["1min"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks1min.Last().Time = data.EventTime;
+                            findCoin.Ticks1min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks1min.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -240,7 +246,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["3min"].Add(
+                            findCoin.Ticks3min.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -254,13 +260,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["3min"].Last().Time = data.EventTime;
-                            findCoin.Ticks["3min"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["3min"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["3min"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["3min"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["3min"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["3min"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks3min.Last().Time = data.EventTime;
+                            findCoin.Ticks3min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks3min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks3min.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -280,7 +286,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["5min"].Add(
+                            findCoin.Ticks5min.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -294,13 +300,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["5min"].Last().Time = data.EventTime;
-                            findCoin.Ticks["5min"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["5min"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["5min"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["5min"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["5min"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["5min"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks5min.Last().Time = data.EventTime;
+                            findCoin.Ticks5min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks5min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks5min.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -320,7 +326,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["15min"].Add(
+                            findCoin.Ticks15min.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -334,13 +340,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["15min"].Last().Time = data.EventTime;
-                            findCoin.Ticks["15min"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["15min"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["15min"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["15min"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["15min"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["15min"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks15min.Last().Time = data.EventTime;
+                            findCoin.Ticks15min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks15min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks15min.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -360,7 +366,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["30min"].Add(
+                            findCoin.Ticks30min.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -374,13 +380,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["30min"].Last().Time = data.EventTime;
-                            findCoin.Ticks["30min"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["30min"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["30min"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["30min"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["30min"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["30min"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks30min.Last().Time = data.EventTime;
+                            findCoin.Ticks30min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks30min.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks30min.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -400,7 +406,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["1h"].Add(
+                            findCoin.Ticks1h.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -414,13 +420,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["1h"].Last().Time = data.EventTime;
-                            findCoin.Ticks["1h"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1h"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1h"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1h"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["1h"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["1h"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks1h.Last().Time = data.EventTime;
+                            findCoin.Ticks1h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks1h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks1h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -440,7 +446,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["2h"].Add(
+                            findCoin.Ticks2h.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -454,13 +460,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["2h"].Last().Time = data.EventTime;
-                            findCoin.Ticks["2h"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["2h"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["2h"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["2h"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["2h"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["2h"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks2h.Last().Time = data.EventTime;
+                            findCoin.Ticks2h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks2h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks2h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -480,7 +486,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["4h"].Add(
+                            findCoin.Ticks4h.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -494,13 +500,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["4h"].Last().Time = data.EventTime;
-                            findCoin.Ticks["4h"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["4h"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["4h"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["4h"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["4h"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["4h"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks4h.Last().Time = data.EventTime;
+                            findCoin.Ticks4h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks4h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks4h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -519,7 +525,7 @@ namespace Binance_alert_bot.Binance
                     {
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["6h"].Add(
+                            findCoin.Ticks6h.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -533,13 +539,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["6h"].Last().Time = data.EventTime;
-                            findCoin.Ticks["6h"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["6h"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["6h"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["6h"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["6h"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["6h"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks6h.Last().Time = data.EventTime;
+                            findCoin.Ticks6h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks6h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks6h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -559,7 +565,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["12h"].Add(
+                            findCoin.Ticks12h.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -573,13 +579,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["12h"].Last().Time = data.EventTime;
-                            findCoin.Ticks["12h"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["12h"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["12h"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["12h"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["12h"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["12h"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks12h.Last().Time = data.EventTime;
+                            findCoin.Ticks12h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks12h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks12h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -598,7 +604,7 @@ namespace Binance_alert_bot.Binance
 
                         if (data.Data.Final)
                         {
-                            findCoin.Ticks["24h"].Add(
+                            findCoin.Ticks24h.Add(
                                 new MarketTicks
                                 {
                                     Time = data.Data.CloseTime,
@@ -612,13 +618,13 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks["24h"].Last().Time = data.EventTime;
-                            findCoin.Ticks["24h"].Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["24h"].Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["24h"].Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["24h"].Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
-                            findCoin.Ticks["24h"].Last().VolumeQuote = data.Data.QuoteAssetVolume;
-                            findCoin.Ticks["24h"].Last().VolumeBase = data.Data.Volume;
+                            findCoin.Ticks24h.Last().Time = data.EventTime;
+                            findCoin.Ticks24h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().High = Math.Round(data.Data.High, GetPriceFilter(data.Symbol));
+                            findCoin.Ticks24h.Last().VolumeQuote = data.Data.QuoteAssetVolume;
+                            findCoin.Ticks24h.Last().VolumeBase = data.Data.Volume;
                         }
                     }
                 }
@@ -666,7 +672,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["1min"].AddRange(MarketTicks);
+                        findCoin.Ticks1min.AddRange(MarketTicks);
                     }
                 }
 
@@ -707,7 +713,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["3min"].AddRange(MarketTicks);
+                        findCoin.Ticks3min.AddRange(MarketTicks);
                     }
                 }
 
@@ -748,7 +754,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["5min"].AddRange(MarketTicks);
+                        findCoin.Ticks5min.AddRange(MarketTicks);
                     }
                 }
 
@@ -789,7 +795,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["15min"].AddRange(MarketTicks);
+                        findCoin.Ticks15min.AddRange(MarketTicks);
                     }
                 }
 
@@ -830,7 +836,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["30min"].AddRange(MarketTicks);
+                        findCoin.Ticks30min.AddRange(MarketTicks);
                     }
                 }
 
@@ -871,7 +877,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["1h"].AddRange(MarketTicks);
+                        findCoin.Ticks1h.AddRange(MarketTicks);
                     }
                 }
 
@@ -912,7 +918,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["2h"].AddRange(MarketTicks);
+                        findCoin.Ticks2h.AddRange(MarketTicks);
                     }
                 }
 
@@ -953,7 +959,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["4h"].AddRange(MarketTicks);
+                        findCoin.Ticks4h.AddRange(MarketTicks);
                     }
                 }
 
@@ -994,7 +1000,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["6h"].AddRange(MarketTicks);
+                        findCoin.Ticks6h.AddRange(MarketTicks);
                     }
                 }
 
@@ -1035,7 +1041,7 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["12h"].AddRange(MarketTicks);
+                        findCoin.Ticks12h.AddRange(MarketTicks);
                     }
                 }
 
@@ -1076,13 +1082,13 @@ namespace Binance_alert_bot.Binance
                     }
                     else
                     {
-                        findCoin.Ticks["24h"].AddRange(MarketTicks);
+                        findCoin.Ticks24h.AddRange(MarketTicks);
                     }
                 }
 
-                Logs?.Invoke($"История свечей по {symbol.Replace("BTC", "/BTC")}");
+                BinanceLogs?.Invoke($"История свечей по {symbol.Replace("BTC", "/BTC")}");
             }
-            Logs?.Invoke("Получил историю свечей");
+            BinanceLogs?.Invoke("Получил историю свечей");
         }
         private void GetExchangeInfo(string Symbol = "")
         {
@@ -1103,7 +1109,7 @@ namespace Binance_alert_bot.Binance
                         AllSymbolsBTC.Add(symbol.Name);
                     }
                 }
-                SymbolsEvent?.Invoke(AllSymbolsBTC);
+                BinanceSymbols?.Invoke(AllSymbolsBTC);
             }
             else
             {
@@ -1129,7 +1135,7 @@ namespace Binance_alert_bot.Binance
         }
         private void ErrorHandling(Error error)
         {
-            Logs?.Invoke($"{error.Code}: {error.Message}");
+            BinanceLogs?.Invoke($"{error.Code}: {error.Message}");
         }
         #endregion
     }
