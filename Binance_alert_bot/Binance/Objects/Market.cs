@@ -280,19 +280,24 @@ namespace Binance_alert_bot.Binance.Objects
             return marketInfo;
         }
 
+        public Dictionary<string, MarketInfo> MI;
+
         public void Update()
         {
-            PriceChange1min = GetPriceChange(Ticks1min, 1);
-            PriceChange3min = GetPriceChange(Ticks3min, 3);
-            PriceChange5min = GetPriceChange(Ticks5min, 5);
-            PriceChange15min = GetPriceChange(Ticks15min, 15);
-            PriceChange30min = GetPriceChange(Ticks30min, 30);
-            PriceChange1h = GetPriceChange(Ticks1h, 60);
-            PriceChange2h = GetPriceChange(Ticks2h, 60 * 2);
-            PriceChange4h = GetPriceChange(Ticks4h, 60 * 4);
-            PriceChange6h = GetPriceChange(Ticks6h, 60 * 6);
-            PriceChange12h = GetPriceChange(Ticks12h, 60 * 12);
-            PriceChange24h = GetPriceChange(Ticks24h, 60 * 24);
+            MI = new Dictionary<string, MarketInfo>();
+
+            MI.Add("PriceChange1min",GetPriceChange(Ticks1min, 1));
+
+            MI.Add("PriceChange3min",GetPriceChange(Ticks3min, 3));
+            MI.Add("PriceChange5min", GetPriceChange(Ticks5min, 5));
+            MI.Add("PriceChange15min",GetPriceChange(Ticks15min, 15));
+            MI.Add("PriceChange30min", GetPriceChange(Ticks30min, 30));
+            MI.Add("PriceChange1h",GetPriceChange(Ticks1h, 60));
+            MI.Add("PriceChange2h",GetPriceChange(Ticks2h, 60 * 2));
+            MI.Add("PriceChange4h", GetPriceChange(Ticks4h, 60 * 4));
+            MI.Add("PriceChange6h", GetPriceChange(Ticks6h, 60 * 6));
+            MI.Add("PriceChange12h",GetPriceChange(Ticks12h, 60 * 12));
+            MI.Add("PriceChange24h", GetPriceChange(Ticks24h, 60 * 24));
 
             High1min = GetHigh(Ticks1min, 1);
             High3min = GetHigh(Ticks3min, 3);

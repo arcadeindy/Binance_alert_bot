@@ -8,11 +8,16 @@ namespace Binance_alert_bot.Objects
 {
     public class Notifications
     {
-        public string Symbol { get; set; }
+        public Dictionary<string, List<Notification>> Guid { get; set; } = new Dictionary<string, List<Notification>>();
+        public long TelegramChatId { get; set; }
+    }
+    public class Notification
+    {
+        public List<string> Symbol { get; set; }
         public string Type { get; set; }
         public string Timeframe { get; set; }
         public string Change { get; set; }
-        public string GUID { get; set; }
-        public DateTime NotifyTime { get; set; }
+        public DateTime Time { get; set; } = DateTime.MinValue;
+        public int Delay { get; set; }
     }
 }

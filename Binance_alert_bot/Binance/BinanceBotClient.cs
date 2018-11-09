@@ -1,6 +1,7 @@
 ﻿using Binance.Net;
 using Binance.Net.Objects;
 using Binance_alert_bot.Binance.Objects;
+using Binance_alert_bot.Objects;
 using CryptoExchange.Net.Objects;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace Binance_alert_bot.Binance
         private BinanceClient client;
         private BinanceSocketClient ws;
         private BinanceSymbol[] exchangeInfo;
+        private Notifications notifications = new Notifications();
         #endregion
 
         #region Constructor/Destructor
@@ -60,7 +62,10 @@ namespace Binance_alert_bot.Binance
             Task.Run(() => Notification());
 
         }
-
+        public void UpdateNotifications(List<Notifications> notify)
+        {
+            this.notify = notify;
+        }
         #endregion
 
         #region Methods
@@ -99,7 +104,19 @@ namespace Binance_alert_bot.Binance
 
                     BinanceMarkets?.Invoke(market);
 
+                    foreach (var notify in notifications.Guid)
+                    {
+                        foreach(var n in notify.Value)
+                        {
+                            if (!n.Symbol.Contains(market.Symbol))
+                                continue;
 
+                            if ((DateTime.Now - n.Time).TotalSeconds < n.Delay)
+                                continue;
+
+                            if (market.MI[n.Type + n.Timeframe].ChangeValue > n.Change)
+                        }
+                    }
 
                 }
             }

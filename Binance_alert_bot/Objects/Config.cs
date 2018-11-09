@@ -106,7 +106,7 @@ namespace Binance_alert_bot.Objects
         public List<string> FavoriveSymbols { get; set; } = new List<string>();
 
         public string TelegramApiKey { get; set; }
-        public string TelegramChatID { get; set; }
+        public Dictionary<long, string> TelegramChats { get; set; } = new Dictionary<long, string>();
 
         public bool Timeframe1min { get; set; } = true;
         public bool TimeframeAll { get; set; } = false;
