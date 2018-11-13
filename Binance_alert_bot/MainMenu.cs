@@ -38,17 +38,24 @@ namespace Binance_alert_bot
         }
         private void btnAddNotify_Click(object sender, EventArgs e)
         {
-            if (this.ddlNotifySymbol.SelectedItem.ToString() == "" && this.ddlNotifyType.SelectedItem.ToString() == "" && this.ddlNotifyTimeframe.SelectedItem.ToString() == "" && this.tbNotifyChange.Text != "")
+            if (this.cblNotifySymbols.CheckedItems.Count == 0 
+                && this.ddlNotifyType.SelectedItem.ToString() == "" 
+                && this.ddlNotifyTimeframe.SelectedItem.ToString() == "" 
+                && this.tbNotifyChange.Text != ""
+                && this.ddlGiud.SelectedItem.ToString() != ""
+                && this.ddlChatId.ToString() != "")
             {
                 MessageBox.Show("Заполните все поля");
                 return;
             }
 
             InThread(() => this.dgNotification.Rows.Add(
-                this.ddlNotifySymbol.SelectedItem.ToString(),
+                (cblNotifySymbols.CheckedItems.Count > 1) ? $"{cblNotifySymbols.CheckedItems.Count} Pairs" : cblNotifySymbols.CheckedItems[0].ToString(),
                 this.ddlNotifyType.SelectedItem.ToString(),
                 this.ddlNotifyTimeframe.SelectedItem.ToString(),
-                GetMultiChange(this.tbNotifyChange.Text)));
+                GetMultiChange(this.tbNotifyChange.Text),
+                this.ddlGiud.SelectedItem.ToString(),
+                this.ddlChatId.SelectedText.ToString()));
         }
 
         private void btnNotifyDelete_Click(object sender, EventArgs e)
@@ -505,14 +512,14 @@ namespace Binance_alert_bot
         private void Symbols(List<string> symbols)
         {
             InThread(() => this.ddlSymbols.Items.Clear());
-            InThread(() => this.ddlNotifySymbol.Items.Clear());
+            InThread(() => this.cblNotifySymbols.Items.Clear());
 
             symbols = symbols.OrderBy(q => q).ToList();
 
             foreach (var symbol in symbols)
             {
                 InThread(() => this.ddlSymbols.Items.Add(symbol.Replace("BTC", "/BTC")));
-                InThread(() => this.ddlNotifySymbol.Items.Add(symbol.Replace("BTC", "/BTC")));
+                InThread(() => this.cblNotifySymbols.Items.Add(symbol.Replace("BTC", "/BTC")));
             }
         }
         private void ColumnAction(string ColumnName, bool Checked)
@@ -905,7 +912,7 @@ namespace Binance_alert_bot
                     if (dr_t.Cells["Symbol"].Value.ToString() != dr.Cells["Symb"].Value.ToString())
                         continue;
 
-                    decimal drChange = Convert.ToDecimal(dr.Cells["Change"].Value.ToString().Split(' ')[1].ToString());
+                    decimal drChange = Convert.ToDecimal(dr.Cells["Change"].Value.ToString());
                     decimal dr_tValue = 0;
                     decimal drBeforeValue = 0;
                     if (dr.Cells["Type"].Value.ToString() == "Ask" || dr.Cells["Type"].Value.ToString() == "Bid")
@@ -1067,12 +1074,27 @@ namespace Binance_alert_bot
             }
 
             this.dgNotification.Rows.Clear();
-            foreach(var n in cfg.notifications)
+            foreach(var notify in cfg.notifications)
             {
-                this.dgNotification.Rows.Add(n.Symbol, n.Type, n.Timeframe, n.Change);
+                foreach (var ntf in notify.Guid)
+                {
+                    foreach (var n in ntf.Value)
+                    {
+                        this.dgNotification.Rows.Add(
+                                                (n.Symbol.Count > 1) ? $"{n.Symbol.Count} Pairs" : $"{n.Symbol[0].ToString()}" ,
+                                                n.Type,
+                                                n.Timeframe,
+                                                n.Change,
+                                                ntf.Key,
+                                                n.TelegramChatId);
+                    }
+                }
             }
 
             this.tbTelegramApi.Text = this.cfg.TelegramApiKey;
+            this.lbChatId.Items.Clear();
+            foreach(var chatid in cfg.cha)
+
             this.tbTelegramChatId.Text = this.cfg.TelegramChatID;
 
             this.rb1minTimeframe.Checked = this.cfg.Timeframe1min;
@@ -1205,7 +1227,12 @@ namespace Binance_alert_bot
                 case "VolumeQuote":
                     return $"{((this.rbLess.Checked) ? "<" : ">")} {change} BTC";
                 case "VolumeBase":
-                    return $"{((this.rbLess.Checked) ? "<" : ">")} {change} {this.ddlNotifySymbol.SelectedItem.ToString().Replace("/BTC", "")}";
+                    string endSymbol = "";
+                    if (this.cblNotifySymbols.CheckedItems.Count == 1)
+                    {
+                        endSymbol = this.cblNotifySymbols.CheckedItems[0].ToString().Replace("/BTC", "") ;
+                    }
+                    return $"{((this.rbLess.Checked) ? "<" : ">")} {change} {endSymbol}";
                 case "Ask":
                 case "Bid":
                 case "High":

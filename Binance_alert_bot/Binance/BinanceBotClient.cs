@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
 
 namespace Binance_alert_bot.Binance
 {
@@ -34,7 +36,7 @@ namespace Binance_alert_bot.Binance
         private BinanceClient client;
         private BinanceSocketClient ws;
         private BinanceSymbol[] exchangeInfo;
-        private Notifications notifications = new Notifications();
+        private Config cfg;
         #endregion
 
         #region Constructor/Destructor
@@ -62,9 +64,9 @@ namespace Binance_alert_bot.Binance
             Task.Run(() => Notification());
 
         }
-        public void UpdateNotifications(List<Notifications> notify)
+        public void UpdateNotifications(Config cfg)
         {
-            this.notify = notify;
+            this.cfg = cfg;
         }
         #endregion
 
@@ -104,20 +106,53 @@ namespace Binance_alert_bot.Binance
 
                     BinanceMarkets?.Invoke(market);
 
-                    foreach (var notify in notifications.Guid)
-                    {
-                        foreach(var n in notify.Value)
+                    foreach (var notification in cfg.notifications) {
+                        foreach (var notify in notification.Guid)
                         {
-                            if (!n.Symbol.Contains(market.Symbol))
-                                continue;
+                            string text = "";
+                            string emoje = "";
+                            foreach (var n in notify.Value)
+                            {
+                                if (n.Type == "Ask" || n.Type == "Bid")
+                                    n.Timeframe = "";
 
-                            if ((DateTime.Now - n.Time).TotalSeconds < n.Delay)
-                                continue;
+                                if (!n.Symbol.Contains(market.Symbol))
+                                    continue;
 
-                            if (market.MI[n.Type + n.Timeframe].ChangeValue > n.Change)
+                                if ((DateTime.Now - n.Time).TotalSeconds < n.Delay)
+                                    continue;
+
+                                var formula = n.Change.Split(' ');
+
+                                string operand = formula[0].ToString();
+
+                                decimal change = Convert.ToDecimal(formula[1].ToString());
+
+                                string endSymbol = formula[2].ToString();
+
+                                if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<")
+                                {
+                                    emoje += $"↑{market.MI[n.Type + n.Timeframe].Emoji} ";
+                                    text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
+
+                                }
+                                if (market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
+                                {
+                                    emoje += $"↓{market.MI[n.Type + n.Timeframe].Emoji} ";
+                                    text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
+                                }
+                            }
+
+                            if (text != "")
+                            {
+                                text = $"{emoje}\n{text}\n";
+
+                                TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
+                                bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, text, parseMode: ParseMode.Markdown);
+                            }
+
                         }
                     }
-
                 }
             }
         }

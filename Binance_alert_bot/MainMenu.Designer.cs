@@ -113,8 +113,8 @@
             this.VolumeChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.ddlGiud = new System.Windows.Forms.ComboBox();
+            this.cblNotifySymbols = new System.Windows.Forms.CheckedListBox();
             this.label8 = new System.Windows.Forms.Label();
             this.rbMore = new System.Windows.Forms.RadioButton();
             this.rbLess = new System.Windows.Forms.RadioButton();
@@ -126,13 +126,7 @@
             this.tbNotifyChange = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.ddlNotifyTimeframe = new System.Windows.Forms.ComboBox();
-            this.ddlNotifySymbol = new System.Windows.Forms.ComboBox();
             this.dgNotification = new System.Windows.Forms.DataGridView();
-            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cbFavorite = new System.Windows.Forms.CheckBox();
@@ -142,6 +136,8 @@
             this.ddlSymbols = new System.Windows.Forms.ComboBox();
             this.lbFavorite = new System.Windows.Forms.ListBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.btnTelegramTestMsg = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -238,9 +234,15 @@
             this.cbPriceChange1h = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ddlChatId = new System.Windows.Forms.ComboBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -258,6 +260,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -941,9 +944,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this.ddlChatId);
             this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.comboBox1);
-            this.tabPage2.Controls.Add(this.checkedListBox1);
+            this.tabPage2.Controls.Add(this.ddlGiud);
+            this.tabPage2.Controls.Add(this.cblNotifySymbols);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.rbMore);
             this.tabPage2.Controls.Add(this.rbLess);
@@ -955,7 +960,6 @@
             this.tabPage2.Controls.Add(this.tbNotifyChange);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.ddlNotifyTimeframe);
-            this.tabPage2.Controls.Add(this.ddlNotifySymbol);
             this.tabPage2.Controls.Add(this.dgNotification);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -968,16 +972,16 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 446);
+            this.label3.Location = new System.Drawing.Point(6, 414);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 21;
             this.label3.Text = "Name";
             // 
-            // comboBox1
+            // ddlGiud
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.ddlGiud.FormattingEnabled = true;
+            this.ddlGiud.Items.AddRange(new object[] {
             "1min",
             "3min",
             "5min",
@@ -989,18 +993,18 @@
             "6h",
             "12h",
             "24h"});
-            this.comboBox1.Location = new System.Drawing.Point(9, 462);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(120, 21);
-            this.comboBox1.TabIndex = 20;
+            this.ddlGiud.Location = new System.Drawing.Point(9, 430);
+            this.ddlGiud.Name = "ddlGiud";
+            this.ddlGiud.Size = new System.Drawing.Size(120, 21);
+            this.ddlGiud.TabIndex = 20;
             // 
-            // checkedListBox1
+            // cblNotifySymbols
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(9, 32);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(120, 229);
-            this.checkedListBox1.TabIndex = 19;
+            this.cblNotifySymbols.FormattingEnabled = true;
+            this.cblNotifySymbols.Location = new System.Drawing.Point(9, 32);
+            this.cblNotifySymbols.Name = "cblNotifySymbols";
+            this.cblNotifySymbols.Size = new System.Drawing.Size(120, 229);
+            this.cblNotifySymbols.TabIndex = 19;
             // 
             // label8
             // 
@@ -1015,7 +1019,7 @@
             // 
             this.rbMore.AutoSize = true;
             this.rbMore.Checked = true;
-            this.rbMore.Location = new System.Drawing.Point(46, 422);
+            this.rbMore.Location = new System.Drawing.Point(46, 390);
             this.rbMore.Name = "rbMore";
             this.rbMore.Size = new System.Drawing.Size(31, 17);
             this.rbMore.TabIndex = 16;
@@ -1026,7 +1030,7 @@
             // rbLess
             // 
             this.rbLess.AutoSize = true;
-            this.rbLess.Location = new System.Drawing.Point(9, 422);
+            this.rbLess.Location = new System.Drawing.Point(9, 390);
             this.rbLess.Name = "rbLess";
             this.rbLess.Size = new System.Drawing.Size(31, 17);
             this.rbLess.TabIndex = 15;
@@ -1057,7 +1061,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 300);
+            this.label6.Location = new System.Drawing.Point(6, 268);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(31, 13);
             this.label6.TabIndex = 11;
@@ -1076,7 +1080,7 @@
             "VolumeChange",
             "VolumeBase",
             "VolumeQuote"});
-            this.ddlNotifyType.Location = new System.Drawing.Point(9, 316);
+            this.ddlNotifyType.Location = new System.Drawing.Point(9, 284);
             this.ddlNotifyType.Name = "ddlNotifyType";
             this.ddlNotifyType.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyType.TabIndex = 10;
@@ -1084,7 +1088,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 380);
+            this.label5.Location = new System.Drawing.Point(6, 348);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 9;
@@ -1092,7 +1096,7 @@
             // 
             // tbNotifyChange
             // 
-            this.tbNotifyChange.Location = new System.Drawing.Point(9, 396);
+            this.tbNotifyChange.Location = new System.Drawing.Point(9, 364);
             this.tbNotifyChange.Name = "tbNotifyChange";
             this.tbNotifyChange.Size = new System.Drawing.Size(120, 20);
             this.tbNotifyChange.TabIndex = 8;
@@ -1101,7 +1105,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 340);
+            this.label4.Location = new System.Drawing.Point(6, 308);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 7;
@@ -1122,20 +1126,10 @@
             "6h",
             "12h",
             "24h"});
-            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(9, 356);
+            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(9, 324);
             this.ddlNotifyTimeframe.Name = "ddlNotifyTimeframe";
             this.ddlNotifyTimeframe.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyTimeframe.TabIndex = 6;
-            // 
-            // ddlNotifySymbol
-            // 
-            this.ddlNotifySymbol.FormattingEnabled = true;
-            this.ddlNotifySymbol.Items.AddRange(new object[] {
-            "ETHBTC"});
-            this.ddlNotifySymbol.Location = new System.Drawing.Point(9, 276);
-            this.ddlNotifySymbol.Name = "ddlNotifySymbol";
-            this.ddlNotifySymbol.Size = new System.Drawing.Size(120, 21);
-            this.ddlNotifySymbol.TabIndex = 4;
             // 
             // dgNotification
             // 
@@ -1151,42 +1145,13 @@
             this.Type,
             this.Timeframe,
             this.Change,
-            this.NameNotify});
+            this.NameNotify,
+            this.ChatId});
             this.dgNotification.Location = new System.Drawing.Point(135, 8);
             this.dgNotification.Name = "dgNotification";
             this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgNotification.Size = new System.Drawing.Size(1047, 573);
             this.dgNotification.TabIndex = 1;
-            // 
-            // Symb
-            // 
-            this.Symb.HeaderText = "Pair";
-            this.Symb.Name = "Symb";
-            this.Symb.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
-            // 
-            // NameNotify
-            // 
-            this.NameNotify.HeaderText = "Name";
-            this.NameNotify.Name = "NameNotify";
-            this.NameNotify.ReadOnly = true;
             // 
             // tabPage3
             // 
@@ -1208,7 +1173,7 @@
             this.groupBox8.Controls.Add(this.label7);
             this.groupBox8.Controls.Add(this.ddlSymbols);
             this.groupBox8.Controls.Add(this.lbFavorite);
-            this.groupBox8.Location = new System.Drawing.Point(818, 13);
+            this.groupBox8.Location = new System.Drawing.Point(834, 28);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(172, 455);
             this.groupBox8.TabIndex = 2;
@@ -1272,9 +1237,9 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.dataGridView1);
             this.groupBox7.Controls.Add(this.button1);
             this.groupBox7.Controls.Add(this.button2);
-            this.groupBox7.Controls.Add(this.listBox1);
             this.groupBox7.Controls.Add(this.btnTelegramTestMsg);
             this.groupBox7.Controls.Add(this.label2);
             this.groupBox7.Controls.Add(this.label1);
@@ -1282,16 +1247,34 @@
             this.groupBox7.Controls.Add(this.tbTelegramApi);
             this.groupBox7.Location = new System.Drawing.Point(607, 13);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(189, 455);
+            this.groupBox7.Size = new System.Drawing.Size(221, 397);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Telegram";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 115);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Удалить";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(139, 115);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Добавить";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // btnTelegramTestMsg
             // 
-            this.btnTelegramTestMsg.Location = new System.Drawing.Point(14, 387);
+            this.btnTelegramTestMsg.Location = new System.Drawing.Point(6, 333);
             this.btnTelegramTestMsg.Name = "btnTelegramTestMsg";
-            this.btnTelegramTestMsg.Size = new System.Drawing.Size(161, 49);
+            this.btnTelegramTestMsg.Size = new System.Drawing.Size(208, 49);
             this.btnTelegramTestMsg.TabIndex = 4;
             this.btnTelegramTestMsg.Text = "Тестовое сообщение";
             this.btnTelegramTestMsg.UseVisualStyleBackColor = true;
@@ -1300,7 +1283,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 70);
+            this.label2.Location = new System.Drawing.Point(3, 70);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 3;
@@ -1309,7 +1292,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 24);
+            this.label1.Location = new System.Drawing.Point(3, 27);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 13);
             this.label1.TabIndex = 2;
@@ -1317,16 +1300,16 @@
             // 
             // tbTelegramChatId
             // 
-            this.tbTelegramChatId.Location = new System.Drawing.Point(15, 89);
+            this.tbTelegramChatId.Location = new System.Drawing.Point(6, 89);
             this.tbTelegramChatId.Name = "tbTelegramChatId";
-            this.tbTelegramChatId.Size = new System.Drawing.Size(160, 20);
+            this.tbTelegramChatId.Size = new System.Drawing.Size(208, 20);
             this.tbTelegramChatId.TabIndex = 1;
             // 
             // tbTelegramApi
             // 
-            this.tbTelegramApi.Location = new System.Drawing.Point(12, 43);
+            this.tbTelegramApi.Location = new System.Drawing.Point(6, 43);
             this.tbTelegramApi.Name = "tbTelegramApi";
-            this.tbTelegramApi.Size = new System.Drawing.Size(163, 20);
+            this.tbTelegramApi.Size = new System.Drawing.Size(208, 20);
             this.tbTelegramApi.TabIndex = 0;
             // 
             // groupBox1
@@ -2402,31 +2385,78 @@
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
             // 
-            // button1
+            // Symb
             // 
-            this.button1.Location = new System.Drawing.Point(100, 117);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Удалить";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
             // 
-            // button2
+            // Type
             // 
-            this.button2.Location = new System.Drawing.Point(15, 117);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Добавить";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
             // 
-            // listBox1
+            // Timeframe
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(15, 146);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(160, 238);
-            this.listBox1.TabIndex = 5;
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
+            // NameNotify
+            // 
+            this.NameNotify.HeaderText = "Name";
+            this.NameNotify.Name = "NameNotify";
+            this.NameNotify.ReadOnly = true;
+            // 
+            // ChatId
+            // 
+            this.ChatId.HeaderText = "ChatId";
+            this.ChatId.Name = "ChatId";
+            this.ChatId.ReadOnly = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 460);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(38, 13);
+            this.label9.TabIndex = 23;
+            this.label9.Text = "ChatId";
+            // 
+            // ddlChatId
+            // 
+            this.ddlChatId.FormattingEnabled = true;
+            this.ddlChatId.Items.AddRange(new object[] {
+            "1min",
+            "3min",
+            "5min",
+            "15min",
+            "30min",
+            "1h",
+            "2h",
+            "4h",
+            "6h",
+            "12h",
+            "24h"});
+            this.ddlChatId.Location = new System.Drawing.Point(9, 476);
+            this.ddlChatId.Name = "ddlChatId";
+            this.ddlChatId.Size = new System.Drawing.Size(120, 21);
+            this.ddlChatId.TabIndex = 22;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 144);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(208, 183);
+            this.dataGridView1.TabIndex = 8;
             // 
             // MainMenu
             // 
@@ -2467,6 +2497,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2485,7 +2516,6 @@
         private System.Windows.Forms.TextBox tbNotifyChange;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox ddlNotifyTimeframe;
-        private System.Windows.Forms.ComboBox ddlNotifySymbol;
         private System.Windows.Forms.DataGridView dgNotification;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox7;
@@ -2675,17 +2705,20 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton rb1minTimeframe;
         private System.Windows.Forms.RadioButton rbAllTimeframe;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox cblNotifySymbols;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox ddlGiud;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
         private System.Windows.Forms.DataGridViewTextBoxColumn Change;
         private System.Windows.Forms.DataGridViewTextBoxColumn NameNotify;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ChatId;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox ddlChatId;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

@@ -9,7 +9,7 @@ namespace Binance_alert_bot.Objects
     public class Notifications
     {
         public Dictionary<string, List<Notification>> Guid { get; set; } = new Dictionary<string, List<Notification>>();
-        public long TelegramChatId { get; set; }
+        
     }
     public class Notification
     {
@@ -19,5 +19,6 @@ namespace Binance_alert_bot.Objects
         public string Change { get; set; }
         public DateTime Time { get; set; } = DateTime.MinValue;
         public int Delay { get; set; }
+        public long TelegramChatId { get; set; }
     }
 }
