@@ -101,7 +101,7 @@ namespace Binance_alert_bot.Objects
         public bool VolumeChange24h { get; set; } = false;
         #endregion
 
-        public List<Notifications> notifications { get; set; } = new List<Notifications>();
+        public Notifications notifications { get; set; } = new Notifications();
         public bool Favorite { get; set; } = false;
         public List<string> FavoriveSymbols { get; set; } = new List<string>();
 
@@ -110,6 +110,7 @@ namespace Binance_alert_bot.Objects
 
         public bool Timeframe1min { get; set; } = true;
         public bool TimeframeAll { get; set; } = false;
+        public int Delay { get; set; }
 
         public static Config Reload()
         {

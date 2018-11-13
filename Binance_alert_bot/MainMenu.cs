@@ -32,6 +32,7 @@ namespace Binance_alert_bot
         {
             client = new BinanceBotClient();
             client.BinanceLogs += Logs;
+            client.BinanceSymbols += Symbols;
 
             Task.Run(() => client.BinanceSetCredentials());
             Task.Run(() => LoadBinance());
@@ -42,20 +43,48 @@ namespace Binance_alert_bot
                 && this.ddlNotifyType.SelectedItem.ToString() == "" 
                 && this.ddlNotifyTimeframe.SelectedItem.ToString() == "" 
                 && this.tbNotifyChange.Text != ""
-                && this.ddlGiud.SelectedItem.ToString() != ""
-                && this.ddlChatId.ToString() != "")
+                && this.ddlGiud.Text != ""
+                && this.ddlChatId.SelectedItem.ToString() != "")
             {
                 MessageBox.Show("Заполните все поля");
                 return;
             }
 
-            InThread(() => this.dgNotification.Rows.Add(
+            this.dgNotification.Rows.Add(
                 (cblNotifySymbols.CheckedItems.Count > 1) ? $"{cblNotifySymbols.CheckedItems.Count} Pairs" : cblNotifySymbols.CheckedItems[0].ToString(),
                 this.ddlNotifyType.SelectedItem.ToString(),
                 this.ddlNotifyTimeframe.SelectedItem.ToString(),
                 GetMultiChange(this.tbNotifyChange.Text),
                 this.ddlGiud.SelectedItem.ToString(),
-                this.ddlChatId.SelectedText.ToString()));
+                this.ddlChatId.SelectedText.ToString());
+
+            List<string> list = new List<string>();
+            for (int i = 0; i < cblNotifySymbols.CheckedItems.Count; i++)
+            {
+                list.Add(cblNotifySymbols.CheckedItems[i].ToString());
+            }
+
+            start:
+            if (this.cfg.notifications.Guid.ContainsKey(this.ddlGiud.Text))
+            {
+                this.cfg.notifications.Guid[this.ddlGiud.Text].Add(
+                    new Notification()
+                    {
+                        Change = GetMultiChange(this.tbNotifyChange.Text),
+                        Symbol = list,
+                        TelegramChatId = Convert.ToInt64(this.ddlChatId.SelectedValue.ToString()),
+                        Timeframe = this.ddlNotifyTimeframe.SelectedItem.ToString(),
+                        Type = this.ddlNotifyType.SelectedItem.ToString()
+                    });
+            }
+            else
+            {
+                this.ddlGiud.Items.Insert(0, this.ddlGiud.Text);
+                this.cfg.notifications.Guid.Add(this.ddlGiud.Text, new List<Notification>());
+                goto start;
+            }
+
+            SaveConfig();
         }
 
         private void btnNotifyDelete_Click(object sender, EventArgs e)
@@ -528,350 +557,13 @@ namespace Binance_alert_bot
         }
         private void LoadBinance()
         {
-            while (true)
+            try
             {
-                try
-                {
 
-                    if (client == null) { Thread.Sleep(1000); continue; }
-                    var sw = Stopwatch.StartNew();
-                    //List<Market> BinanceMarket = client.BinanceMarket;
-                    if (client.BinanceMarket.Count > 0)
-
-                        foreach (var market in client.BinanceMarket.ToArray())
-                        {
-                            if (market.Ticks1min.Count < 60 * 24 * 2 - 1 
-                                || market.Ticks3min.Count < 2
-                                || market.Ticks5min.Count < 2
-                                || market.Ticks15min.Count < 2
-                                || market.Ticks30min.Count < 2
-                                || market.Ticks1h.Count < 2
-                                || market.Ticks2h.Count < 2
-                                || market.Ticks4h.Count < 2
-                                || market.Ticks6h.Count < 2
-                                || market.Ticks12h.Count < 2
-                                || market.Ticks24h.Count < 2)
-                                continue;
-
-                            if (this.cbFavorite.Checked && !this.lbFavorite.Items.Contains(market.Symbol.Replace("BTC", "/BTC")))
-                                continue;
-
-                            start:
-                            bool find = false;
-                            foreach (DataGridViewRow dr in this.dgBinanceTable.Rows)
-                            {
-                                if (dr.Cells["Symbol"].Value.ToString() == market.Symbol.Replace("BTC", "/BTC"))
-                                {
-                                    find = true;
-
-                                    DataGridViewRow drBefore = (Convert.ToDecimal(dr.Cells["Ask"].Value) > 0) ? dr : null;
-
-                                    market.Ticks1min = market.Ticks1min.OrderBy(x => x.Time).ToList();
-                                    market.Ticks3min = market.Ticks3min.OrderBy(x => x.Time).ToList();
-                                    market.Ticks5min = market.Ticks5min.OrderBy(x => x.Time).ToList();
-                                    market.Ticks15min = market.Ticks15min.OrderBy(x => x.Time).ToList();
-                                    market.Ticks30min = market.Ticks30min.OrderBy(x => x.Time).ToList();
-                                    market.Ticks1h = market.Ticks1h.OrderBy(x => x.Time).ToList();
-                                    market.Ticks2h = market.Ticks2h.OrderBy(x => x.Time).ToList();
-                                    market.Ticks4h = market.Ticks4h.OrderBy(x => x.Time).ToList();
-                                    market.Ticks6h = market.Ticks6h.OrderBy(x => x.Time).ToList();
-                                    market.Ticks12h = market.Ticks12h.OrderBy(x => x.Time).ToList();
-                                    market.Ticks24h = market.Ticks24h.OrderBy(x => x.Time).ToList();
-
-                                    if (this.rb1minTimeframe.Checked)
-                                        InThread(() => {
-                                        LoadBinanceCell(dr.Cells["Ask"], market.Ask);
-                                        LoadBinanceCell(dr.Cells["Bid"], market.Bid);
-
-                                        LoadBinanceCell(dr.Cells["PriceChange1min"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-1 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange3min"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-3 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange5min"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-5 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange15min"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-15 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange30min"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-30 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange1h"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-60 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange2h"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-60*2 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange4h"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-60*4 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange6h"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-60*6 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange12h"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-60*12 + 1)).Close, market.Ticks1min.Last().Close), true);
-                                        LoadBinanceCell(dr.Cells["PriceChange24h"], GetProfit(market.Ticks1min.Find(t => t.Time == market.Ticks1min[market.Ticks1min.Count - 2].Time.AddMinutes(-60*24 + 1)).Close, market.Ticks1min.Last().Close), true);
-
-                                        LoadBinanceCell(dr.Cells["High1min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High3min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High5min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High15min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High30min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High1h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High2h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High4h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High6h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High12h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Max(h => h.High));
-                                        LoadBinanceCell(dr.Cells["High24h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Max(h => h.High));
-
-                                        LoadBinanceCell(dr.Cells["Low1min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low3min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low5min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low15min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low30min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low1h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low2h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low4h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low6h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low12h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12) && t.Low > 0).Min(h => h.Low));
-                                        LoadBinanceCell(dr.Cells["Low24h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24) && t.Low > 0).Min(h => h.Low));
-
-                                        LoadBinanceCell(dr.Cells["Amplitude1min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude3min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude5min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude15min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude30min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude1h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude2h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*2)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*2)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude4h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*4)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*4)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude6h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*6)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*6)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude12h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*12)).Min(m=>m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*12)).Max(m => m.High)));
-                                        LoadBinanceCell(dr.Cells["Amplitude24h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*24)).Min(m => m.Low), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60*24)).Max(m => m.High)));
-
-                                        LoadBinanceCell(dr.Cells["VolumeQuote1min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote3min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote5min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote15min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote30min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote1h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote2h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote4h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote6h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote12h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Sum(h => h.VolumeQuote));
-                                        LoadBinanceCell(dr.Cells["VolumeQuote24h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Sum(h => h.VolumeQuote));
-
-                                        LoadBinanceCell(dr.Cells["VolumeBase1min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase3min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase5min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase15min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase30min"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase1h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase2h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase4h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase6h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase12h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12)).Sum(h => h.VolumeBase));
-                                        LoadBinanceCell(dr.Cells["VolumeBase24h"], market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24)).Sum(h => h.VolumeBase));     
-
-                                        LoadBinanceCell(dr.Cells["VolumeChange1min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-1)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time >= DateTime.UtcNow.AddMinutes(0)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange3min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-3)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange5min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-5)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange15min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-15)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange30min"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-30)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange1h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(60 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange2h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(60 * 2 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-60 * 2)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 2)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange4h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 4 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-60 * 4)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * 60 * 4)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 6 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-60 * 6)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * 60 * 6)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 12 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-60 * 12)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * 60 * 12)).Sum(h => h.VolumeQuote)), true);
-                                        LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-60 * 24 * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-60 * 24)).Sum(h => h.VolumeQuote), market.Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * 60 * 24)).Sum(h => h.VolumeQuote)), true);
-                                        });
-                                    else
-                                        InThread(() => {
-                                            LoadBinanceCell(dr.Cells["Ask"], market.Ask);
-                                            LoadBinanceCell(dr.Cells["Bid"], market.Bid);
-
-                                            LoadBinanceCell(dr.Cells["PriceChange1min"], GetProfit(market.Ticks1min[market.Ticks1min.Count - 2].Close, market.Ticks1min.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange3min"], GetProfit(market.Ticks3min[market.Ticks3min.Count - 2].Close, market.Ticks3min.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange5min"], GetProfit(market.Ticks5min[market.Ticks5min.Count - 2].Close, market.Ticks5min.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange15min"], GetProfit(market.Ticks15min[market.Ticks15min.Count - 2].Close, market.Ticks15min.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange30min"], GetProfit(market.Ticks30min[market.Ticks30min.Count - 2].Close, market.Ticks30min.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange1h"], GetProfit(market.Ticks1h[market.Ticks1h.Count - 2].Close, market.Ticks1h.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange2h"], GetProfit(market.Ticks2h[market.Ticks2h.Count - 2].Close, market.Ticks2h.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange4h"], GetProfit(market.Ticks4h[market.Ticks4h.Count - 2].Close, market.Ticks4h.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange6h"], GetProfit(market.Ticks6h[market.Ticks6h.Count - 2].Close, market.Ticks6h.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange12h"], GetProfit(market.Ticks12h[market.Ticks12h.Count - 2].Close, market.Ticks12h.Last().Close), true);
-                                            LoadBinanceCell(dr.Cells["PriceChange24h"], GetProfit(market.Ticks24h[market.Ticks24h.Count - 2].Close, market.Ticks24h.Last().Close), true);
-
-                                            LoadBinanceCell(dr.Cells["High1min"], market.Ticks1min.Last().High);
-                                            LoadBinanceCell(dr.Cells["High3min"], market.Ticks3min.Last().High);
-                                            LoadBinanceCell(dr.Cells["High5min"], market.Ticks5min.Last().High);
-                                            LoadBinanceCell(dr.Cells["High15min"], market.Ticks15min.Last().High);
-                                            LoadBinanceCell(dr.Cells["High30min"], market.Ticks30min.Last().High);
-                                            LoadBinanceCell(dr.Cells["High1h"], market.Ticks1h.Last().High);
-                                            LoadBinanceCell(dr.Cells["High2h"], market.Ticks2h.Last().High);
-                                            LoadBinanceCell(dr.Cells["High4h"], market.Ticks4h.Last().High);
-                                            LoadBinanceCell(dr.Cells["High6h"], market.Ticks6h.Last().High);
-                                            LoadBinanceCell(dr.Cells["High12h"], market.Ticks12h.Last().High);
-                                            LoadBinanceCell(dr.Cells["High24h"], market.Ticks24h.Last().High);
-
-                                            LoadBinanceCell(dr.Cells["Low1min"], market.Ticks1min.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low3min"], market.Ticks3min.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low5min"], market.Ticks5min.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low15min"], market.Ticks15min.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low30min"], market.Ticks30min.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low1h"], market.Ticks1h.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low2h"], market.Ticks2h.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low4h"], market.Ticks4h.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low6h"], market.Ticks6h.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low12h"], market.Ticks12h.Last().Low);
-                                            LoadBinanceCell(dr.Cells["Low24h"], market.Ticks24h.Last().Low);
-
-                                            LoadBinanceCell(dr.Cells["Amplitude1min"], GetProfit(market.Ticks1min.Last().Low, market.Ticks1min.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude3min"], GetProfit(market.Ticks3min.Last().Low, market.Ticks3min.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude5min"], GetProfit(market.Ticks5min.Last().Low, market.Ticks5min.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude15min"], GetProfit(market.Ticks15min.Last().Low, market.Ticks15min.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude30min"], GetProfit(market.Ticks30min.Last().Low, market.Ticks30min.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude1h"], GetProfit(market.Ticks1h.Last().Low, market.Ticks1h.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude2h"], GetProfit(market.Ticks2h.Last().Low, market.Ticks2h.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude4h"], GetProfit(market.Ticks4h.Last().Low, market.Ticks4h.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude6h"], GetProfit(market.Ticks6h.Last().Low, market.Ticks6h.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude12h"], GetProfit(market.Ticks12h.Last().Low, market.Ticks12h.Last().High));
-                                            LoadBinanceCell(dr.Cells["Amplitude24h"], GetProfit(market.Ticks24h.Last().Low, market.Ticks24h.Last().High));
-
-                                            LoadBinanceCell(dr.Cells["VolumeQuote1min"], market.Ticks1min.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote3min"], market.Ticks3min.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote5min"], market.Ticks5min.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote15min"], market.Ticks15min.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote30min"], market.Ticks30min.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote1h"], market.Ticks1h.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote2h"], market.Ticks2h.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote4h"], market.Ticks4h.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote6h"], market.Ticks6h.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote12h"], market.Ticks12h.Last().VolumeQuote);
-                                            LoadBinanceCell(dr.Cells["VolumeQuote24h"], market.Ticks24h.Last().VolumeQuote);
-
-                                            LoadBinanceCell(dr.Cells["VolumeBase1min"], market.Ticks1min.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase3min"], market.Ticks3min.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase5min"], market.Ticks5min.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase15min"], market.Ticks15min.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase30min"], market.Ticks30min.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase1h"], market.Ticks1h.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase2h"], market.Ticks2h.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase4h"], market.Ticks4h.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase6h"], market.Ticks6h.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase12h"], market.Ticks12h.Last().VolumeBase);
-                                            LoadBinanceCell(dr.Cells["VolumeBase24h"], market.Ticks24h.Last().VolumeBase);
-
-                                            LoadBinanceCell(dr.Cells["VolumeChange1min"], GetProfit(market.Ticks1min[market.Ticks1min.Count - 2].VolumeQuote, market.Ticks1min.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange3min"], GetProfit(market.Ticks3min[market.Ticks3min.Count - 2].VolumeQuote, market.Ticks3min.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange5min"], GetProfit(market.Ticks5min[market.Ticks5min.Count - 2].VolumeQuote, market.Ticks5min.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange15min"], GetProfit(market.Ticks15min[market.Ticks15min.Count - 2].VolumeQuote, market.Ticks15min.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange30min"], GetProfit(market.Ticks30min[market.Ticks30min.Count - 2].VolumeQuote, market.Ticks30min.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange1h"], GetProfit(market.Ticks1h[market.Ticks1h.Count - 2].VolumeQuote, market.Ticks1h.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange2h"], GetProfit(market.Ticks2h[market.Ticks2h.Count - 2].VolumeQuote, market.Ticks2h.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange4h"], GetProfit(market.Ticks4h[market.Ticks4h.Count - 2].VolumeQuote, market.Ticks4h.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange6h"], GetProfit(market.Ticks6h[market.Ticks6h.Count - 2].VolumeQuote, market.Ticks6h.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange12h"], GetProfit(market.Ticks12h[market.Ticks12h.Count - 2].VolumeQuote, market.Ticks12h.Last().VolumeQuote), true);
-                                            LoadBinanceCell(dr.Cells["VolumeChange24h"], GetProfit(market.Ticks24h[market.Ticks24h.Count - 2].VolumeQuote, market.Ticks24h.Last().VolumeQuote), true);
-                                        });
-
-                                    SendNotification(dr, drBefore);
-                                    break;
-                                }
-                            }
-
-                            if (!find)
-                            {
-                                InThread(() => this.dgBinanceTable.Rows.Add(
-                                    market.Symbol.Replace("BTC", "/BTC"),
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0
-                                    ));
-
-                                goto start;
-                            }   
-                        }
-                    sw.Stop();
-                    if (sw.ElapsedMilliseconds / 10 > 1000)
-                        continue;
-                    else
-                        Thread.Sleep(1000 - (int)sw.ElapsedMilliseconds / 10);
-
-                }
-                catch (Exception ex)
-                {
-                    Logs(ex.ToString());
-                }
-                finally
-                {
-                    Thread.Sleep(1000);
-                }
+            }
+            catch (Exception ex)
+            {
+                Logs(ex.ToString());
             }
         }
 
@@ -897,78 +589,6 @@ namespace Binance_alert_bot
             if (last == 0)
                 last = 1;
             return Math.Round(last * 100 / first - 100, 2);
-        }
-
-        public void SendNotification(DataGridViewRow dr_t, DataGridViewRow drBefore)
-        {
-            if (drBefore == null)
-                return;
-
-            if (this.tbTelegramApi.Text != "" && this.tbTelegramChatId.Text != "")
-            {
-                TelegramBotClient bot = new TelegramBotClient(this.tbTelegramApi.Text);
-                foreach (DataGridViewRow dr in this.dgNotification.Rows)
-                {
-                    if (dr_t.Cells["Symbol"].Value.ToString() != dr.Cells["Symb"].Value.ToString())
-                        continue;
-
-                    decimal drChange = Convert.ToDecimal(dr.Cells["Change"].Value.ToString());
-                    decimal dr_tValue = 0;
-                    decimal drBeforeValue = 0;
-                    if (dr.Cells["Type"].Value.ToString() == "Ask" || dr.Cells["Type"].Value.ToString() == "Bid")
-                    {
-                        dr_tValue = Convert.ToDecimal(dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}"].Value.ToString());
-                        drBeforeValue = Convert.ToDecimal(drBefore.Cells[$"{dr.Cells["Type"].Value.ToString()}"].Value.ToString());
-                    }
-                    else
-                    {
-                        dr_tValue = Convert.ToDecimal(dr_t.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Split(' ')[0].ToString());
-                        drBeforeValue = Convert.ToDecimal(drBefore.Cells[$"{dr.Cells["Type"].Value.ToString()}{dr.Cells["Timeframe"].Value.ToString()}"].Value.ToString().Split(' ')[0].ToString());
-                    }
-
-
-                    bool less = dr.Cells["Change"].Value.ToString().Contains("<");
-                    bool more = dr.Cells["Change"].Value.ToString().Contains(">");
-
-                    
-
-                    if (dr_tValue > drChange && more)
-                    {
-                        string Type = dr.Cells["Type"].Value.ToString();
-                        string Symbol = $"[{dr.Cells["Symb"].Value.ToString()}](https://www.binance.com/en/trade/{dr.Cells["Symb"].Value.ToString().Replace("/", "_")})";
-                        string drChangeValue = dr.Cells["Change"].Value.ToString();
-                        string Timeframe = (dr.Cells["Type"].Value.ToString() == "Ask" || dr.Cells["Type"].Value.ToString() == "Bid") ? "" : dr.Cells["Timeframe"].Value.ToString();
-                        string EndSymbol = dr.Cells["Change"].Value.ToString().Split(' ')[2].ToString();
-
-                        string text = $"{Symbol}\n";
-                        text = $"*{Type}* = `{dr_tValue}` `{EndSymbol}`\n";
-
-                        if (dr.Cells["Type"].Value.ToString() == "PriceChange")
-                            text = $"`{drBeforeValue}` → `{dr_tValue}`\n";
-
-                        text = $"*{Type}* `{drChangeValue}` *{Timeframe}*\n";
-
-                        Logs($"Telegram -> {dr.Cells["Symb"].Value.ToString()}");
-
-                        bot.SendTextMessageAsync(Convert.ToInt32(this.tbTelegramChatId.Text), text, parseMode: ParseMode.Markdown, disableWebPagePreview: true);
-                    }
-                    if (dr_tValue < drChange && less)
-                    {
-                        string Type = dr.Cells["Type"].Value.ToString();
-                        string Symbol = $"[{dr.Cells["Symb"].Value.ToString()}](https://www.binance.com/en/trade/{dr.Cells["Symb"].Value.ToString().Replace("/", "_")})";
-                        string drChangeValue = dr.Cells["Change"].Value.ToString();
-                        string Timeframe = (dr.Cells["Type"].Value.ToString() == "Ask" || dr.Cells["Type"].Value.ToString() == "Bid") ? "" : dr.Cells["Timeframe"].Value.ToString();
-                        string EndSymbol = dr.Cells["Change"].Value.ToString().Split(' ')[2].ToString();
-
-                        string text = $"{Symbol}\n" +
-                             $"*{Type}* = `{dr_tValue}` `{EndSymbol}`\n" +
-                             $"*{Type}* `{drChangeValue}` *{Timeframe}*\n";
-
-                        Logs($"Telegram -> {dr.Cells["Symb"].Value.ToString()}");
-                        bot.SendTextMessageAsync(Convert.ToInt32(this.tbTelegramChatId.Text), text, parseMode: ParseMode.Markdown, disableWebPagePreview: true);
-                    }
-                }
-            }
         }
 
         private void LoadSettings()
@@ -1074,28 +694,34 @@ namespace Binance_alert_bot
             }
 
             this.dgNotification.Rows.Clear();
-            foreach(var notify in cfg.notifications)
+            foreach(var notify in cfg.notifications.Guid)
             {
-                foreach (var ntf in notify.Guid)
+                this.ddlGiud.Items.Insert(0, notify.Key);
+                foreach (var n in notify.Value)
                 {
-                    foreach (var n in ntf.Value)
-                    {
-                        this.dgNotification.Rows.Add(
-                                                (n.Symbol.Count > 1) ? $"{n.Symbol.Count} Pairs" : $"{n.Symbol[0].ToString()}" ,
-                                                n.Type,
-                                                n.Timeframe,
-                                                n.Change,
-                                                ntf.Key,
-                                                n.TelegramChatId);
-                    }
+                    this.dgNotification.Rows.Add(
+                                            (n.Symbol.Count > 1) ? $"{n.Symbol.Count} Pairs" : $"{n.Symbol[0].ToString()}",
+                                            n.Type,
+                                            n.Timeframe,
+                                            n.Change,
+                                            notify.Key,
+                                            n.TelegramChatId);
                 }
             }
 
             this.tbTelegramApi.Text = this.cfg.TelegramApiKey;
-            this.lbChatId.Items.Clear();
-            foreach(var chatid in cfg.cha)
 
-            this.tbTelegramChatId.Text = this.cfg.TelegramChatID;
+            this.dgTgChats.Rows.Clear();
+            foreach (var chatid in cfg.TelegramChats)
+            {
+                this.ddlChatId.DataSource = new BindingSource(this.cfg.TelegramChats, null);
+                this.ddlChatId.DisplayMember = "Value";
+                this.ddlChatId.ValueMember = "Key";
+                this.dgTgChats.Rows.Add(chatid.Key, chatid.Value);
+            }
+
+            this.tbTelegramChatId.Text = "";
+            this.tbTelegramChatName.Text = "";
 
             this.rb1minTimeframe.Checked = this.cfg.Timeframe1min;
             this.rbAllTimeframe.Checked = this.cfg.TimeframeAll;
@@ -1191,30 +817,7 @@ namespace Binance_alert_bot
 
             this.cfg.Favorite = this.cbFavorite.Checked;
 
-            this.cfg.FavoriveSymbols = new List<string>();
-            foreach (var f in this.lbFavorite.Items)
-                cfg.FavoriveSymbols.Add(f.ToString());
-
-            this.cfg.notifications = new List<Notifications>();
-            foreach (DataGridViewRow dr in dgNotification.Rows)
-            {
-                this.cfg.notifications.Add(
-                    new Notifications
-                    {
-                        Symbol = dr.Cells["Symb"].Value.ToString(),
-                        Type = dr.Cells["Type"].Value.ToString(),
-                        Timeframe = dr.Cells["Timeframe"].Value.ToString(),
-                        Change = dr.Cells["Change"].Value.ToString()
-                    });
-            }
-
-            this.cfg.TelegramApiKey = this.tbTelegramApi.Text;
-            this.cfg.TelegramChatID = this.tbTelegramChatId.Text;
-
-            this.cfg.Timeframe1min = this.rb1minTimeframe.Checked;
-            this.cfg.TimeframeAll = this.rbAllTimeframe.Checked;
-
-            Config.Save(cfg);
+            SaveConfig();
         }
         private string GetMultiChange(string change)
         {
@@ -1253,7 +856,7 @@ namespace Binance_alert_bot
 
         private void btnDeleteFavorite_Click(object sender, EventArgs e)
         {
-            if (this.lbFavorite.SelectedItem.ToString() != "")
+            if (this.lbFavorite.SelectedItem != null && this.lbFavorite.SelectedItem.ToString() != "")
                 this.lbFavorite.Items.Remove(this.lbFavorite.SelectedItem);
         }
 
@@ -1264,32 +867,41 @@ namespace Binance_alert_bot
 
         private void btnTelegramTestMsg_Click(object sender, EventArgs e)
         {
-            try
+            if (dgTgChats.SelectedRows.Count > 0)
             {
-                if (this.tbTelegramApi.Text != "" && this.tbTelegramChatId.Text != "")
+                foreach(DataGridViewRow row in dgTgChats.SelectedRows)
                 {
-                    TelegramBotClient bot = new TelegramBotClient(this.tbTelegramApi.Text);
-                    bot.SendTextMessageAsync(Convert.ToInt32(this.tbTelegramChatId.Text), "Тестовое сообщение", parseMode: ParseMode.Markdown);
-                }
-                else
-                {
-                    MessageBox.Show("Следует заполнить поля");
+                    try
+                    {
+                        TelegramBotClient bot = new TelegramBotClient(this.tbTelegramApi.Text);
+                        bot.SendTextMessageAsync(Convert.ToInt64(row.Cells[0].Value), $"Тестовое сообщение от \"{row.Cells[1].Value.ToString()}\"", parseMode: ParseMode.Markdown);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка в заполненных полях телеграма");
+                    }
                 }
             }
-            catch
+            else
             {
-                MessageBox.Show("Ошибка в заполненных полях телеграма");
+                MessageBox.Show("Для отправки тестового сообщения выберете чат из списка");
             }
         }
 
         private void rbAllTimeframe_CheckedChanged(object sender, EventArgs e)
         {
             this.dgBinanceTable.Rows.Clear();
+            this.cfg.Timeframe1min = rb1minTimeframe.Checked;
+            this.cfg.TimeframeAll = rbAllTimeframe.Checked;
+            SaveConfig();
         }
 
         private void rb1minTimeframe_CheckedChanged(object sender, EventArgs e)
         {
             this.dgBinanceTable.Rows.Clear();
+            this.cfg.Timeframe1min = rb1minTimeframe.Checked;
+            this.cfg.TimeframeAll = rbAllTimeframe.Checked;
+            SaveConfig();
         }
 
         private void tbNotifyChange_Leave(object sender, EventArgs e)
@@ -1299,6 +911,84 @@ namespace Binance_alert_bot
                 MessageBox.Show($"Ошибка в коверитировании. Двоичное число должно быть через '{Convert.ToChar(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)}'");
                 return;
             }
+        }
+
+        private void btnAddTgChat_Click(object sender, EventArgs e)
+        {
+            if (this.tbTelegramChatId.Text != "")
+            {
+                if (Int64.TryParse(this.tbTelegramChatId.Text, out long chatid))
+                {
+                    InThread(() =>
+                    {
+                        this.dgTgChats.Rows.Add(
+                            this.tbTelegramChatId.Text,
+                            this.tbTelegramChatName.Text);
+                    });
+                    this.cfg.TelegramChats.Add(chatid, this.tbTelegramChatName.Text);
+
+                    SaveConfig();
+
+                    this.ddlChatId.DataSource = new BindingSource(this.cfg.TelegramChats, null);
+                    this.ddlChatId.DisplayMember = "Value";
+                    this.ddlChatId.ValueMember = "Key";
+
+                    this.tbTelegramChatId.Text = "";
+                    this.tbTelegramChatName.Text = "";
+                }
+                else
+                {
+                    MessageBox.Show("Id чата не соответствует требованиям");
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Заполните Id чата");
+            }
+        }
+
+        private void btnDeleteTgChat_Click(object sender, EventArgs e)
+        {
+            if (this.dgTgChats.SelectedRows.Count > 0)
+            {
+                foreach (DataGridViewRow row in dgTgChats.SelectedRows)
+                {
+                    this.cfg.TelegramChats.Remove(Convert.ToInt64(row.Cells[0].Value.ToString()));
+                    SaveConfig();
+                    InThread(() =>
+                    {
+                        this.ddlChatId.DataSource = new BindingSource(this.cfg.TelegramChats, null);
+                        this.ddlChatId.DisplayMember = "Value";
+                        this.ddlChatId.ValueMember = "Key";
+                        this.dgTgChats.Rows.Remove(row);
+                    });
+                }
+            }
+        }
+
+        private void SaveConfig()
+        {
+            Config.Save(cfg);
+            client.UpdateNotifications(cfg);
+        }
+
+        private void tbDelay_Leave(object sender, EventArgs e)
+        {
+            if (Int32.TryParse(this.tbDelay.Text, out int deley))
+            {
+                cfg.Delay = deley;
+                SaveConfig();
+            }
+            else
+            {
+                MessageBox.Show("Значение должно быть целым числом");
+            }
+        }
+
+        private void tbTelegramApi_Leave(object sender, EventArgs e)
+        {
+            cfg.TelegramApiKey = this.tbTelegramApi.Text;
         }
     }
 }

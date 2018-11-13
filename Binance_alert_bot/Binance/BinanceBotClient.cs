@@ -106,53 +106,51 @@ namespace Binance_alert_bot.Binance
 
                     BinanceMarkets?.Invoke(market);
 
-                    foreach (var notification in cfg.notifications) {
-                        foreach (var notify in notification.Guid)
+                    foreach (var notify in cfg.notifications.Guid)
+                    {
+                        string text = "";
+                        string emoje = "";
+                        foreach (var n in notify.Value)
                         {
-                            string text = "";
-                            string emoje = "";
-                            foreach (var n in notify.Value)
+                            if (n.Type == "Ask" || n.Type == "Bid")
+                                n.Timeframe = "";
+
+                            if (!n.Symbol.Contains(market.Symbol))
+                                continue;
+
+                            if ((DateTime.Now - n.Time).TotalSeconds < cfg.Delay)
+                                continue;
+
+                            var formula = n.Change.Split(' ');
+
+                            string operand = formula[0].ToString();
+
+                            decimal change = Convert.ToDecimal(formula[1].ToString());
+
+                            string endSymbol = formula[2].ToString();
+
+                            if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<")
                             {
-                                if (n.Type == "Ask" || n.Type == "Bid")
-                                    n.Timeframe = "";
+                                emoje += $"↑{market.MI[n.Type + n.Timeframe].Emoji} ";
+                                text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
 
-                                if (!n.Symbol.Contains(market.Symbol))
-                                    continue;
-
-                                if ((DateTime.Now - n.Time).TotalSeconds < n.Delay)
-                                    continue;
-
-                                var formula = n.Change.Split(' ');
-
-                                string operand = formula[0].ToString();
-
-                                decimal change = Convert.ToDecimal(formula[1].ToString());
-
-                                string endSymbol = formula[2].ToString();
-
-                                if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<")
-                                {
-                                    emoje += $"↑{market.MI[n.Type + n.Timeframe].Emoji} ";
-                                    text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
-
-                                }
-                                if (market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
-                                {
-                                    emoje += $"↓{market.MI[n.Type + n.Timeframe].Emoji} ";
-                                    text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
-                                }
                             }
-
-                            if (text != "")
+                            if (market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
                             {
-                                text = $"{emoje}\n{text}\n";
-
-                                TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
-                                bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, text, parseMode: ParseMode.Markdown);
+                                emoje += $"↓{market.MI[n.Type + n.Timeframe].Emoji} ";
+                                text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
                             }
+                        }
 
+                        if (text != "")
+                        {
+                            text = $"{emoje}\n{text}\n";
+
+                            TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
+                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, text, parseMode: ParseMode.Markdown);
                         }
                     }
+                    
                 }
             }
         }
@@ -175,7 +173,7 @@ namespace Binance_alert_bot.Binance
                     symbol.Ticks12h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 12 * 60 * 2 - 1));
                     symbol.Ticks24h.RemoveAll(d => d.Time < DateTime.Now.AddMinutes(-1 * 24 * 60 * 2 - 1));
                 }
-                Thread.Sleep(1000 * 60);
+                Thread.Sleep(1000);
             }
         }
         private void SubscribeToNewSymbolAsync(List<string> symbol, int SubscribeDeleyHour = 0)

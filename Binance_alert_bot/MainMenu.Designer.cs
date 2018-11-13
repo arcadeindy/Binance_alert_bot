@@ -112,6 +112,8 @@
             this.VolumeChange12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ddlChatId = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ddlGiud = new System.Windows.Forms.ComboBox();
             this.cblNotifySymbols = new System.Windows.Forms.CheckedListBox();
@@ -127,7 +129,15 @@
             this.label4 = new System.Windows.Forms.Label();
             this.ddlNotifyTimeframe = new System.Windows.Forms.ComboBox();
             this.dgNotification = new System.Windows.Forms.DataGridView();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tbDelay = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cbFavorite = new System.Windows.Forms.CheckBox();
             this.btnDeleteFavorite = new System.Windows.Forms.Button();
@@ -136,13 +146,14 @@
             this.ddlSymbols = new System.Windows.Forms.ComboBox();
             this.lbFavorite = new System.Windows.Forms.ListBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tbTelegramChatName = new System.Windows.Forms.TextBox();
+            this.dgTgChats = new System.Windows.Forms.DataGridView();
+            this.btnDeleteTgChat = new System.Windows.Forms.Button();
+            this.btnAddTgChat = new System.Windows.Forms.Button();
             this.btnTelegramTestMsg = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.tbTelegramChatId = new System.Windows.Forms.TextBox();
-            this.tbTelegramApi = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rb1minTimeframe = new System.Windows.Forms.RadioButton();
             this.rbAllTimeframe = new System.Windows.Forms.RadioButton();
@@ -232,17 +243,12 @@
             this.cbPriceChange30min = new System.Windows.Forms.CheckBox();
             this.cbPriceChange2h = new System.Windows.Forms.CheckBox();
             this.cbPriceChange1h = new System.Windows.Forms.CheckBox();
+            this.tbTelegramApi = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
-            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label9 = new System.Windows.Forms.Label();
-            this.ddlChatId = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.TgChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TgChatName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -251,6 +257,7 @@
             this.tabPage3.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgTgChats)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox9.SuspendLayout();
@@ -260,7 +267,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -377,6 +383,7 @@
             this.dgBinanceTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgBinanceTable.Location = new System.Drawing.Point(3, 3);
             this.dgBinanceTable.Name = "dgBinanceTable";
+            this.dgBinanceTable.RowHeadersVisible = false;
             this.dgBinanceTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dgBinanceTable.Size = new System.Drawing.Size(1176, 575);
             this.dgBinanceTable.TabIndex = 0;
@@ -969,6 +976,24 @@
             this.tabPage2.Text = "Уведомления";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 460);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(60, 13);
+            this.label9.TabIndex = 23;
+            this.label9.Text = "Chat Name";
+            // 
+            // ddlChatId
+            // 
+            this.ddlChatId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlChatId.FormattingEnabled = true;
+            this.ddlChatId.Location = new System.Drawing.Point(9, 476);
+            this.ddlChatId.Name = "ddlChatId";
+            this.ddlChatId.Size = new System.Drawing.Size(120, 21);
+            this.ddlChatId.TabIndex = 22;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -981,18 +1006,6 @@
             // ddlGiud
             // 
             this.ddlGiud.FormattingEnabled = true;
-            this.ddlGiud.Items.AddRange(new object[] {
-            "1min",
-            "3min",
-            "5min",
-            "15min",
-            "30min",
-            "1h",
-            "2h",
-            "4h",
-            "6h",
-            "12h",
-            "24h"});
             this.ddlGiud.Location = new System.Drawing.Point(9, 430);
             this.ddlGiud.Name = "ddlGiud";
             this.ddlGiud.Size = new System.Drawing.Size(120, 21);
@@ -1000,6 +1013,7 @@
             // 
             // cblNotifySymbols
             // 
+            this.cblNotifySymbols.CheckOnClick = true;
             this.cblNotifySymbols.FormattingEnabled = true;
             this.cblNotifySymbols.Location = new System.Drawing.Point(9, 32);
             this.cblNotifySymbols.Name = "cblNotifySymbols";
@@ -1069,6 +1083,7 @@
             // 
             // ddlNotifyType
             // 
+            this.ddlNotifyType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlNotifyType.FormattingEnabled = true;
             this.ddlNotifyType.Items.AddRange(new object[] {
             "Ask",
@@ -1113,6 +1128,7 @@
             // 
             // ddlNotifyTimeframe
             // 
+            this.ddlNotifyTimeframe.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlNotifyTimeframe.FormattingEnabled = true;
             this.ddlNotifyTimeframe.Items.AddRange(new object[] {
             "1min",
@@ -1153,17 +1169,74 @@
             this.dgNotification.Size = new System.Drawing.Size(1047, 573);
             this.dgNotification.TabIndex = 1;
             // 
+            // Symb
+            // 
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
+            // 
+            // Type
+            // 
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Timeframe
+            // 
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
+            // NameNotify
+            // 
+            this.NameNotify.HeaderText = "Name";
+            this.NameNotify.Name = "NameNotify";
+            this.NameNotify.ReadOnly = true;
+            // 
+            // ChatId
+            // 
+            this.ChatId.HeaderText = "ChatId";
+            this.ChatId.Name = "ChatId";
+            this.ChatId.ReadOnly = true;
+            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.tbDelay);
+            this.tabPage3.Controls.Add(this.label11);
             this.tabPage3.Controls.Add(this.groupBox8);
             this.tabPage3.Controls.Add(this.groupBox7);
             this.tabPage3.Controls.Add(this.groupBox1);
+            this.tabPage3.Controls.Add(this.tbTelegramApi);
+            this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(1182, 581);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Настройка";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tbDelay
+            // 
+            this.tbDelay.Location = new System.Drawing.Point(777, 29);
+            this.tbDelay.Name = "tbDelay";
+            this.tbDelay.Size = new System.Drawing.Size(55, 20);
+            this.tbDelay.TabIndex = 4;
+            this.tbDelay.Leave += new System.EventHandler(this.tbDelay_Leave);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(774, 13);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(34, 13);
+            this.label11.TabIndex = 3;
+            this.label11.Text = "Delay";
             // 
             // groupBox8
             // 
@@ -1173,7 +1246,7 @@
             this.groupBox8.Controls.Add(this.label7);
             this.groupBox8.Controls.Add(this.ddlSymbols);
             this.groupBox8.Controls.Add(this.lbFavorite);
-            this.groupBox8.Location = new System.Drawing.Point(834, 28);
+            this.groupBox8.Location = new System.Drawing.Point(840, 13);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(172, 455);
             this.groupBox8.TabIndex = 2;
@@ -1237,42 +1310,79 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.dataGridView1);
-            this.groupBox7.Controls.Add(this.button1);
-            this.groupBox7.Controls.Add(this.button2);
+            this.groupBox7.Controls.Add(this.label10);
+            this.groupBox7.Controls.Add(this.tbTelegramChatName);
+            this.groupBox7.Controls.Add(this.dgTgChats);
+            this.groupBox7.Controls.Add(this.btnDeleteTgChat);
+            this.groupBox7.Controls.Add(this.btnAddTgChat);
             this.groupBox7.Controls.Add(this.btnTelegramTestMsg);
             this.groupBox7.Controls.Add(this.label2);
-            this.groupBox7.Controls.Add(this.label1);
             this.groupBox7.Controls.Add(this.tbTelegramChatId);
-            this.groupBox7.Controls.Add(this.tbTelegramApi);
-            this.groupBox7.Location = new System.Drawing.Point(607, 13);
+            this.groupBox7.Location = new System.Drawing.Point(613, 55);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(221, 397);
+            this.groupBox7.Size = new System.Drawing.Size(221, 381);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Telegram";
             // 
-            // button1
+            // label10
             // 
-            this.button1.Location = new System.Drawing.Point(6, 115);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Удалить";
-            this.button1.UseVisualStyleBackColor = true;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 62);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(107, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Telegram Chat Name";
             // 
-            // button2
+            // tbTelegramChatName
             // 
-            this.button2.Location = new System.Drawing.Point(139, 115);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Добавить";
-            this.button2.UseVisualStyleBackColor = true;
+            this.tbTelegramChatName.Location = new System.Drawing.Point(6, 81);
+            this.tbTelegramChatName.Name = "tbTelegramChatName";
+            this.tbTelegramChatName.Size = new System.Drawing.Size(208, 20);
+            this.tbTelegramChatName.TabIndex = 9;
+            // 
+            // dgTgChats
+            // 
+            this.dgTgChats.AllowUserToAddRows = false;
+            this.dgTgChats.AllowUserToDeleteRows = false;
+            this.dgTgChats.AllowUserToResizeColumns = false;
+            this.dgTgChats.AllowUserToResizeRows = false;
+            this.dgTgChats.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgTgChats.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgTgChats.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.TgChatId,
+            this.TgChatName});
+            this.dgTgChats.Location = new System.Drawing.Point(7, 136);
+            this.dgTgChats.Name = "dgTgChats";
+            this.dgTgChats.RowHeadersVisible = false;
+            this.dgTgChats.RowHeadersWidth = 10;
+            this.dgTgChats.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgTgChats.Size = new System.Drawing.Size(208, 183);
+            this.dgTgChats.TabIndex = 8;
+            // 
+            // btnDeleteTgChat
+            // 
+            this.btnDeleteTgChat.Location = new System.Drawing.Point(6, 107);
+            this.btnDeleteTgChat.Name = "btnDeleteTgChat";
+            this.btnDeleteTgChat.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteTgChat.TabIndex = 7;
+            this.btnDeleteTgChat.Text = "Удалить";
+            this.btnDeleteTgChat.UseVisualStyleBackColor = true;
+            this.btnDeleteTgChat.Click += new System.EventHandler(this.btnDeleteTgChat_Click);
+            // 
+            // btnAddTgChat
+            // 
+            this.btnAddTgChat.Location = new System.Drawing.Point(139, 107);
+            this.btnAddTgChat.Name = "btnAddTgChat";
+            this.btnAddTgChat.Size = new System.Drawing.Size(75, 23);
+            this.btnAddTgChat.TabIndex = 6;
+            this.btnAddTgChat.Text = "Добавить";
+            this.btnAddTgChat.UseVisualStyleBackColor = true;
+            this.btnAddTgChat.Click += new System.EventHandler(this.btnAddTgChat_Click);
             // 
             // btnTelegramTestMsg
             // 
-            this.btnTelegramTestMsg.Location = new System.Drawing.Point(6, 333);
+            this.btnTelegramTestMsg.Location = new System.Drawing.Point(7, 325);
             this.btnTelegramTestMsg.Name = "btnTelegramTestMsg";
             this.btnTelegramTestMsg.Size = new System.Drawing.Size(208, 49);
             this.btnTelegramTestMsg.TabIndex = 4;
@@ -1283,34 +1393,18 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 70);
+            this.label2.Location = new System.Drawing.Point(3, 19);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Telegram Chat ID";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Telegram API Key";
-            // 
             // tbTelegramChatId
             // 
-            this.tbTelegramChatId.Location = new System.Drawing.Point(6, 89);
+            this.tbTelegramChatId.Location = new System.Drawing.Point(6, 38);
             this.tbTelegramChatId.Name = "tbTelegramChatId";
             this.tbTelegramChatId.Size = new System.Drawing.Size(208, 20);
             this.tbTelegramChatId.TabIndex = 1;
-            // 
-            // tbTelegramApi
-            // 
-            this.tbTelegramApi.Location = new System.Drawing.Point(6, 43);
-            this.tbTelegramApi.Name = "tbTelegramApi";
-            this.tbTelegramApi.Size = new System.Drawing.Size(208, 20);
-            this.tbTelegramApi.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -2365,6 +2459,23 @@
             this.cbPriceChange1h.UseVisualStyleBackColor = true;
             this.cbPriceChange1h.CheckedChanged += new System.EventHandler(this.cbChange1h_CheckedChanged);
             // 
+            // tbTelegramApi
+            // 
+            this.tbTelegramApi.Location = new System.Drawing.Point(619, 29);
+            this.tbTelegramApi.Name = "tbTelegramApi";
+            this.tbTelegramApi.Size = new System.Drawing.Size(154, 20);
+            this.tbTelegramApi.TabIndex = 0;
+            this.tbTelegramApi.Leave += new System.EventHandler(this.tbTelegramApi_Leave);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(616, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Telegram API Key";
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.tbLogs);
@@ -2385,78 +2496,17 @@
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
             // 
-            // Symb
+            // TgChatId
             // 
-            this.Symb.HeaderText = "Pair";
-            this.Symb.Name = "Symb";
-            this.Symb.ReadOnly = true;
+            this.TgChatId.HeaderText = "Id";
+            this.TgChatId.Name = "TgChatId";
+            this.TgChatId.ReadOnly = true;
             // 
-            // Type
+            // TgChatName
             // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
-            // 
-            // NameNotify
-            // 
-            this.NameNotify.HeaderText = "Name";
-            this.NameNotify.Name = "NameNotify";
-            this.NameNotify.ReadOnly = true;
-            // 
-            // ChatId
-            // 
-            this.ChatId.HeaderText = "ChatId";
-            this.ChatId.Name = "ChatId";
-            this.ChatId.ReadOnly = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 460);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 13);
-            this.label9.TabIndex = 23;
-            this.label9.Text = "ChatId";
-            // 
-            // ddlChatId
-            // 
-            this.ddlChatId.FormattingEnabled = true;
-            this.ddlChatId.Items.AddRange(new object[] {
-            "1min",
-            "3min",
-            "5min",
-            "15min",
-            "30min",
-            "1h",
-            "2h",
-            "4h",
-            "6h",
-            "12h",
-            "24h"});
-            this.ddlChatId.Location = new System.Drawing.Point(9, 476);
-            this.ddlChatId.Name = "ddlChatId";
-            this.ddlChatId.Size = new System.Drawing.Size(120, 21);
-            this.ddlChatId.TabIndex = 22;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 144);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(208, 183);
-            this.dataGridView1.TabIndex = 8;
+            this.TgChatName.HeaderText = "Name";
+            this.TgChatName.Name = "TgChatName";
+            this.TgChatName.ReadOnly = true;
             // 
             // MainMenu
             // 
@@ -2476,10 +2526,12 @@
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgNotification)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgTgChats)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox10.ResumeLayout(false);
@@ -2497,7 +2549,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2708,8 +2759,8 @@
         private System.Windows.Forms.CheckedListBox cblNotifySymbols;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox ddlGiud;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDeleteTgChat;
+        private System.Windows.Forms.Button btnAddTgChat;
         private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
         private System.Windows.Forms.DataGridViewTextBoxColumn Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
@@ -2718,7 +2769,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ChatId;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox ddlChatId;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgTgChats;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tbTelegramChatName;
+        private System.Windows.Forms.TextBox tbDelay;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TgChatId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TgChatName;
     }
 }
 
