@@ -75,7 +75,7 @@ namespace Binance_alert_bot.Binance
         {
             while (true)
             {
-                foreach (var market in BinanceMarket.ToArray())
+                foreach (var market in BinanceMarket.ToList())
                 {
                     if (market.Ticks1min.Count < 60 * 24 * 2 - 1
                      || market.Ticks3min.Count < 2
