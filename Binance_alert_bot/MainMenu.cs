@@ -33,9 +33,11 @@ namespace Binance_alert_bot
             client = new BinanceBotClient();
             client.BinanceLogs += Logs;
             client.BinanceSymbols += Symbols;
+            client.BinanceMarkets += Markets;
+
+            client.UpdateNotifications(cfg);
 
             Task.Run(() => client.BinanceSetCredentials());
-            Task.Run(() => LoadBinance());
         }
         private void btnAddNotify_Click(object sender, EventArgs e)
         {
@@ -49,14 +51,16 @@ namespace Binance_alert_bot
                 MessageBox.Show("Заполните все поля");
                 return;
             }
+            string guid = Guid.NewGuid().ToString();
 
             this.dgNotification.Rows.Add(
                 (cblNotifySymbols.CheckedItems.Count > 1) ? $"{cblNotifySymbols.CheckedItems.Count} Pairs" : cblNotifySymbols.CheckedItems[0].ToString(),
                 this.ddlNotifyType.SelectedItem.ToString(),
                 this.ddlNotifyTimeframe.SelectedItem.ToString(),
                 GetMultiChange(this.tbNotifyChange.Text),
-                this.ddlGiud.SelectedItem.ToString(),
-                this.ddlChatId.SelectedText.ToString());
+                this.ddlGiud.Text,
+                this.ddlChatId.SelectedItem.ToString(),
+                guid);
 
             List<string> list = new List<string>();
             for (int i = 0; i < cblNotifySymbols.CheckedItems.Count; i++)
@@ -74,7 +78,8 @@ namespace Binance_alert_bot
                         Symbol = list,
                         TelegramChatId = Convert.ToInt64(this.ddlChatId.SelectedValue.ToString()),
                         Timeframe = this.ddlNotifyTimeframe.SelectedItem.ToString(),
-                        Type = this.ddlNotifyType.SelectedItem.ToString()
+                        Type = this.ddlNotifyType.SelectedItem.ToString(),
+                        Guid = guid
                     });
             }
             else
@@ -91,6 +96,10 @@ namespace Binance_alert_bot
         {
             foreach (DataGridViewRow row in this.dgNotification.SelectedRows)
             {
+                foreach (var g in this.cfg.notifications.Guid)
+                {
+                    g.Value.RemoveAll(x=> x.Guid == row.Cells["Secret"].Value.ToString());
+                }
                 this.dgNotification.Rows.RemoveAt(row.Index);
             }
         }
@@ -532,6 +541,7 @@ namespace Binance_alert_bot
             }
             catch(Exception ex)
             {
+                MessageBox.Show(ex.ToString());
             }
         }
         private void Logs(string msg)
@@ -551,20 +561,256 @@ namespace Binance_alert_bot
                 InThread(() => this.cblNotifySymbols.Items.Add(symbol.Replace("BTC", "/BTC")));
             }
         }
+
+        private void Markets(List<Market> markets)
+        {
+            foreach (var market in markets)
+            {
+                if (!market.used)
+                    continue;
+
+                var find = false;
+                foreach (DataGridViewRow row in this.dgBinanceTable.Rows)
+                {
+                    if (row.Cells["Symbol"].Value.ToString() == $"{market.BaseSymbol}/{market.QuoteSymbol}")
+                    {
+                        UpdateRow(row, market);
+                        find = true;
+                        break;
+                    }
+                }
+                if (!find)
+                {
+                    AddRow(this.dgBinanceTable, market);
+                    UpdateRow(this.dgBinanceTable.Rows[this.dgBinanceTable.Rows.Count - 1], market);
+                }
+            }
+        }
+
+        private void UpdateRow(DataGridViewRow row, Market market)
+        {
+            InThread(() =>
+            {
+                row.Cells["Symbol"].Value = $"{market.BaseSymbol}/{market.QuoteSymbol}";
+                row.Cells["Ask"].Value = market.Ask;
+                row.Cells["Bid"].Value = market.Bid;
+                row.Cells["PriceChange1min"].Value = market.MI["PriceChange1min"].ChangeValueProcentage;
+                row.Cells["PriceChange1min"].Style.BackColor = market.MI["PriceChange1min"].BackColorColumn;
+                row.Cells["PriceChange3min"].Value = market.MI["PriceChange3min"].ChangeValueProcentage;
+                row.Cells["PriceChange3min"].Style.BackColor = market.MI["PriceChange3min"].BackColorColumn;
+                row.Cells["PriceChange5min"].Value = market.MI["PriceChange5min"].ChangeValueProcentage;
+                row.Cells["PriceChange5min"].Style.BackColor = market.MI["PriceChange5min"].BackColorColumn;
+                row.Cells["PriceChange15min"].Value = market.MI["PriceChange15min"].ChangeValueProcentage;
+                row.Cells["PriceChange15min"].Style.BackColor = market.MI["PriceChange15min"].BackColorColumn;
+                row.Cells["PriceChange30min"].Value = market.MI["PriceChange30min"].ChangeValueProcentage;
+                row.Cells["PriceChange30min"].Style.BackColor = market.MI["PriceChange30min"].BackColorColumn;
+                row.Cells["PriceChange1h"].Value = market.MI["PriceChange1h"].ChangeValueProcentage;
+                row.Cells["PriceChange1h"].Style.BackColor = market.MI["PriceChange1h"].BackColorColumn;
+                row.Cells["PriceChange2h"].Value = market.MI["PriceChange2h"].ChangeValueProcentage;
+                row.Cells["PriceChange2h"].Style.BackColor = market.MI["PriceChange2h"].BackColorColumn;
+                row.Cells["PriceChange4h"].Value = market.MI["PriceChange4h"].ChangeValueProcentage;
+                row.Cells["PriceChange4h"].Style.BackColor = market.MI["PriceChange4h"].BackColorColumn;
+                row.Cells["PriceChange6h"].Value = market.MI["PriceChange6h"].ChangeValueProcentage;
+                row.Cells["PriceChange6h"].Style.BackColor = market.MI["PriceChange6h"].BackColorColumn;
+                row.Cells["PriceChange12h"].Value = market.MI["PriceChange12h"].ChangeValueProcentage;
+                row.Cells["PriceChange12h"].Style.BackColor = market.MI["PriceChange12h"].BackColorColumn;
+                row.Cells["PriceChange24h"].Value = market.MI["PriceChange24h"].ChangeValueProcentage;
+                row.Cells["PriceChange24h"].Style.BackColor = market.MI["PriceChange24h"].BackColorColumn;
+
+
+                row.Cells["High1min"].Value = market.MI["High1min"].NewValue;
+                row.Cells["High3min"].Value = market.MI["High3min"].NewValue;
+                row.Cells["High5min"].Value = market.MI["High5min"].NewValue;
+                row.Cells["High15min"].Value = market.MI["High15min"].NewValue;
+                row.Cells["High30min"].Value = market.MI["High30min"].NewValue;
+                row.Cells["High1h"].Value = market.MI["High1h"].NewValue;
+                row.Cells["High2h"].Value = market.MI["High2h"].NewValue;
+                row.Cells["High4h"].Value = market.MI["High4h"].NewValue;
+                row.Cells["High6h"].Value = market.MI["High6h"].NewValue;
+                row.Cells["High12h"].Value = market.MI["High12h"].NewValue;
+                row.Cells["High24h"].Value = market.MI["High24h"].NewValue;
+
+                row.Cells["Low1min"].Value = market.MI["Low1min"].NewValue;
+                row.Cells["Low3min"].Value = market.MI["Low3min"].NewValue;
+                row.Cells["Low5min"].Value = market.MI["Low5min"].NewValue;
+                row.Cells["Low15min"].Value = market.MI["Low15min"].NewValue;
+                row.Cells["Low30min"].Value = market.MI["Low30min"].NewValue;
+                row.Cells["Low1h"].Value = market.MI["Low1h"].NewValue;
+                row.Cells["Low2h"].Value = market.MI["Low2h"].NewValue;
+                row.Cells["Low4h"].Value = market.MI["Low4h"].NewValue;
+                row.Cells["Low6h"].Value = market.MI["Low6h"].NewValue;
+                row.Cells["Low12h"].Value = market.MI["Low12h"].NewValue;
+                row.Cells["Low24h"].Value = market.MI["Low24h"].NewValue;
+
+                row.Cells["Amplitude1min"].Value = market.MI["Amplitude1min"].ChangeValueProcentage;
+                row.Cells["Amplitude1min"].Style.BackColor = market.MI["Amplitude1min"].BackColorColumn;
+                row.Cells["Amplitude3min"].Value = market.MI["Amplitude3min"].ChangeValueProcentage;
+                row.Cells["Amplitude3min"].Style.BackColor = market.MI["Amplitude3min"].BackColorColumn;
+                row.Cells["Amplitude5min"].Value = market.MI["Amplitude5min"].ChangeValueProcentage;
+                row.Cells["Amplitude5min"].Style.BackColor = market.MI["Amplitude5min"].BackColorColumn;
+                row.Cells["Amplitude15min"].Value = market.MI["Amplitude15min"].ChangeValueProcentage;
+                row.Cells["Amplitude15min"].Style.BackColor = market.MI["Amplitude15min"].BackColorColumn;
+                row.Cells["Amplitude30min"].Value = market.MI["Amplitude30min"].ChangeValueProcentage;
+                row.Cells["Amplitude30min"].Style.BackColor = market.MI["Amplitude30min"].BackColorColumn;
+                row.Cells["Amplitude1h"].Value = market.MI["Amplitude1h"].ChangeValueProcentage;
+                row.Cells["Amplitude1h"].Style.BackColor = market.MI["Amplitude1h"].BackColorColumn;
+                row.Cells["Amplitude2h"].Value = market.MI["Amplitude2h"].ChangeValueProcentage;
+                row.Cells["Amplitude2h"].Style.BackColor = market.MI["Amplitude2h"].BackColorColumn;
+                row.Cells["Amplitude4h"].Value = market.MI["Amplitude4h"].ChangeValueProcentage;
+                row.Cells["Amplitude4h"].Style.BackColor = market.MI["Amplitude4h"].BackColorColumn;
+                row.Cells["Amplitude6h"].Value = market.MI["Amplitude6h"].ChangeValueProcentage;
+                row.Cells["Amplitude6h"].Style.BackColor = market.MI["Amplitude6h"].BackColorColumn;
+                row.Cells["Amplitude12h"].Value = market.MI["Amplitude12h"].ChangeValueProcentage;
+                row.Cells["Amplitude12h"].Style.BackColor = market.MI["Amplitude12h"].BackColorColumn;
+                row.Cells["Amplitude24h"].Value = market.MI["Amplitude24h"].ChangeValueProcentage;
+                row.Cells["Amplitude24h"].Style.BackColor = market.MI["Amplitude24h"].BackColorColumn;
+
+                row.Cells["VolumeQuote1min"].Value = market.MI["VolumeQuote1min"].NewValue;
+                row.Cells["VolumeQuote3min"].Value = market.MI["VolumeQuote3min"].NewValue;
+                row.Cells["VolumeQuote5min"].Value = market.MI["VolumeQuote5min"].NewValue;
+                row.Cells["VolumeQuote15min"].Value = market.MI["VolumeQuote15min"].NewValue;
+                row.Cells["VolumeQuote30min"].Value = market.MI["VolumeQuote30min"].NewValue;
+                row.Cells["VolumeQuote1h"].Value = market.MI["VolumeQuote1h"].NewValue;
+                row.Cells["VolumeQuote2h"].Value = market.MI["VolumeQuote2h"].NewValue;
+                row.Cells["VolumeQuote4h"].Value = market.MI["VolumeQuote4h"].NewValue;
+                row.Cells["VolumeQuote6h"].Value = market.MI["VolumeQuote6h"].NewValue;
+                row.Cells["VolumeQuote12h"].Value = market.MI["VolumeQuote12h"].NewValue;
+                row.Cells["VolumeQuote24h"].Value = market.MI["VolumeQuote24h"].NewValue;
+
+                row.Cells["VolumeBase1min"].Value = market.MI["VolumeBase1min"].NewValue;
+                row.Cells["VolumeBase3min"].Value = market.MI["VolumeBase3min"].NewValue;
+                row.Cells["VolumeBase5min"].Value = market.MI["VolumeBase5min"].NewValue;
+                row.Cells["VolumeBase15min"].Value = market.MI["VolumeBase15min"].NewValue;
+                row.Cells["VolumeBase30min"].Value = market.MI["VolumeBase30min"].NewValue;
+                row.Cells["VolumeBase1h"].Value = market.MI["VolumeBase1h"].NewValue;
+                row.Cells["VolumeBase2h"].Value = market.MI["VolumeBase2h"].NewValue;
+                row.Cells["VolumeBase4h"].Value = market.MI["VolumeBase4h"].NewValue;
+                row.Cells["VolumeBase6h"].Value = market.MI["VolumeBase6h"].NewValue;
+                row.Cells["VolumeBase12h"].Value = market.MI["VolumeBase12h"].NewValue;
+                row.Cells["VolumeBase24h"].Value = market.MI["VolumeBase24h"].NewValue;
+
+                row.Cells["VolumeChange1min"].Value = market.MI["VolumeChange1min"].ChangeValueProcentage;
+                row.Cells["VolumeChange1min"].Style.BackColor = market.MI["VolumeChange1min"].BackColorColumn;
+                row.Cells["VolumeChange3min"].Value = market.MI["VolumeChange3min"].ChangeValueProcentage;
+                row.Cells["VolumeChange3min"].Style.BackColor = market.MI["VolumeChange3min"].BackColorColumn;
+                row.Cells["VolumeChange5min"].Value = market.MI["VolumeChange5min"].ChangeValueProcentage;
+                row.Cells["VolumeChange5min"].Style.BackColor = market.MI["VolumeChange5min"].BackColorColumn;
+                row.Cells["VolumeChange15min"].Value = market.MI["VolumeChange15min"].ChangeValueProcentage;
+                row.Cells["VolumeChange15min"].Style.BackColor = market.MI["VolumeChange15min"].BackColorColumn;
+                row.Cells["VolumeChange30min"].Value = market.MI["VolumeChange30min"].ChangeValueProcentage;
+                row.Cells["VolumeChange30min"].Style.BackColor = market.MI["VolumeChange30min"].BackColorColumn;
+                row.Cells["VolumeChange1h"].Value = market.MI["VolumeChange1h"].ChangeValueProcentage;
+                row.Cells["VolumeChange1h"].Style.BackColor = market.MI["VolumeChange1h"].BackColorColumn;
+                row.Cells["VolumeChange2h"].Value = market.MI["VolumeChange2h"].ChangeValueProcentage;
+                row.Cells["VolumeChange2h"].Style.BackColor = market.MI["VolumeChange2h"].BackColorColumn;
+                row.Cells["VolumeChange4h"].Value = market.MI["VolumeChange4h"].ChangeValueProcentage;
+                row.Cells["VolumeChange4h"].Style.BackColor = market.MI["VolumeChange4h"].BackColorColumn;
+                row.Cells["VolumeChange6h"].Value = market.MI["VolumeChange6h"].ChangeValueProcentage;
+                row.Cells["VolumeChange6h"].Style.BackColor = market.MI["VolumeChange6h"].BackColorColumn;
+                row.Cells["VolumeChange12h"].Value = market.MI["VolumeChange12h"].ChangeValueProcentage;
+                row.Cells["VolumeChange12h"].Style.BackColor = market.MI["VolumeChange12h"].BackColorColumn;
+                row.Cells["VolumeChange24h"].Value = market.MI["VolumeChange24h"].ChangeValueProcentage;
+                row.Cells["VolumeChange24h"].Style.BackColor = market.MI["VolumeChange24h"].BackColorColumn;
+
+
+            });
+        }
+        private void AddRow(DataGridView dg, Market market)
+        {
+            InThread(()=> dg.Rows.Add(
+            "",
+            "",
+            "",
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""));
+        }
+
         private void ColumnAction(string ColumnName, bool Checked)
         {
             InThread(() => this.dgBinanceTable.Columns[ColumnName].Visible = Checked);
-        }
-        private void LoadBinance()
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                Logs(ex.ToString());
-            }
         }
 
         private void LoadBinanceCell(DataGridViewCell cell, decimal value, bool changeColor = false)
@@ -597,6 +843,8 @@ namespace Binance_alert_bot
                 cfg = new Config();
             else
                 cfg = Config.Reload();
+
+            
 
             this.cbAsk.Checked = this.cfg.ask;
             this.cbBid.Checked = this.cfg.bid;
@@ -970,7 +1218,8 @@ namespace Binance_alert_bot
         private void SaveConfig()
         {
             Config.Save(cfg);
-            client.UpdateNotifications(cfg);
+            if (client != null)
+                client.UpdateNotifications(cfg);
         }
 
         private void tbDelay_Leave(object sender, EventArgs e)

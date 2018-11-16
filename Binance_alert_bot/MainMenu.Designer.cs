@@ -129,12 +129,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.ddlNotifyTimeframe = new System.Windows.Forms.ComboBox();
             this.dgNotification = new System.Windows.Forms.DataGridView();
-            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tbDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -149,6 +143,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.tbTelegramChatName = new System.Windows.Forms.TextBox();
             this.dgTgChats = new System.Windows.Forms.DataGridView();
+            this.TgChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TgChatName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnDeleteTgChat = new System.Windows.Forms.Button();
             this.btnAddTgChat = new System.Windows.Forms.Button();
             this.btnTelegramTestMsg = new System.Windows.Forms.Button();
@@ -247,8 +243,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
-            this.TgChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TgChatName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Secret = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -1086,15 +1087,12 @@
             this.ddlNotifyType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlNotifyType.FormattingEnabled = true;
             this.ddlNotifyType.Items.AddRange(new object[] {
-            "Ask",
-            "Bid",
-            "High",
-            "Low",
-            "Amplitude",
+            "Price",
             "PriceChange",
-            "VolumeChange",
-            "VolumeBase",
-            "VolumeQuote"});
+            "Amplitude",
+            "Volume",
+            "VolumeBTC",
+            "VolumeChange"});
             this.ddlNotifyType.Location = new System.Drawing.Point(9, 284);
             this.ddlNotifyType.Name = "ddlNotifyType";
             this.ddlNotifyType.Size = new System.Drawing.Size(120, 21);
@@ -1162,48 +1160,13 @@
             this.Timeframe,
             this.Change,
             this.NameNotify,
-            this.ChatId});
+            this.ChatId,
+            this.Secret});
             this.dgNotification.Location = new System.Drawing.Point(135, 8);
             this.dgNotification.Name = "dgNotification";
             this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgNotification.Size = new System.Drawing.Size(1047, 573);
             this.dgNotification.TabIndex = 1;
-            // 
-            // Symb
-            // 
-            this.Symb.HeaderText = "Pair";
-            this.Symb.Name = "Symb";
-            this.Symb.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
-            // 
-            // NameNotify
-            // 
-            this.NameNotify.HeaderText = "Name";
-            this.NameNotify.Name = "NameNotify";
-            this.NameNotify.ReadOnly = true;
-            // 
-            // ChatId
-            // 
-            this.ChatId.HeaderText = "ChatId";
-            this.ChatId.Name = "ChatId";
-            this.ChatId.ReadOnly = true;
             // 
             // tabPage3
             // 
@@ -1359,6 +1322,18 @@
             this.dgTgChats.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgTgChats.Size = new System.Drawing.Size(208, 183);
             this.dgTgChats.TabIndex = 8;
+            // 
+            // TgChatId
+            // 
+            this.TgChatId.HeaderText = "Id";
+            this.TgChatId.Name = "TgChatId";
+            this.TgChatId.ReadOnly = true;
+            // 
+            // TgChatName
+            // 
+            this.TgChatName.HeaderText = "Name";
+            this.TgChatName.Name = "TgChatName";
+            this.TgChatName.ReadOnly = true;
             // 
             // btnDeleteTgChat
             // 
@@ -2496,17 +2471,48 @@
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
             // 
-            // TgChatId
+            // Symb
             // 
-            this.TgChatId.HeaderText = "Id";
-            this.TgChatId.Name = "TgChatId";
-            this.TgChatId.ReadOnly = true;
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
             // 
-            // TgChatName
+            // Type
             // 
-            this.TgChatName.HeaderText = "Name";
-            this.TgChatName.Name = "TgChatName";
-            this.TgChatName.ReadOnly = true;
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Timeframe
+            // 
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
+            // NameNotify
+            // 
+            this.NameNotify.HeaderText = "Name";
+            this.NameNotify.Name = "NameNotify";
+            this.NameNotify.ReadOnly = true;
+            // 
+            // ChatId
+            // 
+            this.ChatId.HeaderText = "ChatId";
+            this.ChatId.Name = "ChatId";
+            this.ChatId.ReadOnly = true;
+            // 
+            // Secret
+            // 
+            this.Secret.HeaderText = "Guid";
+            this.Secret.Name = "Secret";
+            this.Secret.ReadOnly = true;
+            this.Secret.Visible = false;
             // 
             // MainMenu
             // 
@@ -2761,12 +2767,6 @@
         private System.Windows.Forms.ComboBox ddlGiud;
         private System.Windows.Forms.Button btnDeleteTgChat;
         private System.Windows.Forms.Button btnAddTgChat;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameNotify;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ChatId;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox ddlChatId;
         private System.Windows.Forms.DataGridView dgTgChats;
@@ -2776,6 +2776,13 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.DataGridViewTextBoxColumn TgChatId;
         private System.Windows.Forms.DataGridViewTextBoxColumn TgChatName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Symb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Timeframe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Change;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NameNotify;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ChatId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Secret;
     }
 }
 

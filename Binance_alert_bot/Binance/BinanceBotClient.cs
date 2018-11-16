@@ -24,12 +24,12 @@ namespace Binance_alert_bot.Binance
         public delegate void BinanceSymbolsStateHandler(List<string> Symbols);
 
         public event BinanceMarketStateHandler BinanceMarkets;
-        public delegate void BinanceMarketStateHandler(Market market);
+        public delegate void BinanceMarketStateHandler(List<Market> market);
         #endregion
 
         #region Fields
         public List<string> AllSymbolsBTC = new List<string>();
-        public volatile List<Market> BinanceMarket = new List<Market>();
+        public List<Market> BinanceMarket = new List<Market>();
         #endregion
 
         #region Properties
@@ -67,6 +67,10 @@ namespace Binance_alert_bot.Binance
         public void UpdateNotifications(Config cfg)
         {
             this.cfg = cfg;
+            foreach (var m in BinanceMarket.ToArray())
+            {
+                m.AllTimeFrame = cfg.TimeframeAll;
+            }
         }
         #endregion
 
@@ -75,9 +79,13 @@ namespace Binance_alert_bot.Binance
         {
             while (true)
             {
-                foreach (var market in BinanceMarket.ToList())
+                BinanceMarkets?.Invoke(BinanceMarket);
+                //var BM = BinanceMarket;
+                foreach (var market in BinanceMarket.ToArray())
                 {
-                    if (market.Ticks1min.Count < 60 * 24 * 2 - 1
+                    if (!market.used)
+                        continue;
+                    /*if (market.Ticks1min.Count < 60 * 24 * 2 - 1
                      || market.Ticks3min.Count < 2
                      || market.Ticks5min.Count < 2
                      || market.Ticks15min.Count < 2
@@ -88,7 +96,7 @@ namespace Binance_alert_bot.Binance
                      || market.Ticks6h.Count < 2
                      || market.Ticks12h.Count < 2
                      || market.Ticks24h.Count < 2)
-                        continue;
+                        continue;*/
 
 
                     market.Ticks1min = market.Ticks1min.OrderBy(x => x.Time).ToList();
@@ -104,18 +112,24 @@ namespace Binance_alert_bot.Binance
                     market.Ticks24h = market.Ticks24h.OrderBy(x => x.Time).ToList();
                     market.Update();
 
-                    BinanceMarkets?.Invoke(market);
+                    
 
                     foreach (var notify in cfg.notifications.Guid)
                     {
                         string text = "";
                         string emoje = "";
+                        string Header = "";
                         foreach (var n in notify.Value)
                         {
-                            if (n.Type == "Ask" || n.Type == "Bid")
+                            if (n.Type == "Price")
                                 n.Timeframe = "";
+                            if (n.Type == "Volume")
+                                n.Type = "VolumeBase";
+                            if (n.Type == "VolumeBTC")
+                                n.Type = "VolumeQuote";
 
-                            if (!n.Symbol.Contains(market.Symbol))
+
+                            if (!n.Symbol.Contains($"{market.BaseSymbol}/{market.QuoteSymbol}"))
                                 continue;
 
                             if ((DateTime.Now - n.Time).TotalSeconds < cfg.Delay)
@@ -129,29 +143,81 @@ namespace Binance_alert_bot.Binance
 
                             string endSymbol = formula[2].ToString();
 
-                            if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<")
+                            if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<"
+                             || market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
                             {
-                                emoje += $"↑{market.MI[n.Type + n.Timeframe].Emoji} ";
-                                text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
+                                Header += $"[*{GetTypeHeader(n.Type, operand)}*{operand}{change} {endSymbol}, {n.Timeframe}]";
+                                emoje += $"{GetEmoji(n.Type, operand)}";
 
-                            }
-                            if (market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
-                            {
-                                emoje += $"↓{market.MI[n.Type + n.Timeframe].Emoji} ";
-                                text += $"{market.MI[n.Type + n.Timeframe].Text}\n";
+                                text += $"{GetEmoji(n.Type, operand)}{market.MI[n.Type + n.Timeframe].Text}\n";
+
                             }
                         }
 
-                        if (text != "")
+                        if (text != "" && notify.Value.Count > 1)
                         {
-                            text = $"{emoje}\n{text}\n";
+                            string globalText = "";
+
+                            globalText += $"#{market.QuoteSymbol}";
+                            globalText += $"*[{emoje}]*\n";
+                            globalText += text;
+                            globalText += Header;
 
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
-                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, text, parseMode: ParseMode.Markdown);
+                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText, parseMode: ParseMode.Markdown);
+                        }
+                        else if (text != "" && notify.Value.Count == 1)
+                        {
+                            string globalText = "";
+
+                            globalText += $"#{market.QuoteSymbol}";
+                            globalText += $"*[{emoje}]*\n";
+                            globalText += text;
+                            globalText += Header;
+
+                            TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
+                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText, parseMode: ParseMode.Markdown);
                         }
                     }
-                    
                 }
+
+                Thread.Sleep(500);
+            }
+        }
+        private string GetTypeHeader(string type, string operand)
+        {
+            switch (type)
+            {
+                case "VolumeBase":
+                    return "Volume";
+                case "VolumeQuote":
+                    return "VolumeBTC";
+                case "Price":
+                    return type;
+                case "VolumeChange":
+                case "PriceChange":
+                    return $"{type} {((operand == ">") ? "Up" : "Down")}";
+                default:
+                    return "";
+
+            }
+        }
+        private string GetEmoji(string type, string operand)
+        {
+            switch (type)
+            {
+                case "VolumeChange":
+                    return $"{((operand == ">") ? "↑🍖" : "↓🍗")}";
+                case "PriceChange":
+                    return $"{((operand == ">") ? "↑🍏" : "↓🍎")}";
+                case "VolumeBTC":
+                case "Volume":
+                    return $"{((operand == ">") ? "🍖" : "🍗")}";
+                case "Price":
+                    return $"{((operand == ">") ? "🍏" : "🍎")}";
+                default:
+                    return "";
+
             }
         }
 
@@ -1136,6 +1202,30 @@ namespace Binance_alert_bot.Binance
                     }
                 }
 
+                var f = BinanceMarket.Find(x => x.Symbol == symbol);
+                if (f != null)
+                {
+                    f.Ticks1min = f.Ticks1min.OrderBy(x => x.Time).ToList();
+                    f.Ticks3min = f.Ticks3min.OrderBy(x => x.Time).ToList();
+                    f.Ticks5min = f.Ticks5min.OrderBy(x => x.Time).ToList();
+                    f.Ticks15min = f.Ticks15min.OrderBy(x => x.Time).ToList();
+                    f.Ticks30min = f.Ticks30min.OrderBy(x => x.Time).ToList();
+                    f.Ticks1h = f.Ticks1h.OrderBy(x => x.Time).ToList();
+                    f.Ticks2h = f.Ticks2h.OrderBy(x => x.Time).ToList();
+                    f.Ticks4h = f.Ticks4h.OrderBy(x => x.Time).ToList();
+                    f.Ticks6h = f.Ticks6h.OrderBy(x => x.Time).ToList();
+                    f.Ticks12h = f.Ticks12h.OrderBy(x => x.Time).ToList();
+                    f.Ticks24h = f.Ticks24h.OrderBy(x => x.Time).ToList();
+                    f.Update();
+                    f.AllTimeFrame = cfg.TimeframeAll;
+                    f.used = true;
+                    
+
+                }
+                else
+                    BinanceLogs?.Invoke($"WTF??? {symbol.Replace("BTC", "/BTC")}");
+
+
                 BinanceLogs?.Invoke($"История свечей по {symbol.Replace("BTC", "/BTC")}");
             }
             BinanceLogs?.Invoke("Получил историю свечей");
@@ -1156,6 +1246,7 @@ namespace Binance_alert_bot.Binance
                 {
                     if (symbol.Name.Contains("BTC") && symbol.Name != "BTCUSDT")
                     {
+                        BinanceMarket.Add(new Market { Symbol = symbol.Name, BaseSymbol = symbol.BaseAsset, QuoteSymbol = symbol.QuoteAsset });
                         AllSymbolsBTC.Add(symbol.Name);
                     }
                 }

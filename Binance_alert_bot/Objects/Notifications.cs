@@ -19,5 +19,6 @@ namespace Binance_alert_bot.Objects
         public string Change { get; set; }
         public DateTime Time { get; set; } = DateTime.MinValue;
         public long TelegramChatId { get; set; }
+        public string Guid { get; set; }
     }
 }
