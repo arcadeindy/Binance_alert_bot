@@ -17,8 +17,9 @@ namespace Binance_alert_bot.Objects
         public string Type { get; set; }
         public string Timeframe { get; set; }
         public string Change { get; set; }
-        public DateTime Time { get; set; } = DateTime.MinValue;
+        public Dictionary<string, DateTime> Time { get; set; } = new Dictionary<string, DateTime>();
         public long TelegramChatId { get; set; }
+        public string TelegramName { get;set; }
         public string Guid { get; set; }
     }
 }

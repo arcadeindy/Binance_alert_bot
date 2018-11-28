@@ -129,6 +129,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.ddlNotifyTimeframe = new System.Windows.Forms.ComboBox();
             this.dgNotification = new System.Windows.Forms.DataGridView();
+            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Secret = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tbDelay = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -243,13 +250,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
-            this.Symb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Timeframe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Change = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameNotify = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ChatId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Secret = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cbNotifyAllSymbols = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -952,6 +953,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cbNotifyAllSymbols);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.ddlChatId);
             this.tabPage2.Controls.Add(this.label3);
@@ -1167,6 +1169,49 @@
             this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgNotification.Size = new System.Drawing.Size(1047, 573);
             this.dgNotification.TabIndex = 1;
+            // 
+            // Symb
+            // 
+            this.Symb.HeaderText = "Pair";
+            this.Symb.Name = "Symb";
+            this.Symb.ReadOnly = true;
+            // 
+            // Type
+            // 
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // Timeframe
+            // 
+            this.Timeframe.HeaderText = "Timeframe";
+            this.Timeframe.Name = "Timeframe";
+            this.Timeframe.ReadOnly = true;
+            // 
+            // Change
+            // 
+            this.Change.HeaderText = "Change %";
+            this.Change.Name = "Change";
+            this.Change.ReadOnly = true;
+            // 
+            // NameNotify
+            // 
+            this.NameNotify.HeaderText = "Name";
+            this.NameNotify.Name = "NameNotify";
+            this.NameNotify.ReadOnly = true;
+            // 
+            // ChatId
+            // 
+            this.ChatId.HeaderText = "ChatId";
+            this.ChatId.Name = "ChatId";
+            this.ChatId.ReadOnly = true;
+            // 
+            // Secret
+            // 
+            this.Secret.HeaderText = "Guid";
+            this.Secret.Name = "Secret";
+            this.Secret.ReadOnly = true;
+            this.Secret.Visible = false;
             // 
             // tabPage3
             // 
@@ -2471,48 +2516,16 @@
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
             // 
-            // Symb
+            // cbNotifyAllSymbols
             // 
-            this.Symb.HeaderText = "Pair";
-            this.Symb.Name = "Symb";
-            this.Symb.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // Timeframe
-            // 
-            this.Timeframe.HeaderText = "Timeframe";
-            this.Timeframe.Name = "Timeframe";
-            this.Timeframe.ReadOnly = true;
-            // 
-            // Change
-            // 
-            this.Change.HeaderText = "Change %";
-            this.Change.Name = "Change";
-            this.Change.ReadOnly = true;
-            // 
-            // NameNotify
-            // 
-            this.NameNotify.HeaderText = "Name";
-            this.NameNotify.Name = "NameNotify";
-            this.NameNotify.ReadOnly = true;
-            // 
-            // ChatId
-            // 
-            this.ChatId.HeaderText = "ChatId";
-            this.ChatId.Name = "ChatId";
-            this.ChatId.ReadOnly = true;
-            // 
-            // Secret
-            // 
-            this.Secret.HeaderText = "Guid";
-            this.Secret.Name = "Secret";
-            this.Secret.ReadOnly = true;
-            this.Secret.Visible = false;
+            this.cbNotifyAllSymbols.AutoSize = true;
+            this.cbNotifyAllSymbols.Location = new System.Drawing.Point(92, 12);
+            this.cbNotifyAllSymbols.Name = "cbNotifyAllSymbols";
+            this.cbNotifyAllSymbols.Size = new System.Drawing.Size(37, 17);
+            this.cbNotifyAllSymbols.TabIndex = 24;
+            this.cbNotifyAllSymbols.Text = "All";
+            this.cbNotifyAllSymbols.UseVisualStyleBackColor = true;
+            this.cbNotifyAllSymbols.CheckedChanged += new System.EventHandler(this.cbNotifyAllSymbols_CheckedChanged);
             // 
             // MainMenu
             // 
@@ -2783,6 +2796,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NameNotify;
         private System.Windows.Forms.DataGridViewTextBoxColumn ChatId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Secret;
+        private System.Windows.Forms.CheckBox cbNotifyAllSymbols;
     }
 }
 

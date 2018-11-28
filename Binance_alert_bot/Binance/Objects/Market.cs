@@ -348,7 +348,8 @@ namespace Binance_alert_bot.Binance.Objects
                 marketInfo.BackColorColumn = Color.Red;
                 marketInfo.Emoji = "🍎↓";
             }*/
-            marketInfo.Text = $"Volume BTC = {marketInfo.NewValue}";
+            marketInfo.Emoji = "🥒";
+            marketInfo.Text = $"🥒 Volume BTC = {marketInfo.NewValue}";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 
             return marketInfo;
@@ -590,6 +591,11 @@ namespace Binance_alert_bot.Binance.Objects
                 default:
                     return ""; 
             }
+        }
+
+        private string ConvertToReadebleInt(string number)
+        {
+            return number;
         }
     }
 }

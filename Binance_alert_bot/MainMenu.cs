@@ -59,7 +59,7 @@ namespace Binance_alert_bot
                 this.ddlNotifyTimeframe.SelectedItem.ToString(),
                 GetMultiChange(this.tbNotifyChange.Text),
                 this.ddlGiud.Text,
-                this.ddlChatId.SelectedItem.ToString(),
+                this.ddlChatId.Text,
                 guid);
 
             List<string> list = new List<string>();
@@ -77,6 +77,7 @@ namespace Binance_alert_bot
                         Change = GetMultiChange(this.tbNotifyChange.Text),
                         Symbol = list,
                         TelegramChatId = Convert.ToInt64(this.ddlChatId.SelectedValue.ToString()),
+                        TelegramName = this.ddlChatId.Text,
                         Timeframe = this.ddlNotifyTimeframe.SelectedItem.ToString(),
                         Type = this.ddlNotifyType.SelectedItem.ToString(),
                         Guid = guid
@@ -102,6 +103,7 @@ namespace Binance_alert_bot
                 }
                 this.dgNotification.Rows.RemoveAt(row.Index);
             }
+            SaveConfig();
         }
         private void cbAsk_CheckedChanged(object sender, EventArgs e)
         {
@@ -947,13 +949,15 @@ namespace Binance_alert_bot
                 this.ddlGiud.Items.Insert(0, notify.Key);
                 foreach (var n in notify.Value)
                 {
+                    
                     this.dgNotification.Rows.Add(
                                             (n.Symbol.Count > 1) ? $"{n.Symbol.Count} Pairs" : $"{n.Symbol[0].ToString()}",
                                             n.Type,
                                             n.Timeframe,
                                             n.Change,
                                             notify.Key,
-                                            n.TelegramChatId);
+                                            n.TelegramName,
+                                            n.Guid);
                 }
             }
 
@@ -970,6 +974,8 @@ namespace Binance_alert_bot
 
             this.tbTelegramChatId.Text = "";
             this.tbTelegramChatName.Text = "";
+
+            this.tbDelay.Text = cfg.Delay.ToString();
 
             this.rb1minTimeframe.Checked = this.cfg.Timeframe1min;
             this.rbAllTimeframe.Checked = this.cfg.TimeframeAll;
@@ -1238,6 +1244,15 @@ namespace Binance_alert_bot
         private void tbTelegramApi_Leave(object sender, EventArgs e)
         {
             cfg.TelegramApiKey = this.tbTelegramApi.Text;
+        }
+
+        private void cbNotifyAllSymbols_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbNotifyAllSymbols.Checked)
+                for (int i = 0; i < cblNotifySymbols.Items.Count; i++)
+                {
+                    cblNotifySymbols.SetItemChecked(i, true);
+                }
         }
     }
 }

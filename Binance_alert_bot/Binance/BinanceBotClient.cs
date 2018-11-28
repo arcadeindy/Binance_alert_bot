@@ -130,10 +130,16 @@ namespace Binance_alert_bot.Binance
 
 
                             if (!n.Symbol.Contains($"{market.BaseSymbol}/{market.QuoteSymbol}"))
-                                continue;
+                            {
+                                text = "";
+                                break;
+                            }
 
-                            if ((DateTime.Now - n.Time).TotalSeconds < cfg.Delay)
-                                continue;
+                            if (n.Time.ContainsKey($"{market.BaseSymbol}/{market.QuoteSymbol}") && (DateTime.Now - n.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"]).TotalSeconds < cfg.Delay)
+                            {
+                                text = "";
+                                break;
+                            }
 
                             var formula = n.Change.Split(' ');
 
@@ -146,11 +152,15 @@ namespace Binance_alert_bot.Binance
                             if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<"
                              || market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
                             {
-                                Header += $"[*{GetTypeHeader(n.Type, operand)}*{operand}{change} {endSymbol}, {n.Timeframe}]";
+                                Header += $"⟦*{GetTypeHeader(n.Type, operand)}*{operand}{change} {endSymbol} {((n.Timeframe == "") ? "" : $", {n.Timeframe}")}⟧";
                                 emoje += $"{GetEmoji(n.Type, operand)}";
 
                                 text += $"{GetEmoji(n.Type, operand)}{market.MI[n.Type + n.Timeframe].Text}\n";
-
+                            }
+                            else
+                            {
+                                text = "";
+                                break;
                             }
                         }
 
@@ -158,11 +168,11 @@ namespace Binance_alert_bot.Binance
                         {
                             string globalText = "";
 
-                            globalText += $"#{market.QuoteSymbol}";
-                            globalText += $"*[{emoje}]*\n";
+                            globalText += $"#{market.BaseSymbol}";
+                            globalText += $" ⟦{emoje}⟧\n";
                             globalText += text;
                             globalText += Header;
-
+                            notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
                             bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText, parseMode: ParseMode.Markdown);
                         }
@@ -170,11 +180,12 @@ namespace Binance_alert_bot.Binance
                         {
                             string globalText = "";
 
-                            globalText += $"#{market.QuoteSymbol}";
-                            globalText += $"*[{emoje}]*\n";
+                            globalText += $"#{market.BaseSymbol}";
+                            globalText += $" ⟦{emoje}⟧\n";
                             globalText += text;
                             globalText += Header;
 
+                            notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
                             bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText, parseMode: ParseMode.Markdown);
                         }
@@ -210,8 +221,8 @@ namespace Binance_alert_bot.Binance
                     return $"{((operand == ">") ? "↑🍖" : "↓🍗")}";
                 case "PriceChange":
                     return $"{((operand == ">") ? "↑🍏" : "↓🍎")}";
-                case "VolumeBTC":
-                case "Volume":
+                case "VolumeBase":
+                case "VolumeQuote":
                     return $"{((operand == ">") ? "🍖" : "🍗")}";
                 case "Price":
                     return $"{((operand == ">") ? "🍏" : "🍎")}";
