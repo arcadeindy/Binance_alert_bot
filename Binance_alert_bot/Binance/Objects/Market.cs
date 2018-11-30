@@ -127,6 +127,8 @@ namespace Binance_alert_bot.Binance.Objects
             {
                 marketInfo.BackColorColumn = Color.Red;
             }
+
+            marketInfo.Change = marketInfo.ChangeValueProcentage;
             marketInfo.Text = $"Price = {((marketInfo.ChangeValueProcentage > 0) ? "+" : "")}{marketInfo.ChangeValueProcentage}% ({marketInfo.OldValue} → {marketInfo.NewValue})";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 
@@ -182,6 +184,7 @@ namespace Binance_alert_bot.Binance.Objects
                 marketInfo.BackColorColumn = Color.Red;
                 marketInfo.Emoji = "🍎↓";
             }*/
+            marketInfo.Change = marketInfo.ChangeValue;
             marketInfo.Text = $"{marketInfo.Emoji} High = {marketInfo.NewValue}";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 
@@ -237,6 +240,7 @@ namespace Binance_alert_bot.Binance.Objects
                 marketInfo.BackColorColumn = Color.Red;
                 marketInfo.Emoji = "🍎↓";
             }*/
+            marketInfo.Change = marketInfo.ChangeValue;
             marketInfo.Text = $"{marketInfo.Emoji} Low = {marketInfo.NewValue}";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 
@@ -292,6 +296,7 @@ namespace Binance_alert_bot.Binance.Objects
                 marketInfo.BackColorColumn = Color.Red;
                 marketInfo.Emoji = "🕯↓";
             }
+            marketInfo.Change = marketInfo.ChangeValueProcentage;
             marketInfo.Text = $"{marketInfo.Emoji} Amp = {marketInfo.ChangeValueProcentage}%";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 
@@ -348,6 +353,7 @@ namespace Binance_alert_bot.Binance.Objects
                 marketInfo.BackColorColumn = Color.Red;
                 marketInfo.Emoji = "🍎↓";
             }*/
+            marketInfo.Change = marketInfo.ChangeValue;
             marketInfo.Emoji = "🥒";
             marketInfo.Text = $"🥒 Volume BTC = {marketInfo.NewValue}";
             marketInfo.TimeFrame = GetTimeframe(minutes);
@@ -405,6 +411,7 @@ namespace Binance_alert_bot.Binance.Objects
                 marketInfo.BackColorColumn = Color.Red;
                 marketInfo.Emoji = "🍎↓";
             }*/
+            marketInfo.Change = marketInfo.ChangeValue;
             marketInfo.Text = $"Volume = {marketInfo.NewValue}";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 
@@ -456,6 +463,7 @@ namespace Binance_alert_bot.Binance.Objects
             {
                 marketInfo.BackColorColumn = Color.Red;
             }
+            marketInfo.Change = marketInfo.ChangeValueProcentage;
             marketInfo.Text = $"Vol = {((marketInfo.ChangeValueProcentage > 0) ? "+" : "")}{marketInfo.ChangeValueProcentage}% ({marketInfo.OldValue} → {marketInfo.NewValue})";
             marketInfo.TimeFrame = GetTimeframe(minutes);
 

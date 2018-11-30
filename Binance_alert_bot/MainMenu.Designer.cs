@@ -112,6 +112,8 @@
             this.VolumeChange12h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VolumeChange24h = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tbSymbolFilter = new System.Windows.Forms.TextBox();
+            this.cbNotifyAllSymbols = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.ddlChatId = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -250,7 +252,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tbLogs = new System.Windows.Forms.RichTextBox();
-            this.cbNotifyAllSymbols = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBinanceTable)).BeginInit();
@@ -281,7 +282,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1190, 607);
+            this.tabControl1.Size = new System.Drawing.Size(1190, 652);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -290,7 +291,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1182, 581);
+            this.tabPage1.Size = new System.Drawing.Size(1182, 626);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Таблица";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -387,7 +388,7 @@
             this.dgBinanceTable.Name = "dgBinanceTable";
             this.dgBinanceTable.RowHeadersVisible = false;
             this.dgBinanceTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.dgBinanceTable.Size = new System.Drawing.Size(1176, 575);
+            this.dgBinanceTable.Size = new System.Drawing.Size(1176, 620);
             this.dgBinanceTable.TabIndex = 0;
             this.dgBinanceTable.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgBinanceTable_RowPrePaint);
             this.dgBinanceTable.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgBinanceTable_SortCompare);
@@ -953,6 +954,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.tbSymbolFilter);
             this.tabPage2.Controls.Add(this.cbNotifyAllSymbols);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.ddlChatId);
@@ -974,15 +976,34 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1182, 581);
+            this.tabPage2.Size = new System.Drawing.Size(1182, 626);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Уведомления";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // tbSymbolFilter
+            // 
+            this.tbSymbolFilter.Location = new System.Drawing.Point(7, 52);
+            this.tbSymbolFilter.Name = "tbSymbolFilter";
+            this.tbSymbolFilter.Size = new System.Drawing.Size(69, 20);
+            this.tbSymbolFilter.TabIndex = 25;
+            this.tbSymbolFilter.TextChanged += new System.EventHandler(this.tbSymbolFilter_TextChanged);
+            // 
+            // cbNotifyAllSymbols
+            // 
+            this.cbNotifyAllSymbols.AutoSize = true;
+            this.cbNotifyAllSymbols.Location = new System.Drawing.Point(92, 54);
+            this.cbNotifyAllSymbols.Name = "cbNotifyAllSymbols";
+            this.cbNotifyAllSymbols.Size = new System.Drawing.Size(37, 17);
+            this.cbNotifyAllSymbols.TabIndex = 24;
+            this.cbNotifyAllSymbols.Text = "All";
+            this.cbNotifyAllSymbols.UseVisualStyleBackColor = true;
+            this.cbNotifyAllSymbols.CheckedChanged += new System.EventHandler(this.cbNotifyAllSymbols_CheckedChanged);
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 460);
+            this.label9.Location = new System.Drawing.Point(5, 506);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(60, 13);
             this.label9.TabIndex = 23;
@@ -992,7 +1013,7 @@
             // 
             this.ddlChatId.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlChatId.FormattingEnabled = true;
-            this.ddlChatId.Location = new System.Drawing.Point(9, 476);
+            this.ddlChatId.Location = new System.Drawing.Point(8, 522);
             this.ddlChatId.Name = "ddlChatId";
             this.ddlChatId.Size = new System.Drawing.Size(120, 21);
             this.ddlChatId.TabIndex = 22;
@@ -1000,7 +1021,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 414);
+            this.label3.Location = new System.Drawing.Point(5, 460);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 21;
@@ -1009,7 +1030,7 @@
             // ddlGiud
             // 
             this.ddlGiud.FormattingEnabled = true;
-            this.ddlGiud.Location = new System.Drawing.Point(9, 430);
+            this.ddlGiud.Location = new System.Drawing.Point(8, 476);
             this.ddlGiud.Name = "ddlGiud";
             this.ddlGiud.Size = new System.Drawing.Size(120, 21);
             this.ddlGiud.TabIndex = 20;
@@ -1018,7 +1039,7 @@
             // 
             this.cblNotifySymbols.CheckOnClick = true;
             this.cblNotifySymbols.FormattingEnabled = true;
-            this.cblNotifySymbols.Location = new System.Drawing.Point(9, 32);
+            this.cblNotifySymbols.Location = new System.Drawing.Point(8, 78);
             this.cblNotifySymbols.Name = "cblNotifySymbols";
             this.cblNotifySymbols.Size = new System.Drawing.Size(120, 229);
             this.cblNotifySymbols.TabIndex = 19;
@@ -1026,7 +1047,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 16);
+            this.label8.Location = new System.Drawing.Point(4, 36);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(30, 13);
             this.label8.TabIndex = 18;
@@ -1036,7 +1057,7 @@
             // 
             this.rbMore.AutoSize = true;
             this.rbMore.Checked = true;
-            this.rbMore.Location = new System.Drawing.Point(46, 390);
+            this.rbMore.Location = new System.Drawing.Point(45, 436);
             this.rbMore.Name = "rbMore";
             this.rbMore.Size = new System.Drawing.Size(31, 17);
             this.rbMore.TabIndex = 16;
@@ -1047,7 +1068,7 @@
             // rbLess
             // 
             this.rbLess.AutoSize = true;
-            this.rbLess.Location = new System.Drawing.Point(9, 390);
+            this.rbLess.Location = new System.Drawing.Point(8, 436);
             this.rbLess.Name = "rbLess";
             this.rbLess.Size = new System.Drawing.Size(31, 17);
             this.rbLess.TabIndex = 15;
@@ -1057,7 +1078,7 @@
             // 
             // btnNotifyDelete
             // 
-            this.btnNotifyDelete.Location = new System.Drawing.Point(9, 550);
+            this.btnNotifyDelete.Location = new System.Drawing.Point(8, 596);
             this.btnNotifyDelete.Name = "btnNotifyDelete";
             this.btnNotifyDelete.Size = new System.Drawing.Size(120, 23);
             this.btnNotifyDelete.TabIndex = 14;
@@ -1067,7 +1088,7 @@
             // 
             // btnAddNotify
             // 
-            this.btnAddNotify.Location = new System.Drawing.Point(9, 525);
+            this.btnAddNotify.Location = new System.Drawing.Point(8, 571);
             this.btnAddNotify.Name = "btnAddNotify";
             this.btnAddNotify.Size = new System.Drawing.Size(120, 23);
             this.btnAddNotify.TabIndex = 12;
@@ -1078,7 +1099,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 268);
+            this.label6.Location = new System.Drawing.Point(5, 314);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(31, 13);
             this.label6.TabIndex = 11;
@@ -1095,7 +1116,7 @@
             "Volume",
             "VolumeBTC",
             "VolumeChange"});
-            this.ddlNotifyType.Location = new System.Drawing.Point(9, 284);
+            this.ddlNotifyType.Location = new System.Drawing.Point(8, 330);
             this.ddlNotifyType.Name = "ddlNotifyType";
             this.ddlNotifyType.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyType.TabIndex = 10;
@@ -1103,7 +1124,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 348);
+            this.label5.Location = new System.Drawing.Point(5, 394);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 9;
@@ -1111,7 +1132,7 @@
             // 
             // tbNotifyChange
             // 
-            this.tbNotifyChange.Location = new System.Drawing.Point(9, 364);
+            this.tbNotifyChange.Location = new System.Drawing.Point(8, 410);
             this.tbNotifyChange.Name = "tbNotifyChange";
             this.tbNotifyChange.Size = new System.Drawing.Size(120, 20);
             this.tbNotifyChange.TabIndex = 8;
@@ -1120,7 +1141,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 308);
+            this.label4.Location = new System.Drawing.Point(5, 354);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(56, 13);
             this.label4.TabIndex = 7;
@@ -1142,7 +1163,7 @@
             "6h",
             "12h",
             "24h"});
-            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(9, 324);
+            this.ddlNotifyTimeframe.Location = new System.Drawing.Point(8, 370);
             this.ddlNotifyTimeframe.Name = "ddlNotifyTimeframe";
             this.ddlNotifyTimeframe.Size = new System.Drawing.Size(120, 21);
             this.ddlNotifyTimeframe.TabIndex = 6;
@@ -1167,7 +1188,7 @@
             this.dgNotification.Location = new System.Drawing.Point(135, 8);
             this.dgNotification.Name = "dgNotification";
             this.dgNotification.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgNotification.Size = new System.Drawing.Size(1047, 573);
+            this.dgNotification.Size = new System.Drawing.Size(1047, 618);
             this.dgNotification.TabIndex = 1;
             // 
             // Symb
@@ -1224,7 +1245,7 @@
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1182, 581);
+            this.tabPage3.Size = new System.Drawing.Size(1182, 626);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Настройка";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -2501,7 +2522,7 @@
             this.tabPage4.Controls.Add(this.tbLogs);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1182, 581);
+            this.tabPage4.Size = new System.Drawing.Size(1182, 626);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Логи";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2512,26 +2533,15 @@
             this.tbLogs.Location = new System.Drawing.Point(0, 0);
             this.tbLogs.Name = "tbLogs";
             this.tbLogs.ReadOnly = true;
-            this.tbLogs.Size = new System.Drawing.Size(1182, 581);
+            this.tbLogs.Size = new System.Drawing.Size(1182, 626);
             this.tbLogs.TabIndex = 0;
             this.tbLogs.Text = "";
-            // 
-            // cbNotifyAllSymbols
-            // 
-            this.cbNotifyAllSymbols.AutoSize = true;
-            this.cbNotifyAllSymbols.Location = new System.Drawing.Point(92, 12);
-            this.cbNotifyAllSymbols.Name = "cbNotifyAllSymbols";
-            this.cbNotifyAllSymbols.Size = new System.Drawing.Size(37, 17);
-            this.cbNotifyAllSymbols.TabIndex = 24;
-            this.cbNotifyAllSymbols.Text = "All";
-            this.cbNotifyAllSymbols.UseVisualStyleBackColor = true;
-            this.cbNotifyAllSymbols.CheckedChanged += new System.EventHandler(this.cbNotifyAllSymbols_CheckedChanged);
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1190, 607);
+            this.ClientSize = new System.Drawing.Size(1190, 652);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainMenu";
             this.Text = "Binance Plus";
@@ -2797,6 +2807,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ChatId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Secret;
         private System.Windows.Forms.CheckBox cbNotifyAllSymbols;
+        private System.Windows.Forms.TextBox tbSymbolFilter;
     }
 }
 

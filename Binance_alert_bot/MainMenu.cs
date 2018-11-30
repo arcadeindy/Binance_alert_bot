@@ -1248,11 +1248,22 @@ namespace Binance_alert_bot
 
         private void cbNotifyAllSymbols_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbNotifyAllSymbols.Checked)
                 for (int i = 0; i < cblNotifySymbols.Items.Count; i++)
                 {
-                    cblNotifySymbols.SetItemChecked(i, true);
+                    cblNotifySymbols.SetItemChecked(i, cbNotifyAllSymbols.Checked);
                 }
+        }
+
+        private void tbSymbolFilter_TextChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < cblNotifySymbols.Items.Count; i++)
+            {
+                if (cblNotifySymbols.Items[i].ToString().Contains(this.tbSymbolFilter.Text.ToUpper()))
+                {
+                    cblNotifySymbols.SelectedIndex = i;
+                    break;
+                }
+            }
         }
     }
 }

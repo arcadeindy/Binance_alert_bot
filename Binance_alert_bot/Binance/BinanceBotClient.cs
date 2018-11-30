@@ -149,10 +149,10 @@ namespace Binance_alert_bot.Binance
 
                             string endSymbol = formula[2].ToString();
 
-                            if (market.MI[n.Type + n.Timeframe].ChangeValue < change && operand == "<"
-                             || market.MI[n.Type + n.Timeframe].ChangeValue > change && operand == ">")
+                            if (market.MI[n.Type + n.Timeframe].Change < change && operand == "<"
+                             || market.MI[n.Type + n.Timeframe].Change > change && operand == ">")
                             {
-                                Header += $"⟦*{GetTypeHeader(n.Type, operand)}*{operand}{change} {endSymbol} {((n.Timeframe == "") ? "" : $", {n.Timeframe}")}⟧";
+                                Header += $"[{GetTypeHeader(n.Type, operand)} {operand} {change} {endSymbol} {((n.Timeframe == "") ? "" : $", {n.Timeframe}")}]";
                                 emoje += $"{GetEmoji(n.Type, operand)}";
 
                                 text += $"{GetEmoji(n.Type, operand)}{market.MI[n.Type + n.Timeframe].Text}\n";
@@ -169,25 +169,25 @@ namespace Binance_alert_bot.Binance
                             string globalText = "";
 
                             globalText += $"#{market.BaseSymbol}";
-                            globalText += $" ⟦{emoje}⟧\n";
+                            globalText += $" [{emoje}]\n";
                             globalText += text;
                             globalText += Header;
                             notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
-                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText, parseMode: ParseMode.Markdown);
+                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText);
                         }
                         else if (text != "" && notify.Value.Count == 1)
                         {
                             string globalText = "";
 
                             globalText += $"#{market.BaseSymbol}";
-                            globalText += $" ⟦{emoje}⟧\n";
+                            globalText += $" [{emoje}]\n";
                             globalText += text;
                             globalText += Header;
 
                             notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
-                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText, parseMode: ParseMode.Markdown);
+                            bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText);
                         }
                     }
                 }

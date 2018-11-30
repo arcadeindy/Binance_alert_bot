@@ -14,6 +14,7 @@ namespace Binance_plus.Binance.Objects
         public decimal OldValue { get; set; }
         public decimal NewValue { get; set; }
         public decimal Price { get; set; }
+        public decimal Change { get; set; }
         public decimal ChangeValue => NewValue - OldValue;
         public decimal ChangeValueProcentage => GetProfit(OldValue, NewValue);
         public string Text { get; set; } = "";
