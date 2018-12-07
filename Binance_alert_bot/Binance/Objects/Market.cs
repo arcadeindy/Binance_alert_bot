@@ -109,7 +109,7 @@ namespace Binance_alert_bot.Binance.Objects
                 }
                 else
                 {
-                    marketInfo.OldValue = Ticks1min.FindAll(t => t.Time >= Ticks1min[Ticks1min.Count - 2].Time.AddMinutes(-1 * minutes + 1)).First().Close;
+                    marketInfo.OldValue = Ticks1min.FindAll(t=> t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).First().Close;
                     marketInfo.NewValue = Ticks1min.Last().Close;
                 }
             }
@@ -158,13 +158,11 @@ namespace Binance_alert_bot.Binance.Objects
             {
                 if (AllTimeFrame)
                 {
-                    //marketInfo.OldValue = Ticks[Ticks.Count - 2].High;
                     marketInfo.NewValue = Ticks.Last().High;
                 }
                 else
                 {
-                    //marketInfo.OldValue = Ticks1min.FindAll(t => t.Time >= Ticks1min[Ticks1min.Count - 2].Time.AddMinutes(-1 * minutes + 1)).First().Close;
-                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes)).Max(h => h.High); ;
+                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Max(h => h.High);
                 }
             }
             catch
@@ -220,7 +218,7 @@ namespace Binance_alert_bot.Binance.Objects
                 else
                 {
                     //marketInfo.OldValue = Ticks1min.FindAll(t => t.Time >= Ticks1min[Ticks1min.Count - 2].Time.AddMinutes(-1 * minutes + 1)).First().Close;
-                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes)).Min(h => h.Low);
+                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Min(h => h.Low);
                 }
             }
             catch
@@ -276,8 +274,8 @@ namespace Binance_alert_bot.Binance.Objects
                 }
                 else
                 {
-                    marketInfo.OldValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes)).Min(m => m.Low);
-                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes)).Max(m => m.High);
+                    marketInfo.OldValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Min(m => m.Low);
+                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Max(m => m.High);
                 }
             }
             catch
@@ -333,7 +331,7 @@ namespace Binance_alert_bot.Binance.Objects
                 else
                 {
                     //marketInfo.OldValue = Ticks1min.FindAll(t => t.Time >= Ticks1min[Ticks1min.Count - 2].Time.AddMinutes(-1 * minutes + 1)).First().Close;
-                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes)).Sum(h => h.VolumeQuote);
+                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Sum(h => h.VolumeQuote);
                 }
             }
             catch
@@ -391,7 +389,7 @@ namespace Binance_alert_bot.Binance.Objects
                 else
                 {
                     //marketInfo.OldValue = Ticks1min.FindAll(t => t.Time >= Ticks1min[Ticks1min.Count - 2].Time.AddMinutes(-1 * minutes + 1)).First().Close;
-                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes)).Sum(h => h.VolumeBase);
+                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Sum(h => h.VolumeBase);
                 }
             }
             catch
@@ -445,8 +443,8 @@ namespace Binance_alert_bot.Binance.Objects
                 }
                 else
                 {
-                    marketInfo.OldValue = Ticks1min.FindAll(t => t.Time > DateTime.UtcNow.AddMinutes(-1 * minutes * 2) && t.Time <= DateTime.UtcNow.AddMinutes(-1 * minutes)).Sum(h => h.VolumeQuote);
-                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.UtcNow.AddMinutes(-1 * minutes - 1)).Sum(h => h.VolumeQuote);
+                    marketInfo.OldValue = Ticks1min.FindAll(t => t.Time > DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes * 2 + 1) && t.Time <= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes)).Sum(h => h.VolumeQuote);
+                    marketInfo.NewValue = Ticks1min.FindAll(t => t.Time >= DateTime.Parse(DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm")).AddMinutes(-1 * minutes + 1)).Sum(h => h.VolumeQuote);
                 }
             }
             catch

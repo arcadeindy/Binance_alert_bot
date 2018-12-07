@@ -85,6 +85,11 @@ namespace Binance_alert_bot.Binance
                 {
                     if (!market.used)
                         continue;
+
+                    if (cfg.Favorite)
+                        if (!cfg.FavoriveSymbols.Contains($"{market.BaseSymbol}/{market.QuoteSymbol}"))
+                            continue;
+    
                     /*if (market.Ticks1min.Count < 60 * 24 * 2 - 1
                      || market.Ticks3min.Count < 2
                      || market.Ticks5min.Count < 2
@@ -152,7 +157,7 @@ namespace Binance_alert_bot.Binance
                             if (market.MI[n.Type + n.Timeframe].Change < change && operand == "<"
                              || market.MI[n.Type + n.Timeframe].Change > change && operand == ">")
                             {
-                                Header += $"[{GetTypeHeader(n.Type, operand)} {operand} {change} {endSymbol} {((n.Timeframe == "") ? "" : $", {n.Timeframe}")}]";
+                                Header += $"[{GetTypeHeader(n.Type, operand)} {operand} {change} {endSymbol} {((n.Timeframe == "") ? "" : $", {n.Timeframe}")}]\n";
                                 emoje += $"{GetEmoji(n.Type, operand)}";
 
                                 text += $"{GetEmoji(n.Type, operand)}{market.MI[n.Type + n.Timeframe].Text}\n";
@@ -172,6 +177,7 @@ namespace Binance_alert_bot.Binance
                             globalText += $" [{emoje}]\n";
                             globalText += text;
                             globalText += Header;
+                            globalText += DateTime.UtcNow.ToString("HH:mm:ss") + " UTC";
                             notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
                             bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText);
@@ -184,7 +190,7 @@ namespace Binance_alert_bot.Binance
                             globalText += $" [{emoje}]\n";
                             globalText += text;
                             globalText += Header;
-
+                            globalText += DateTime.UtcNow.ToString("HH:mm:ss") + " UTC";
                             notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
                             bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText);
@@ -680,7 +686,7 @@ namespace Binance_alert_bot.Binance
             });
 
             //сокеты свечей на 12 h
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.TwelfHour, data =>
+            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.TwelveHour, data =>
             {
                 try
                 {
@@ -1134,7 +1140,7 @@ namespace Binance_alert_bot.Binance
                 requests = -2 * 12 * 60 - 1;
                 while (requests < 0)
                 {
-                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.TwelfHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
+                    CallResult<BinanceKline[]> klines = client.GetKlines(symbol, KlineInterval.TwelveHour, startTime: DateTime.UtcNow.AddMinutes(requests), limit: 1000);
 
                     requests += 1000;
 
@@ -1277,12 +1283,10 @@ namespace Binance_alert_bot.Binance
             {
                 GetExchangeInfo(Symbol);
                 goto start;
-                //throw new Exception($"{Symbol} не найдена в списке всех монет. Обновил");
             }
             else
             {
-                BinanceSymbolPriceFilter filter = (BinanceSymbolPriceFilter)findCoin.Filters[0];
-                return filter.TickSize.ToString().Replace(",", "").IndexOf("1");
+                return findCoin.PriceFilter.TickSize.ToString().Replace(",", "").IndexOf("1");
             }
         }
         private void ErrorHandling(Error error)

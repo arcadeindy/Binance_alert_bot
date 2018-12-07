@@ -571,6 +571,10 @@ namespace Binance_alert_bot
                 if (!market.used)
                     continue;
 
+                if (cfg.Favorite)
+                    if (!cfg.FavoriveSymbols.Contains($"{market.BaseSymbol}/{market.QuoteSymbol}"))
+                        continue;
+
                 var find = false;
                 foreach (DataGridViewRow row in this.dgBinanceTable.Rows)
                 {
@@ -1105,18 +1109,28 @@ namespace Binance_alert_bot
         private void btnAddFavorite_Click(object sender, EventArgs e)
         {
             if (this.ddlSymbols.SelectedItem.ToString() != "")
+            {
                 this.lbFavorite.Items.Add(this.ddlSymbols.SelectedItem.ToString());
+                cfg.FavoriveSymbols.Add(this.ddlSymbols.SelectedItem.ToString());
+            }
+                
+            SaveConfig();
         }
 
         private void btnDeleteFavorite_Click(object sender, EventArgs e)
         {
             if (this.lbFavorite.SelectedItem != null && this.lbFavorite.SelectedItem.ToString() != "")
+            {
                 this.lbFavorite.Items.Remove(this.lbFavorite.SelectedItem);
+            }
+            SaveConfig();
         }
 
         private void cbFavorite_CheckedChanged(object sender, EventArgs e)
         {
+            this.cfg.Favorite = this.cbFavorite.Checked;
             this.dgBinanceTable.Rows.Clear();
+            SaveConfig();
         }
 
         private void btnTelegramTestMsg_Click(object sender, EventArgs e)

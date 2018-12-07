@@ -723,154 +723,154 @@
             // 
             // VolumeQuote1min
             // 
-            this.VolumeQuote1min.HeaderText = "1min Volume Quote";
+            this.VolumeQuote1min.HeaderText = "1min VolumeBTC";
             this.VolumeQuote1min.Name = "VolumeQuote1min";
             this.VolumeQuote1min.ReadOnly = true;
             this.VolumeQuote1min.Visible = false;
             // 
             // VolumeQuote3min
             // 
-            this.VolumeQuote3min.HeaderText = "3min Volume Quote";
+            this.VolumeQuote3min.HeaderText = "3min VolumeBTC";
             this.VolumeQuote3min.Name = "VolumeQuote3min";
             this.VolumeQuote3min.ReadOnly = true;
             this.VolumeQuote3min.Visible = false;
             // 
             // VolumeQuote5min
             // 
-            this.VolumeQuote5min.HeaderText = "5min Volume Quote";
+            this.VolumeQuote5min.HeaderText = "5min VolumeBTC";
             this.VolumeQuote5min.Name = "VolumeQuote5min";
             this.VolumeQuote5min.ReadOnly = true;
             this.VolumeQuote5min.Visible = false;
             // 
             // VolumeQuote15min
             // 
-            this.VolumeQuote15min.HeaderText = "15min Volume Quote";
+            this.VolumeQuote15min.HeaderText = "15min VolumeBTC";
             this.VolumeQuote15min.Name = "VolumeQuote15min";
             this.VolumeQuote15min.ReadOnly = true;
             this.VolumeQuote15min.Visible = false;
             // 
             // VolumeQuote30min
             // 
-            this.VolumeQuote30min.HeaderText = "30min Volume Quote";
+            this.VolumeQuote30min.HeaderText = "30min VolumeBTC";
             this.VolumeQuote30min.Name = "VolumeQuote30min";
             this.VolumeQuote30min.ReadOnly = true;
             this.VolumeQuote30min.Visible = false;
             // 
             // VolumeQuote1h
             // 
-            this.VolumeQuote1h.HeaderText = "1h Volume Quote";
+            this.VolumeQuote1h.HeaderText = "1h VolumeBTC";
             this.VolumeQuote1h.Name = "VolumeQuote1h";
             this.VolumeQuote1h.ReadOnly = true;
             this.VolumeQuote1h.Visible = false;
             // 
             // VolumeQuote2h
             // 
-            this.VolumeQuote2h.HeaderText = "2h Volume Quote";
+            this.VolumeQuote2h.HeaderText = "2h VolumeBTC";
             this.VolumeQuote2h.Name = "VolumeQuote2h";
             this.VolumeQuote2h.ReadOnly = true;
             this.VolumeQuote2h.Visible = false;
             // 
             // VolumeQuote4h
             // 
-            this.VolumeQuote4h.HeaderText = "4h Volume Quote";
+            this.VolumeQuote4h.HeaderText = "4h VolumeBTC";
             this.VolumeQuote4h.Name = "VolumeQuote4h";
             this.VolumeQuote4h.ReadOnly = true;
             this.VolumeQuote4h.Visible = false;
             // 
             // VolumeQuote6h
             // 
-            this.VolumeQuote6h.HeaderText = "6h Volume Quote";
+            this.VolumeQuote6h.HeaderText = "6h VolumeBTC";
             this.VolumeQuote6h.Name = "VolumeQuote6h";
             this.VolumeQuote6h.ReadOnly = true;
             this.VolumeQuote6h.Visible = false;
             // 
             // VolumeQuote12h
             // 
-            this.VolumeQuote12h.HeaderText = "12h Volume Quote";
+            this.VolumeQuote12h.HeaderText = "12h VolumeBTC";
             this.VolumeQuote12h.Name = "VolumeQuote12h";
             this.VolumeQuote12h.ReadOnly = true;
             this.VolumeQuote12h.Visible = false;
             // 
             // VolumeQuote24h
             // 
-            this.VolumeQuote24h.HeaderText = "24 Volume Quote";
+            this.VolumeQuote24h.HeaderText = "24 VolumeBTC";
             this.VolumeQuote24h.Name = "VolumeQuote24h";
             this.VolumeQuote24h.ReadOnly = true;
             this.VolumeQuote24h.Visible = false;
             // 
             // VolumeBase1min
             // 
-            this.VolumeBase1min.HeaderText = "1min Volume Base";
+            this.VolumeBase1min.HeaderText = "1min Volume";
             this.VolumeBase1min.Name = "VolumeBase1min";
             this.VolumeBase1min.ReadOnly = true;
             this.VolumeBase1min.Visible = false;
             // 
             // VolumeBase3min
             // 
-            this.VolumeBase3min.HeaderText = "3min Volume Base";
+            this.VolumeBase3min.HeaderText = "3min Volume";
             this.VolumeBase3min.Name = "VolumeBase3min";
             this.VolumeBase3min.ReadOnly = true;
             this.VolumeBase3min.Visible = false;
             // 
             // VolumeBase5min
             // 
-            this.VolumeBase5min.HeaderText = "5min Volume Base";
+            this.VolumeBase5min.HeaderText = "5min Volume";
             this.VolumeBase5min.Name = "VolumeBase5min";
             this.VolumeBase5min.ReadOnly = true;
             this.VolumeBase5min.Visible = false;
             // 
             // VolumeBase15min
             // 
-            this.VolumeBase15min.HeaderText = "15min Volume Base";
+            this.VolumeBase15min.HeaderText = "15min Volume";
             this.VolumeBase15min.Name = "VolumeBase15min";
             this.VolumeBase15min.ReadOnly = true;
             this.VolumeBase15min.Visible = false;
             // 
             // VolumeBase30min
             // 
-            this.VolumeBase30min.HeaderText = "30min Volume Base";
+            this.VolumeBase30min.HeaderText = "30min Volume";
             this.VolumeBase30min.Name = "VolumeBase30min";
             this.VolumeBase30min.ReadOnly = true;
             this.VolumeBase30min.Visible = false;
             // 
             // VolumeBase1h
             // 
-            this.VolumeBase1h.HeaderText = "1h Volume Base";
+            this.VolumeBase1h.HeaderText = "1h Volume";
             this.VolumeBase1h.Name = "VolumeBase1h";
             this.VolumeBase1h.ReadOnly = true;
             this.VolumeBase1h.Visible = false;
             // 
             // VolumeBase2h
             // 
-            this.VolumeBase2h.HeaderText = "2h Volume Base";
+            this.VolumeBase2h.HeaderText = "2h Volume";
             this.VolumeBase2h.Name = "VolumeBase2h";
             this.VolumeBase2h.ReadOnly = true;
             this.VolumeBase2h.Visible = false;
             // 
             // VolumeBase4h
             // 
-            this.VolumeBase4h.HeaderText = "4h Volume Base";
+            this.VolumeBase4h.HeaderText = "4h Volume";
             this.VolumeBase4h.Name = "VolumeBase4h";
             this.VolumeBase4h.ReadOnly = true;
             this.VolumeBase4h.Visible = false;
             // 
             // VolumeBase6h
             // 
-            this.VolumeBase6h.HeaderText = "6h Volume Base";
+            this.VolumeBase6h.HeaderText = "6h Volume";
             this.VolumeBase6h.Name = "VolumeBase6h";
             this.VolumeBase6h.ReadOnly = true;
             this.VolumeBase6h.Visible = false;
             // 
             // VolumeBase12h
             // 
-            this.VolumeBase12h.HeaderText = "12h Volume Base";
+            this.VolumeBase12h.HeaderText = "12h Volume";
             this.VolumeBase12h.Name = "VolumeBase12h";
             this.VolumeBase12h.ReadOnly = true;
             this.VolumeBase12h.Visible = false;
             // 
             // VolumeBase24h
             // 
-            this.VolumeBase24h.HeaderText = "24h Volume Base";
+            this.VolumeBase24h.HeaderText = "24h Volume";
             this.VolumeBase24h.Name = "VolumeBase24h";
             this.VolumeBase24h.ReadOnly = true;
             this.VolumeBase24h.Visible = false;
