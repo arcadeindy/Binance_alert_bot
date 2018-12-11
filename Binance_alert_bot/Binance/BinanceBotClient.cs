@@ -177,7 +177,7 @@ namespace Binance_alert_bot.Binance
                             globalText += $" [{emoje}]\n";
                             globalText += text;
                             globalText += Header;
-                            globalText += DateTime.UtcNow.ToString("HH:mm:ss") + " UTC";
+                            globalText += DateTime.UtcNow.ToString("HH:mm:ss.fff") + " UTC";
                             notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
                             bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText);
@@ -190,7 +190,7 @@ namespace Binance_alert_bot.Binance
                             globalText += $" [{emoje}]\n";
                             globalText += text;
                             globalText += Header;
-                            globalText += DateTime.UtcNow.ToString("HH:mm:ss") + " UTC";
+                            globalText += DateTime.UtcNow.ToString("HH:mm:ss.fff") + " UTC";
                             notify.Value.Select(c => { c.Time[$"{market.BaseSymbol}/{market.QuoteSymbol}"] = DateTime.Now; return c; }).ToList();
                             TelegramBotClient bot = new TelegramBotClient(cfg.TelegramApiKey);
                             bot.SendTextMessageAsync(notify.Value.First().TelegramChatId, globalText);
@@ -223,10 +223,12 @@ namespace Binance_alert_bot.Binance
         {
             switch (type)
             {
+                case "Amplitude":
+                    return $"{((operand == ">") ? "🕯↑" : "🕯↓")}";
                 case "VolumeChange":
-                    return $"{((operand == ">") ? "↑🍖" : "↓🍗")}";
+                    return $"{((operand == ">") ? "🍖↑" : "🍗↓")}";
                 case "PriceChange":
-                    return $"{((operand == ">") ? "↑🍏" : "↓🍎")}";
+                    return $"{((operand == ">") ? "🍏↑" : "🍎↓")}";
                 case "VolumeBase":
                 case "VolumeQuote":
                     return $"{((operand == ">") ? "🍖" : "🍗")}";
@@ -324,16 +326,19 @@ namespace Binance_alert_bot.Binance
                 });
                 BinanceLogs?.Invoke($"Подписался на новую монету {symbol[0]}");
             }
+        }
 
+        private void SubscribeToNewSymbol1min(string symbol)
+        {
             //сокеты свечей на 1 минуту
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.OneMinute, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.OneMinute, data =>
             {
                 try
                 {
                     if (!data.Symbol.Contains("BTC") || data.Symbol == "BTCUSDT") return;
 
                     var findCoin = BinanceMarket.Find(x => x.Symbol == data.Symbol);
-                    
+
                     if (findCoin != null)
                     {
 
@@ -353,7 +358,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks1min.Last().Time = data.EventTime;
+                            findCoin.Ticks1min.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks1min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks1min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks1min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -365,9 +370,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol3min(string symbol)
+        {
             //сокеты свечей на 3 минуты
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.ThreeMinutes, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.ThreeMinutes, data =>
             {
                 try
                 {
@@ -393,7 +400,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks3min.Last().Time = data.EventTime;
+                            findCoin.Ticks3min.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks3min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks3min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks3min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -405,9 +412,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol5min(string symbol)
+        {
             //сокеты свечей на 5 минут
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.FiveMinutes, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.FiveMinutes, data =>
             {
                 try
                 {
@@ -433,7 +442,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks5min.Last().Time = data.EventTime;
+                            findCoin.Ticks5min.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks5min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks5min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks5min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -445,9 +454,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol15min(string symbol)
+        {
             //сокеты свечей на 15 минут
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.FiveteenMinutes, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.FiveteenMinutes, data =>
             {
                 try
                 {
@@ -473,7 +484,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks15min.Last().Time = data.EventTime;
+                            findCoin.Ticks15min.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks15min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks15min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks15min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -485,9 +496,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol30min(string symbol)
+        {
             //сокеты свечей на 30 минут
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.ThirtyMinutes, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.ThirtyMinutes, data =>
             {
                 try
                 {
@@ -513,7 +526,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks30min.Last().Time = data.EventTime;
+                            findCoin.Ticks30min.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks30min.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks30min.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks30min.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -525,9 +538,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol1h(string symbol)
+        {
             //сокеты свечей на 1 час
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.OneHour, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.OneHour, data =>
             {
                 try
                 {
@@ -553,7 +568,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks1h.Last().Time = data.EventTime;
+                            findCoin.Ticks1h.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks1h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks1h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks1h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -565,9 +580,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol2h(string symbol)
+        {
             //сокеты свечей на 2 h
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.TwoHour, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.TwoHour, data =>
             {
                 try
                 {
@@ -593,7 +610,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks2h.Last().Time = data.EventTime;
+                            findCoin.Ticks2h.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks2h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks2h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks2h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -605,9 +622,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol4h(string symbol)
+        {
             //сокеты свечей на 4 h
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.FourHour, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.FourHour, data =>
             {
                 try
                 {
@@ -633,7 +652,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks4h.Last().Time = data.EventTime;
+                            findCoin.Ticks4h.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks4h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks4h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks4h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -645,9 +664,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol6h(string symbol)
+        {
             //сокеты свечей на 6 h
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.SixHour, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.SixHour, data =>
             {
                 try
                 {
@@ -672,7 +693,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks6h.Last().Time = data.EventTime;
+                            findCoin.Ticks6h.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks6h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks6h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks6h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -684,9 +705,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
-
+        }
+        private void SubscribeToNewSymbol12h(string symbol)
+        {
             //сокеты свечей на 12 h
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.TwelveHour, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.TwelveHour, data =>
             {
                 try
                 {
@@ -712,7 +735,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks12h.Last().Time = data.EventTime;
+                            findCoin.Ticks12h.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks12h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks12h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks12h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -724,8 +747,11 @@ namespace Binance_alert_bot.Binance
                 }
                 catch { }
             });
+        }
+        private void SubscribeToNewSymbol24h(string symbol)
+        {
             //сокеты свечей на 24 h
-            ws.SubscribeToKlineStream(symbol.ToArray(), KlineInterval.OneDay, data =>
+            ws.SubscribeToKlineStream(symbol, KlineInterval.OneDay, data =>
             {
                 try
                 {
@@ -751,7 +777,7 @@ namespace Binance_alert_bot.Binance
                         }
                         else
                         {
-                            findCoin.Ticks24h.Last().Time = data.EventTime;
+                            findCoin.Ticks24h.Last().Time = data.Data.CloseTime;
                             findCoin.Ticks24h.Last().Close = Math.Round(data.Data.Close, GetPriceFilter(data.Symbol));
                             findCoin.Ticks24h.Last().Open = Math.Round(data.Data.Open, GetPriceFilter(data.Symbol));
                             findCoin.Ticks24h.Last().Low = Math.Round(data.Data.Low, GetPriceFilter(data.Symbol));
@@ -764,6 +790,7 @@ namespace Binance_alert_bot.Binance
                 catch { }
             });
         }
+
         private void GetKlines()
         {
             foreach (var symbol in AllSymbolsBTC)
@@ -808,6 +835,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks1min.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol1min(symbol);
 
                 requests = -2 * 3 - 10;
                 while (requests < 0)
@@ -849,6 +877,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks3min.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol3min(symbol);
 
                 requests = -2 * 5 - 10;
                 while (requests < 0)
@@ -890,6 +919,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks5min.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol5min(symbol);
 
                 requests = -2 * 15 - 10;
                 while (requests < 0)
@@ -931,6 +961,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks15min.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol15min(symbol);
 
                 requests = -2 * 30 - 10;
                 while (requests < 0)
@@ -972,6 +1003,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks30min.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol30min(symbol);
 
                 requests = -2 * 60 - 1;
                 while (requests < 0)
@@ -1013,6 +1045,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks1h.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol1h(symbol);
 
                 requests = -2 * 2 *60 - 1;
                 while (requests < 0)
@@ -1054,6 +1087,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks2h.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol2h(symbol);
 
                 requests = -2 * 4 * 60 - 1;
                 while (requests < 0)
@@ -1095,6 +1129,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks4h.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol4h(symbol);
 
                 requests = -2 * 6 * 60 - 1;
                 while (requests < 0)
@@ -1136,6 +1171,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks6h.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol6h(symbol);
 
                 requests = -2 * 12 * 60 - 1;
                 while (requests < 0)
@@ -1177,6 +1213,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks12h.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol12h(symbol);
 
                 requests = -2 * 24 * 60 - 1;
                 while (requests < 0)
@@ -1218,6 +1255,7 @@ namespace Binance_alert_bot.Binance
                         findCoin.Ticks24h.AddRange(MarketTicks);
                     }
                 }
+                SubscribeToNewSymbol24h(symbol);
 
                 var f = BinanceMarket.Find(x => x.Symbol == symbol);
                 if (f != null)
